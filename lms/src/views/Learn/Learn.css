@@ -1,0 +1,476 @@
+.learn-parent-container {
+    /* background-color: #232F3E; */
+    /* padding: 20px 20px 0 20px; */
+    height: calc(100vh - 118px);
+}
+
+.fullscreen {
+    height: 100%;
+}
+  
+.learn-fullscreen-enabled {
+    background: white !important;
+}
+
+.fullscreen-enabled .learn-lab-content-container {
+    padding: 20px;
+    display: inline-block;
+}
+
+.learn-lab-content-container {
+    height: 100%;
+    overflow: auto;
+}
+
+.learn-video-player-container {
+    height: 100%;
+    width: 100%;
+    float: none;
+    overflow: auto;
+}
+  
+a.learn-fill-div {
+    display: block;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    text-decoration: none;
+    color: inherit;
+}
+
+a.learn-fill-div:hover {
+    color: inherit;
+}
+
+.learn-logo-container {
+    background-color: rgba(255,255,255,0.1);
+    padding: 15px;
+    border-radius: 15px;
+    margin-bottom: 40px;
+    flex: 0 1 auto;
+}
+  
+.learn-lecture-info {
+    flex: 0 1 auto;
+}
+  
+.learn-chapters-container {
+    flex: 1 1 auto;
+    overflow: scroll;
+    display: block !important;
+}
+  
+.learn-logo-aws {
+    width: 42px !important;
+    height: auto !important;
+    padding: 0 !important;
+    position: relative;
+    top: 3px;
+}
+  
+.learn-logo-text {
+    margin-left: 10px;
+    font-weight: bold;
+    width: auto !important;
+}
+  
+.learn-course-name {
+    font-size: 18px;
+    font-weight: bold;
+}
+  
+.learn-chapter-name {
+    font-size: 18px;
+    font-weight: lighter;
+    font-weight: 10px;
+}
+  
+.learn-lecture-name-h {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+  
+.learn-table-of-content {
+    margin-top: 20px !important;
+}
+  
+.learn-menu-divider {
+    margin: 5px 10px 10px 10px !important;
+    width: 265px !important;
+    border-top: 1px solid rgba(255,255,255,0.learn-1) !important;
+}
+  
+.learn-chapter-header {
+    margin-top: 10px !important;
+}
+  
+.learn-chapter-content {
+    margin-left: -10px;
+    padding: 0 !important;
+}
+  
+.learn-chapter-number {
+    width: calc(100% - 15px);
+    font-weight: lighter;
+    font-weight: 10px;
+    float: left;
+}
+  
+.learn-chapter-collapse {
+    float: none;
+    overflow: hidden;
+}
+
+.learn-btn-collapse {
+    color: inherit;
+    padding: 0 !important;
+    background-color: transparent !important;
+    border: none !important;
+}
+  
+.learn-btn-collapse:active {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+  
+.learn-chapter-header-text {
+    font-weight: bold;
+    text-overflow: ellipsis;
+    overflow: hidden; 
+    white-space: nowrap;
+}
+  
+.learn-chapter-header-divider {
+    margin-left: 0px !important;
+}
+  
+.learn-section-header {
+    text-overflow: ellipsis;
+    overflow: hidden; 
+    white-space: nowrap;
+    font-size: 90%;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+  
+.learn-lecture {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+  
+.learn-lecture-selected {
+    color: orange !important;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+  
+.learn-lecture-logo {
+    width: 25px;
+    font-size: 18px;
+    float: left;
+    position: relative;
+    top: -5px;
+}
+  
+.learn-lecture-name {
+    float: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    overflow: hidden; 
+    white-space: nowrap;
+    font-size: 90%;
+}
+  
+.learn-transparent-player {
+    background-color: transparent !important;
+}
+  
+.learn-parent-loading {
+    text-align: center;
+    padding-top: 40vh !important;
+}
+  
+.learn-lecture-loading {
+    height: 80px;
+    text-align: center;
+    padding-top: 32px !important;
+}
+  
+.learn-player-loading {
+    height: 100%;
+    text-align: center;
+    padding-top: 30vh !important;
+}
+
+.fullscreen-enabled .learn-player-loading {
+    padding-top: 50vh !important;
+}
+  
+.learn-loading-gif {
+    height: 16px;
+}
+  
+.learn-content-parent {
+    height: 100%;
+}
+
+.learn-content-parent.full-screen {
+    background-color: white;
+}
+  
+.learn-content-main {
+    height: calc(100% - 30px);
+    /* display: inline; */
+}
+  
+.learn-content-control {
+    height: 30px;
+    background-color: rgba(38, 50, 56, 0.8);
+}
+  
+.learn-content-control-left {
+    width: 50%;
+    display: inline-block;
+}
+  
+.learn-content-control-right {
+    width: 50%;
+    display: inline-block;
+    text-align: right;
+}
+  
+.learn-content-control-btn {
+    background-color: transparent;
+    color: white;
+    border: 0px;
+    width: 40px;
+}
+  
+.learn-content-control-btn-disabled {
+    opacity: 0.3;
+}
+  
+.learn-video-react-control-bar {
+    background-color: rgba(0, 0, 0, 0.08) !important;
+}
+  
+.learn-lab-content-header {
+    font-weight: bold;
+    font-size: 30px;
+    border-bottom: solid 1px white;
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+}
+  
+.learn-lab-content-desc {
+    margin-bottom: 5px;
+    white-space: pre-line;
+    line-height: 150%;
+}
+  
+.learn-lab-content-link button {
+    color: orange;
+    border: none;
+    background-color: transparent;
+    padding: 0;
+}
+  
+.learn-lab-content-link button:hover {
+    color: rgb(207, 135, 0);
+}
+  
+.learn-next-lecture {
+    width: 300px;
+    height: 80px;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    padding: 15px;
+    color: white;
+}
+  
+.learn-next-lecture-count {
+    font-size: 40px;
+    font-weight: bold;
+    text-align: center;
+    position: relative;
+    top: -5px;
+    display: inline-block;
+    width: 20%;
+}
+
+.learn-next-lecture-right {
+    width: 80%;
+    display: inline-block;
+}
+  
+.learn-next-lecture-header {
+    font-size: 12px;
+    opacity: 0.6;
+}
+  
+.learn-next-lecture-name {
+    width: 200px;
+    font-size: 14px;
+    display:inline-block !important;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+  
+.learn-next-lecture-cancel {
+    background-color: transparent;
+    color: white;
+    border: 0px;
+    width: 40px;
+    position: absolute;
+    right: 0;
+    top: 10px;
+}
+  
+.learn-auto-next-control {
+    display: inline-block !important;
+    font-size: 10px !important;
+    margin-left: 10px;
+    padding: 2px 5px !important;
+    transition: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    opacity: 0.7;
+    color: white !important;
+}
+  
+.learn-auto-next-control-icon {
+    font-size: 14px;
+    position: relative;
+    left: 4px;
+    top: 3px;
+}
+
+.learn-board {
+    background-color: white;
+    height: 100%;
+}
+
+.learn-board-header {
+    height: 62px;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 20px;
+    border-bottom: solid 1px #EAEDED;
+}
+
+.learn-board-content {
+    padding: 20px;
+    font-size: 14px;
+    height: calc(100% - 62px)
+}
+
+.learn-navigation-badge {
+    /* float: right; */
+    /* opacity: 0.5; */
+    width: 20%;
+    text-align: end;
+}
+
+.learn-navigation-lecture svg {
+    color: #2E7D32;
+    height: 8px;
+    position: relative;
+    top: -1px;
+}
+
+.learn-navigation-lecture {
+    display: flex;
+}
+
+.learn-navigation-chapter, .learn-navigation-lecture {
+    width: 230px;
+}
+
+.learn-navigation-chapter span {
+    float: right;
+}
+
+.learn-navigation-chapter svg {
+    position: relative;
+    top: 2px;
+}
+
+.learn-navigation-progress {
+    color: #EC7211;
+    font-weight: bold;
+}
+
+.learn-navigation-progress-completed {
+    color: #2E7D32;
+    font-weight: bold;
+}
+
+.learn-navigation-progress-completed svg {
+    position: relative;
+    top: 2px;
+}
+
+.learn-quiz-length {
+    opacity: 0.6;
+}
+
+.learn-lab-quiz-control {
+    border-top: solid 1px #EAEDED;
+    padding-top: 6px;
+}
+
+.learn-lab-quiz-control-left {
+    width: 50%;
+    display: inline-block;
+    font-weight: bold;
+}
+
+.learn-lab-quiz-control-right {
+    width: 50%;
+    display: inline-block;
+    text-align: right;
+}
+
+.learn-lab-content-container-quiz {
+    height: 100%;
+}
+
+.learn-lab-content-quiz {
+    height: calc(100% - 50px);
+}
+
+.learn-lab-content-question {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+/* This is temporary overwrite Clouscape CSS */
+.awsui_link-active_l0dv0_5p78l_219 {
+    font-weight: normal !important;
+}
+
+/* This is temporary overwrite Clouscape CSS */
+.awsui_wrapper-footer_gwq0h_ohtdp_199 {
+    font-weight: bold !important;
+}
+
+/* This is temporary overwrite Clouscape CSS */
+.awsui_info_l0dv0_5p78l_253 {
+    opacity: 0.7;
+}
+
+.learn-lab-architech {
+    height: calc(100% - 70px)
+}
+
+.learn-lab-architech img {
+    max-width: 100%;
+    max-height: 100%;
+}

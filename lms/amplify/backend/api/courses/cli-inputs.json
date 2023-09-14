@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "paths": {
+    "/courses": {
+      "name": "/courses",
+      "lambdaFunction": "courses",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/users/courses": {
+      "name": "/users/courses",
+      "lambdaFunction": "UserCourse",
+      "permissions": {
+        "setting": "private",
+        "auth": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ]
+      }
+    },
+    "/lectures": {
+      "name": "/lectures",
+      "lambdaFunction": "lectures",
+      "permissions": {
+        "setting": "private",
+        "auth": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ]
+      }
+    },
+    "/categories": {
+      "name": "/categories",
+      "lambdaFunction": "categories",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/users/lectures": {
+      "name": "/users/lectures",
+      "lambdaFunction": "usersLectures",
+      "permissions": {
+        "setting": "private",
+        "auth": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ]
+      }
+    },
+    "/certs": {
+      "name": "/certs",
+      "lambdaFunction": "certs",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}
