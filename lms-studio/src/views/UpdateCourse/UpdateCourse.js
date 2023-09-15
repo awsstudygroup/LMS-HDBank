@@ -334,8 +334,10 @@ function UpdateCourse(props) {
         Categories: categories,
         Requirements: newCourse.requirements,
         Difficulty: newCourse.difficulty,
+        Publicity: newCourse.publicity,
         WhatToLearn: newCourse.whatToLearn,
         Chapters: newCourse.chapters,
+        Views: state.Views,
     }
 
     const apiName = "lmsStudio";
