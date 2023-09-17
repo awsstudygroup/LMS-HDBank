@@ -439,10 +439,6 @@
         "studiousers": {
           "deploymentBucketName": "amplify-lmsstudio-stage-204252-deployment",
           "s3Key": "amplify-builds/studiousers-5131422f4a3856625963-build.zip"
-        },
-        "userOverview": {
-          "deploymentBucketName": "amplify-lmsstudio-stage-204252-deployment",
-          "s3Key": "amplify-builds/userOverview-654a2b424847582f692b-build.zip"
         }
       },
       "hosting": {

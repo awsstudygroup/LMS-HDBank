@@ -15,13 +15,6 @@
         "setting": "open"
       }
     },
-    "/useroverview": {
-      "name": "/useroverview",
-      "lambdaFunction": "userOverview",
-      "permissions": {
-        "setting": "open"
-      }
-    },
     "/courses": {
       "name": "/courses",
       "lambdaFunction": "studioCourses",

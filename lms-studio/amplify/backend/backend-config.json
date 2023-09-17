@@ -24,14 +24,6 @@
             "Arn"
           ],
           "category": "function",
-          "resourceName": "userOverview"
-        },
-        {
-          "attributes": [
-            "Name",
-            "Arn"
-          ],
-          "category": "function",
           "resourceName": "studioCourses"
         }
       ],
@@ -86,12 +78,6 @@
     },
     "studiousers": {
       "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "userOverview": {
-      "build": true,
-      "dependsOn": [],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     }
@@ -165,22 +151,6 @@
         {
           "category": "function",
           "resourceName": "studiousers"
-        }
-      ]
-    },
-    "AMPLIFY_function_userOverview_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "userOverview"
-        }
-      ]
-    },
-    "AMPLIFY_function_userOverview_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "userOverview"
         }
       ]
     },
