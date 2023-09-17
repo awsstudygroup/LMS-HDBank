@@ -29,7 +29,10 @@ const userIdPresent = true; // TODO: update in case is required to use that defi
 const partitionKeyName = "ID";
 const partitionKeyType = "S";
 const userIndex = "CreatorID-index";
-const publicityIndex = "Publicity-index"
+const publicityIndex = "Publicity-index";
+const creatorIDIndex = "CreatorID-index";
+const partitionCreatorKeyIndex = "CreatorID";
+const partitionCreatorKeyIndexType = "S";
 const sortKeyName = "";
 const sortKeyType = "";
 const hasSortKey = sortKeyName !== "";
@@ -179,6 +182,39 @@ app.get(path+"/private", function(req, res) {
     if (err) {
       res.statusCode = 500;
       res.json({error: 'Could not load items: ' + err});
+    } else {
+      res.json(data.Items);
+    }
+  });
+});
+
+// /*********************************************
+//  * HTTP Get method for get object by user id*
+//  *********************************************/
+
+app.get(path + "/creator", function(req, res) {
+  let value = "";
+  console.log("Creator nè sao k vào nhỉ")
+  try {
+    value = req.apiGateway.event.requestContext.identity.cognitoAuthenticationProvider.split(':CognitoSignIn:')[1];
+  } catch(err) {
+    res.statusCode = 500;
+    res.json({error: 'Wrong column type ' + err});
+  }
+
+  let queryItemParams = {
+    TableName: tableName,
+    IndexName: creatorIDIndex,
+    KeyConditionExpression: "CreatorID = :value",
+    ExpressionAttributeValues: {
+      ":value": value
+    }
+  }
+
+  dynamodb.query(queryItemParams,(err, data) => {
+    if(err) {
+      res.statusCode = 500;
+      res.json({error: 'Could not load items: ' + err.message});
     } else {
       res.json(data.Items);
     }

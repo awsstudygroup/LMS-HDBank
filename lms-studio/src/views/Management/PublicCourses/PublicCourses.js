@@ -136,11 +136,11 @@ const PublicCourses = () => {
     setDeleting(true);
     let courseList = courses;
     let countDeleteItems = currentCourse ? 1 : selectedItems.length;
-    const deteleItems = currentCourse ? currentCourse : selectedItems
+    const deleteItems = currentCourse ? currentCourse : selectedItems
     for (let i = 0; i < countDeleteItems; i++) {
       try {
-        await API.del(apiName, coursePath + "/object/" + deteleItems[i].ID);
-        courseList = courseList.filter(course => course.ID != deteleItems[i].ID);
+        await API.del(apiName, coursePath + "/object/" + deleteItems[i].ID);
+        courseList = courseList.filter(course => course.ID != deleteItems[i].ID);
         if ( i === countDeleteItems - 1){
           resetSuccess();
           setCourses(courseList);

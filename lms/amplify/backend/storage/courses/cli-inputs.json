@@ -12,6 +12,13 @@
         "fieldName": "Publicity",
         "fieldType": "number"
       }
+    },
+    {
+      "name": "CreatorID-index",
+      "partitionKey": {
+        "fieldName": "CreatorID",
+        "fieldType": "string"
+      }
     }
   ],
   "triggerFunctions": []

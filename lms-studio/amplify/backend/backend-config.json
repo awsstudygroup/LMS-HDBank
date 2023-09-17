@@ -120,14 +120,6 @@
         }
       ]
     },
-    "AMPLIFY_function_studioCourses_tableName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "studioCourses"
-        }
-      ]
-    },
     "AMPLIFY_function_studioLectures_deploymentBucketName": {
       "usedBy": [
         {
@@ -208,19 +200,19 @@
         }
       ]
     },
-    "AMPLIFY_storage_lmsstudiof4e07fec_bucketName": {
+    "AMPLIFY_storage_lmsstudiodcbd5e2f_bucketName": {
       "usedBy": [
         {
           "category": "storage",
-          "resourceName": "lmsstudiof4e07fec"
+          "resourceName": "lmsstudiodcbd5e2f"
         }
       ]
     },
-    "AMPLIFY_storage_lmsstudiof4e07fec_region": {
+    "AMPLIFY_storage_lmsstudiodcbd5e2f_region": {
       "usedBy": [
         {
           "category": "storage",
-          "resourceName": "lmsstudiof4e07fec"
+          "resourceName": "lmsstudiodcbd5e2f"
         }
       ]
     }
