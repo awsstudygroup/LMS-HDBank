@@ -27,6 +27,13 @@
           "delete"
         ]
       }
+    },
+    "/userOverview": {
+      "name": "/userOverview",
+      "lambdaFunction": "userOverview",
+      "permissions": {
+        "setting": "open"
+      }
     }
   }
 }
