@@ -167,6 +167,22 @@
         }
       ]
     },
+    "AMPLIFY_function_userOverview_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "userOverview"
+        }
+      ]
+    },
+    "AMPLIFY_function_userOverview_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "userOverview"
+        }
+      ]
+    },
     "AMPLIFY_hosting_amplifyhosting_appId": {
       "usedBy": [
         {
