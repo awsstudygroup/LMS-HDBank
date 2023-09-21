@@ -22,9 +22,11 @@ if (process.env.ENV && process.env.ENV !== "NONE") {
   tableName = tableName + '-' + process.env.ENV;
 }
 
-const userIdPresent = false; // TODO: update in case is required to use that definition
+const userIdPresent = true; // TODO: update in case is required to use that definition
 const partitionKeyName = "ID";
 const partitionKeyType = "S";
+const creatorIDIndex = "CreatorID-index";
+const publicityIndex = "Publicity-index";
 const sortKeyName = "";
 const sortKeyType = "";
 const hasSortKey = sortKeyName !== "";
@@ -98,7 +100,7 @@ app.get(path, function(req, res) {
 });
 
 //PUBLIC
-app.get(path+"/public", function(req, res) {
+app.get(path + "/public", function(req, res) {
   const condition = {}
   condition[sortKeyName] = {
     ComparisonOperator: 'EQ'
@@ -122,13 +124,46 @@ app.get(path+"/public", function(req, res) {
   let queryParams = {
     TableName: tableName,
     // KeyConditions: condition,
-    // IndexName:"CreatorID-index"
+    IndexName: publicityIndex,
+    KeyConditionExpression: "Publicity = :value",
+    ExpressionAttributeValues: {
+      ":value": 1
+    }
   }
 
-  dynamodb.scan(queryParams, (err, data) => {
+  dynamodb.query(queryParams, (err, data) => {
     if (err) {
       res.statusCode = 500;
       res.json({error: 'Could not load items: ' + err});
+    } else {
+      res.json(data.Items);
+    }
+  });
+});
+
+// My lectures
+app.get(path + "/myLectures", function(req, res) {
+  let value = "";
+  try {
+    value = req.apiGateway.event.requestContext.identity.cognitoAuthenticationProvider.split(':CognitoSignIn:')[1];
+  } catch(err) {
+    res.statusCode = 500;
+    res.json({error: 'Wrong column type ' + err});
+  }
+
+  let queryItemParams = {
+    TableName: tableName,
+    IndexName: creatorIDIndex,
+    KeyConditionExpression: "CreatorID = :value",
+    ExpressionAttributeValues: {
+      ":value": value
+    }
+  }
+
+  dynamodb.query(queryItemParams,(err, data) => {
+    if(err) {
+      res.statusCode = 500;
+      res.json({error: 'Could not load items: ' + err.message});
     } else {
       res.json(data.Items);
     }
@@ -188,7 +223,7 @@ app.get(path + hashKeyPath, function(req, res) {
 app.put(path, function(req, res) {
 
   if (userIdPresent) {
-    req.body['userId'] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
+    req.body['CreatorID'] = req.apiGateway.event.requestContext.identity.cognitoAuthenticationProvider.split(':CognitoSignIn:')[1] || UNAUTH;
   }
 
   let putItemParams = {
@@ -212,7 +247,7 @@ app.put(path, function(req, res) {
 app.post(path, function(req, res) {
 
   if (userIdPresent) {
-    req.body['userId'] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
+    req.body['CreatorID'] = req.apiGateway.event.requestContext.identity.cognitoAuthenticationProvider.split(':CognitoSignIn:')[1] || UNAUTH;
   }
 
   let putItemParams = {

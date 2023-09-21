@@ -47,7 +47,7 @@ const MyCourses = () => {
     //   setLoading(false)
     // }
     try {
-      const data = await API.get(apiName, coursePath + "/creator")
+      const data = await API.get(apiName, coursePath + "/myCourses")
       setCourses(data)
       console.log(data)
       setLoading(false)

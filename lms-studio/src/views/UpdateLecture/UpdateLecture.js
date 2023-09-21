@@ -31,6 +31,7 @@ function UpdateLecture(props) {
     activeStepIndex: 0,
     lectureTitle: "",
     lectureDescription: "",
+    publicity: false,
     lectureType: "Video",
     lectureVideo: [],
     lectureVideoLength: 0,
@@ -54,6 +55,7 @@ function UpdateLecture(props) {
       ...newLecture,
       lectureTitle: state.Name,
       lectureDescription: state.Desc,
+      publicity: state.Publicity === 1 ? true: false,
       lectureType: state.Type,
       workshopUrl: state.WorkshopUrl,
       workshopDescription: state.WorkshopDescription,
@@ -132,11 +134,14 @@ function UpdateLecture(props) {
       ID: state.ID,
       Name: newLecture.lectureTitle ? newLecture.lectureTitle : state.Name,
       Desc: newLecture.lectureDescription,
+      Publicity: newLecture.publicity ? 1 : 0,
       Type: newLecture.lectureType,
       Content: lectureContent,
       Length: Math.round(newLecture.lectureVideoLength),
       WorkshopUrl: newLecture.workshopUrl ? newLecture.workshopUrl : state.WorkshopUrl,
       WorkshopDescription: newLecture.workshopDescription,
+      LastUpdated: new Date().toISOString(),
+      Views: state.Views,
     };
     const apiName = "lmsStudio";
     const path = "/lectures";

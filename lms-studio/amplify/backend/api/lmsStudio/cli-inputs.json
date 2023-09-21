@@ -8,13 +8,6 @@
         "setting": "open"
       }
     },
-    "/lectures": {
-      "name": "/lectures",
-      "lambdaFunction": "studioLectures",
-      "permissions": {
-        "setting": "open"
-      }
-    },
     "/courses": {
       "name": "/courses",
       "lambdaFunction": "studioCourses",
@@ -33,6 +26,19 @@
       "lambdaFunction": "userOverview",
       "permissions": {
         "setting": "open"
+      }
+    },
+    "/lectures": {
+      "name": "/lectures",
+      "lambdaFunction": "studioLectures",
+      "permissions": {
+        "setting": "private",
+        "auth": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ]
       }
     }
   }

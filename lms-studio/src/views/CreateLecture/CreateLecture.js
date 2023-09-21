@@ -1,8 +1,8 @@
-import React from 'react';
+import React from "react";
 import { Navigate } from "react-router-dom";
-import './CreateLecture.css';
-import NavBar from '../../components/NavBar/NavBar';
-import Footer from '../../components/Footer/Footer';
+import "./CreateLecture.css";
+import NavBar from "../../components/NavBar/NavBar";
+import Footer from "../../components/Footer/Footer";
 import ColumnLayout from "@cloudscape-design/components/column-layout";
 import BreadcrumbGroup from "@cloudscape-design/components/breadcrumb-group";
 import Wizard from "@cloudscape-design/components/wizard";
@@ -12,17 +12,18 @@ import SpaceBetween from "@cloudscape-design/components/space-between";
 import FormField from "@cloudscape-design/components/form-field";
 import Input from "@cloudscape-design/components/input";
 import Button from "@cloudscape-design/components/button";
-import Alert from "@cloudscape-design/components/alert"
+import Alert from "@cloudscape-design/components/alert";
 import Box from "@cloudscape-design/components/box";
 import Link from "@cloudscape-design/components/link";
 import Textarea from "@cloudscape-design/components/textarea";
 import RadioGroup from "@cloudscape-design/components/radio-group";
 import FileUpload from "@cloudscape-design/components/file-upload";
 import Flashbar from "@cloudscape-design/components/flashbar";
-import StatusIndicator from "@cloudscape-design/components/status-indicator"
-import { Storage } from 'aws-amplify';
-import { API } from 'aws-amplify';
-import {v4 as uuid} from 'uuid'
+import Toggle from "@cloudscape-design/components/toggle";
+import StatusIndicator from "@cloudscape-design/components/status-indicator";
+import { Storage } from "aws-amplify";
+import { API } from "aws-amplify";
+import { v4 as uuid } from "uuid";
 
 const successMes = "Created success";
 const errorMess = "Error! An error occurred. Please try again later";
@@ -105,7 +106,7 @@ class CreateLecture extends React.Component {
         });
     }
   };
-  
+
   writeLectureToDB = async (lectureContent) => {
     // console.log(lectureContent)
 
@@ -113,13 +114,14 @@ class CreateLecture extends React.Component {
       ID: uuid(),
       Name: this.state.lectureTitle,
       Desc: this.state.lectureDescription,
+      Publicity: this.state.publicity ? 1 : 0,
       Type: this.state.lectureType,
       Content: lectureContent,
       Length: Math.round(this.state.lectureVideoLength),
       WorkshopUrl: this.state.workshopUrl,
       WorkshopDescription: this.state.workshopDescription,
-      ArchitectureDiagramS3Key: this.state.architectureDiagramS3Key,
-      QuizS3Key: this.state.quizS3Key,
+      // ArchitectureDiagramS3Key: this.state.architectureDiagramS3Key,
+      // QuizS3Key: this.state.quizS3Key,
       LastUpdated: new Date().toISOString(),
       Views: 0,
     };
@@ -162,6 +164,7 @@ class CreateLecture extends React.Component {
       activeStepIndex: 0,
       lectureTitle: "",
       lectureDescription: "",
+      publicity: false,
       lectureType: "Video",
       lectureVideo: [],
       lectureVideoLength: 0,
@@ -485,7 +488,7 @@ class CreateLecture extends React.Component {
             }}
             isLoadingNextStep={this.state.isLoadingNextStep}
             onSubmit={this.submitRequest}
-            onCancel={() => this.setState({redirectToHome: true})}
+            onCancel={() => this.setState({ redirectToHome: true })}
             onNavigate={({ detail }) =>
               this.setState({ activeStepIndex: detail.requestedStepIndex })
             }
@@ -519,6 +522,19 @@ class CreateLecture extends React.Component {
                           }
                         />
                       </FormField>
+                      <div>
+                        <p>
+                          <strong>Lecture Publicity</strong>
+                        </p>
+                        <Toggle
+                          onChange={({ detail }) =>
+                            this.setState({ publicity: detail.checked })
+                          }
+                          checked={this.state.publicity}
+                        >
+                          Public Lecture
+                        </Toggle>
+                      </div>
                       <FormField label="Lecture Type">
                         <RadioGroup
                           value={this.state.lectureType}
@@ -616,4 +632,4 @@ class CreateLecture extends React.Component {
   }
 }
 
-export default (CreateLecture);
+export default CreateLecture;

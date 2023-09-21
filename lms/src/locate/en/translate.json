@@ -36,7 +36,8 @@
           "desc": "Receive a certification once complete a course."
         }
       ],
-      "list_title": "Available courses"
+      "list_title": "Available courses",
+      "list_title_unauthen": "Popular courses"
     }
   }
 }

@@ -239,13 +239,12 @@
       },
       "function": {
         "studioCourses": {
-          "tableName": "",
           "deploymentBucketName": "amplify-lmsstudio-test-144203-deployment",
-          "s3Key": "amplify-builds/studioCourses-2b30503953736953694e-build.zip"
+          "s3Key": "amplify-builds/studioCourses-6355373052486e395653-build.zip"
         },
         "studioLectures": {
           "deploymentBucketName": "amplify-lmsstudio-test-144203-deployment",
-          "s3Key": "amplify-builds/studioLectures-6a586f6462496e616c79-build.zip"
+          "s3Key": "amplify-builds/studioLectures-377954686f383342572b-build.zip"
         },
         "studioUserCourse": {
           "deploymentBucketName": "amplify-lmsstudio-test-144203-deployment",
@@ -257,7 +256,7 @@
         },
         "userOverview": {
           "deploymentBucketName": "amplify-lmsstudio-test-144203-deployment",
-          "s3Key": "amplify-builds/userOverview-654a2b424847582f692b-build.zip"
+          "s3Key": "amplify-builds/userOverview-787a33724d7877426965-build.zip"
         }
       },
       "hosting": {

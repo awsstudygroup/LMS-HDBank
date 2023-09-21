@@ -15,7 +15,7 @@ import {
 import Title from "../../../components/Title";
 import { getPublicCoursesService } from "../services/course";
 import { apiName, coursePath } from "../../../utils/api";
-import { API } from "aws-amplify";
+import { API, Auth } from "aws-amplify";
 import { Link, useNavigate } from "react-router-dom";
 
 const successMes = "Delete success";
@@ -48,9 +48,17 @@ const PrivateCourses = () => {
     //   setLoading(false)
     // }
     try {
-      const data = await API.get(apiName, coursePath + "/private")
-      setCourses(data)
-      console.log(data)
+      const user = await Auth.currentAuthenticatedUser({
+        // Optional, By default is false. If set to true, 
+        // this call will send a request to Cognito to get the latest user data
+        bypassCache: false
+      })
+      console.log(user)
+      if ( user.attributes['custom:role'] === "admin"){
+        const data = await API.get(apiName, coursePath + "/private")
+        setCourses(data)
+        // console.log(data)
+      }
       setLoading(false)
     }catch(_) {
       setLoading(false)

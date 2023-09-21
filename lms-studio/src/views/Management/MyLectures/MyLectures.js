@@ -15,7 +15,7 @@ import {
   CollectionPreferences,
 } from "@cloudscape-design/components";
 import Title from "../../../components/Title";
-import { apiName, lecturePublicPath, lecturePath } from "../../../utils/api";
+import { apiName, lecturePath, myLecturePath } from "../../../utils/api";
 import { API, Storage } from "aws-amplify";
 import { useNavigate } from "react-router-dom";
 import { transformDateTime } from "../../../utils/tool";
@@ -96,7 +96,7 @@ const MyLectures = () => {
     //   setLoading(false)
     // }
     try {
-      const data = await API.get(apiName, lecturePublicPath);
+      const data = await API.get(apiName, myLecturePath);
       setLectures(data);
       setLoading(false);
     } catch (_) {

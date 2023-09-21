@@ -192,9 +192,8 @@ app.get(path+"/private", function(req, res) {
 //  * HTTP Get method for get object by user id*
 //  *********************************************/
 
-app.get(path + "/creator", function(req, res) {
+app.get(path + "/myCourses", function(req, res) {
   let value = "";
-  console.log("Creator nè sao k vào nhỉ")
   try {
     value = req.apiGateway.event.requestContext.identity.cognitoAuthenticationProvider.split(':CognitoSignIn:')[1];
   } catch(err) {

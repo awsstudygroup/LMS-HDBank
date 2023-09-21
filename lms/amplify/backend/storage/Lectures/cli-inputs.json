@@ -5,6 +5,21 @@
     "fieldName": "ID",
     "fieldType": "string"
   },
-  "gsi": [],
+  "gsi": [
+    {
+      "name": "CreatorID-index",
+      "partitionKey": {
+        "fieldName": "CreatorID",
+        "fieldType": "string"
+      }
+    },
+    {
+      "name": "Publicity-index",
+      "partitionKey": {
+        "fieldName": "Publicity",
+        "fieldType": "number"
+      }
+    }
+  ],
   "triggerFunctions": []
 }

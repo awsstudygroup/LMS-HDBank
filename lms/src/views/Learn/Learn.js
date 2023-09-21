@@ -43,6 +43,14 @@ import {
   IoCheckmarkSharp,
 } from "react-icons/io5";
 import { Navigate } from "react-router-dom";
+import { 
+  apiName, 
+  userCoursePath, 
+  userCourseUpdatePath, 
+  userLecturePath, 
+  coursePath, 
+  lecturePath 
+} from "../../utils/api"
 
 import loadingGif from "../../assets/images/loading.gif";
 
@@ -225,7 +233,7 @@ function LabContent(props) {
       setArchitecUrl(res)
     );
     props.countView();
-    props.markLectureCompleted()
+    props.markLectureCompleted();
   });
   return (
     <div className="learn-lab-content-container">
@@ -315,7 +323,7 @@ class QuizContent extends React.Component {
       complete: (result) => {
         this.setState({ questions: Array.from(result.data) });
         this.props.setQuestionLength(result.data.length);
-        console.log(result.data)
+        console.log(result.data);
         // this.convertJSONToObject(result.data)
       },
     });
@@ -367,7 +375,8 @@ class QuizContent extends React.Component {
         this.state.currentQuestion
       ].Multichoice.localeCompare("1") === 0
     ) {
-      let i = 0, j = 0;
+      let i = 0,
+        j = 0;
       while (i < this.state.selectedMultiAnswer.length && j < MAX_ANSWERS) {
         if (
           this.state.selectedMultiAnswer[i] ===
@@ -661,12 +670,15 @@ class QuizContent extends React.Component {
                 {this.state.questions[
                   this.state.currentQuestion
                 ].Multichoice.localeCompare("1") === 0
-                  ? this.state.selectedMultiAnswer.map(
-                      (ans) =>
-                        <div >
-                          {this.state.questions[this.state.currentQuestion][`E${ans}`]}
-                        </div>
-                    )
+                  ? this.state.selectedMultiAnswer.map((ans) => (
+                      <div>
+                        {
+                          this.state.questions[this.state.currentQuestion][
+                            `E${ans}`
+                          ]
+                        }
+                      </div>
+                    ))
                   : this.state.questions[this.state.currentQuestion][
                       `E${this.state.selectedAnswer}`
                     ]}
@@ -811,8 +823,8 @@ function MainContent(props) {
     if (!updateView && !uploadingRef.current) {
       uploadingRef.current = true;
       let lectureId = props.lecture.lecture.id;
-      const apiName = "courses";
-      const path = "/lectures/" + lectureId;
+      const path = lecturePath + lectureId;
+
       API.put(apiName, path, { body: {} })
         .then((response) => {
           console.log("count view done");
@@ -1019,9 +1031,7 @@ export default class Learn extends React.Component {
   loadLecture(chapterIndex, lectureIndex) {
     let lectureId =
       this.state.course.chapters[chapterIndex].lectures[lectureIndex].lectureId;
-
-    const apiName = "courses";
-    const path = "/lectures/" + lectureId;
+    const path = lecturePath + lectureId;
     const init = {};
 
     this.setState({ loading: true });
@@ -1089,8 +1099,7 @@ export default class Learn extends React.Component {
       window.location.href = landingPageUrl;
     }
 
-    const apiName = "courses";
-    const path = "/courses/" + course;
+    const path = coursePath + course;
     const init = {};
 
     API.get(apiName, path, init)
@@ -1181,26 +1190,37 @@ export default class Learn extends React.Component {
     let hashParams = this.getHashParams();
     let course = hashParams.course;
 
-    const apiName = "courses";
-    const path = "/users/courses/" + course;
-
-    API.get(apiName, path)
+    API.get(apiName, userCoursePath + course)
       .then((response) => {
-        response.LastAccessed = new Date().getTime();
-        
-        const apiName = "courses";
-        const path = "/users/courses/";
-        const myInit = {
-          body: response,
-        };
+        console.log(response);
+        if (response.length === 0) {
 
-        API.put(apiName, path, myInit)
-          .then((response) => {
-            console.log(response);
-          })
-          .catch((error) => {
-            console.log(error.response);
-          });
+          const myInit = {
+            body: {
+              LastAccessed: new Date().getTime(),
+              CourseID: course,
+              Status: "IN_PROGRESS",
+            },
+          };
+
+          API.put(apiName, userCoursePath, myInit)
+            .then((response) => {
+            })
+            .catch((error) => {
+              console.log(error.response);
+            });
+        } else {
+          const updateBody = {
+            body: { LastAccessed: new Date().getTime() }
+          }
+
+          API.put(apiName, userCourseUpdatePath + course, updateBody)
+            .then((response) => {
+            })
+            .catch((error) => {
+              console.log(error.response);
+            });
+        }
       })
       .catch((error) => {
         console.log(error.response);
@@ -1208,8 +1228,7 @@ export default class Learn extends React.Component {
   }
 
   loadUserLecture() {
-    const apiName = "courses";
-    const path = "/users/lectures/" + this.state.userId;
+    const path = userLecturePath + this.state.userId;
 
     API.get(apiName, path)
       .then((response) => {
@@ -1316,8 +1335,7 @@ export default class Learn extends React.Component {
       this.setState((prevState) => {
         if (!prevState.completedLectures.includes(lectureId))
           prevState.completedLectures.push(lectureId);
-        const apiName = "courses";
-        const path = "/users/lectures";
+
         const myInit = {
           body: {
             UserID: this.state.userId,
@@ -1326,7 +1344,7 @@ export default class Learn extends React.Component {
           },
         };
 
-        API.put(apiName, path, myInit)
+        API.put(apiName, userLecturePath, myInit)
           .then((response) => {
             // console.log(response);
           })
@@ -1388,8 +1406,8 @@ export default class Learn extends React.Component {
 
   countViewForCourse = () => {
     let courseId = this.state.course.id;
-    const apiName = "courses";
-    const path = "/courses/" + courseId;
+    const path = coursePath + courseId;
+
     API.put(apiName, path, { body: {} })
       .then((response) => {
         console.log("count view done");
@@ -1488,25 +1506,32 @@ export default class Learn extends React.Component {
                             return {
                               type: "link",
                               text:
-                              lecture.type === "section" ? (
-                                <div className="text-bold">
-                                  {" "}
-                                  {lecture.name.toUpperCase()}{" "}
-                                </div>
-                              ) : (
-                                <div className="learn-navigation-lecture">
-                                  <div style={{ width: "80%"}}>
-                                  {this.state.completedLectures.includes(
-                                    lecture.lectureId) ? <IoEllipseSharp /> : <IoEllipseSharp style={{visibility:"hidden"}}/>}
-                                  {lecture.name}{" "}
+                                lecture.type === "section" ? (
+                                  <div className="text-bold">
+                                    {" "}
+                                    {lecture.name.toUpperCase()}{" "}
                                   </div>
-                                  <span className="learn-navigation-badge">
-                                    {lecture.length > 0
-                                      ? this.formatTime(lecture.length)
-                                      : ""}
-                                  </span>
-                                </div>
-                              ),
+                                ) : (
+                                  <div className="learn-navigation-lecture">
+                                    <div style={{ width: "80%" }}>
+                                      {this.state.completedLectures.includes(
+                                        lecture.lectureId
+                                      ) ? (
+                                        <IoEllipseSharp />
+                                      ) : (
+                                        <IoEllipseSharp
+                                          style={{ visibility: "hidden" }}
+                                        />
+                                      )}
+                                      {lecture.name}{" "}
+                                    </div>
+                                    <span className="learn-navigation-badge">
+                                      {lecture.length > 0
+                                        ? this.formatTime(lecture.length)
+                                        : ""}
+                                    </span>
+                                  </div>
+                                ),
                               href: lecture.lectureId,
                               // info:
                               //   lecture.type === "section" ? (

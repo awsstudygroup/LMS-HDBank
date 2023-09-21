@@ -16,7 +16,12 @@ import courseDefaultThumbnail from "../../assets/images/course-default-thumbnail
 import loadingGif from "../../assets/images/loading.gif";
 import { Auth } from "aws-amplify";
 import { withTranslation } from "react-i18next";
-import { apiName, coursePath, publicCoursePath, userCoursePath } from "../../utils/api"
+import {
+  apiName,
+  coursePath,
+  publicCoursePath,
+  userCoursePath,
+} from "../../utils/api";
 
 export class Home extends React.Component {
   constructor(props) {
@@ -26,15 +31,24 @@ export class Home extends React.Component {
       courses: [],
       language: "en",
       loading: false,
+      authChecked: false,
+      authenticated: false,
     };
   }
 
   async checkLoggedIn() {
     try {
-      await Auth.currentAuthenticatedUser();
-      return true;
+      const user = await Auth.currentAuthenticatedUser({ bypassCache: false });
+      console.log(user)
+      this.setState({
+        authChecked: true,
+        authenticated: true,
+      });
     } catch {
-      return false;
+      this.setState({
+        authChecked: true,
+        authenticated: false,
+      });
     }
   }
 
@@ -45,9 +59,13 @@ export class Home extends React.Component {
     // Assigned course
     try {
       const userCourseResp = await API.get(apiName, userCoursePath);
+      console.log(userCourseResp);
       if (userCourseResp.length > 0) {
         for (let i = 0; i < userCourseResp.length; i++) {
-          const courseResp = await API.get(apiName, coursePath + `/${userCourseResp[i].CourseID}`);
+          const courseResp = await API.get(
+            apiName,
+            coursePath + `${userCourseResp[i].CourseID}`
+          );
           transformedCourses.push({
             id: courseResp.ID,
             name: courseResp.Name,
@@ -61,7 +79,7 @@ export class Home extends React.Component {
       }
     } catch (error) {
       console.log(error);
-      this.setState({ loading: false });
+      // this.setState({ loading: false });
     }
 
     // Public course
@@ -80,8 +98,7 @@ export class Home extends React.Component {
       });
       // console.log(transformedCourses);
       this.setState({ courses: transformedCourses, loading: false });
-
-    }catch(error) {
+    } catch (error) {
       console.log(error);
       this.setState({ loading: false });
     }
@@ -89,11 +106,58 @@ export class Home extends React.Component {
 
   componentDidMount() {
     this.getCourse();
+    this.checkLoggedIn();
   }
 
   redirectToCourse(courseId) {
     this.setState({ courseToRedirect: courseId });
   }
+
+  renderHighLight = (hightLight) => {
+    return (
+      <>
+        <div className="hightLight-items">
+          <img
+            className="dashboard-highlight-icon"
+            src={hightlightIcon1}
+            alt="Highlight Icon 1"
+          />
+          <div className="dashboard-highlight-text-container">
+            <div className="dashboard-highlight-title">
+              {hightLight[0].title}
+            </div>
+            <div className="dashboard-highlight-desc">{hightLight[0].desc}</div>
+          </div>
+        </div>
+        <div className="hightLight-items">
+          <img
+            className="dashboard-highlight-icon"
+            src={hightlightIcon2}
+            alt="Highlight Icon 2"
+          />
+          <div className="dashboard-highlight-text-container">
+            <div className="dashboard-highlight-title">
+              {hightLight[1].title}
+            </div>
+            <div className="dashboard-highlight-desc">{hightLight[1].desc}</div>
+          </div>
+        </div>
+        <div className="hightLight-items">
+          <img
+            className="dashboard-highlight-icon"
+            src={hightlightIcon3}
+            alt="Highlight Icon 3"
+          />
+          <div className="dashboard-highlight-text-container">
+            <div className="dashboard-highlight-title">
+              {hightLight[2].title}
+            </div>
+            <div className="dashboard-highlight-desc">{hightLight[2].desc}</div>
+          </div>
+        </div>
+      </>
+    );
+  };
 
   render() {
     const { t } = this.props;
@@ -103,9 +167,9 @@ export class Home extends React.Component {
     return !!this.state.courseToRedirect ? (
       <Navigate to={"/course/" + this.state.courseToRedirect} />
     ) : (
-      <div>
+      <>
         <NavBar
-          href = "/"
+          href="/"
           navigation={this.props.navigation}
           title="Cloud Solutions Journey"
         />
@@ -126,58 +190,33 @@ export class Home extends React.Component {
             </Grid>
           </div>
           <div className="dashboard-highlight">
+            {/* {window.innerWidth < 768 ? (
+              <div>
+                {this.renderHighLight(hightLight)}
+              </div>
+            ) : (
+              <Grid
+                gridDefinition={[
+                  { colspan: 4 },
+                  { colspan: 4 },
+                  { colspan: 4 },
+                ]}
+              >
+                {this.renderHighLight(hightLight)}
+              </Grid>
+            )} */}
             <Grid
               gridDefinition={[{ colspan: 4 }, { colspan: 4 }, { colspan: 4 }]}
             >
-              <div>
-                <img
-                  className="dashboard-highlight-icon"
-                  src={hightlightIcon1}
-                  alt="Highlight Icon 1"
-                />
-                <div className="dashboard-highlight-text-container">
-                  <div className="dashboard-highlight-title">
-                    {hightLight[0].title}
-                  </div>
-                  <div className="dashboard-highlight-desc">
-                    {hightLight[0].desc}
-                  </div>
-                </div>
-              </div>
-              <div>
-                <img
-                  className="dashboard-highlight-icon"
-                  src={hightlightIcon2}
-                  alt="Highlight Icon 2"
-                />
-                <div className="dashboard-highlight-text-container">
-                  <div className="dashboard-highlight-title">
-                    {hightLight[1].title}
-                  </div>
-                  <div className="dashboard-highlight-desc">
-                    {hightLight[1].desc}
-                  </div>
-                </div>
-              </div>
-              <div>
-                <img
-                  className="dashboard-highlight-icon"
-                  src={hightlightIcon3}
-                  alt="Highlight Icon 3"
-                />
-                <div className="dashboard-highlight-text-container">
-                  <div className="dashboard-highlight-title">
-                    {hightLight[2].title}
-                  </div>
-                  <div className="dashboard-highlight-desc">
-                    {hightLight[2].desc}
-                  </div>
-                </div>
-              </div>
+              {this.renderHighLight(hightLight)}
             </Grid>
           </div>
           <div className="dashboard-courses">
-            <p className="dashboard-courses-header">{ this.checkLoggedIn() ? t("home.list_title") : t("home.list_title_unauthen")}</p>
+            <p className="dashboard-courses-header">
+              {this.state.authChecked
+                ? t("home.list_title")
+                : t("home.list_title_unauthen")}
+            </p>
             <div className="dashboard-courses-header-decor" />
             <div className="dashboard-courses-list">
               {this.state.loading ? (
@@ -275,7 +314,7 @@ export class Home extends React.Component {
           </div>
         </div>
         <Footer />
-      </div>
+      </>
     );
   }
 }

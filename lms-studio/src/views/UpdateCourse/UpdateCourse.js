@@ -59,7 +59,7 @@ function UpdateCourse(props) {
     currentBenefit: "",
     whatToLearn: [],
     level: "",
-    publicity: 0,
+    publicity: false,
     difficulty: false,
     length: 0,
     currentRequirement: "",
@@ -131,7 +131,7 @@ function UpdateCourse(props) {
       level: state.Level,
       categories: str_categories,
       requirements: state.Requirements,
-      publicity: state.Publicity,
+      publicity: state.Publicity === 1 ? true: false,
       difficulty: state.Difficulty,
       whatToLearn: state.WhatToLearn,
       chapters: state.Chapters,
@@ -334,12 +334,12 @@ function UpdateCourse(props) {
         Categories: categories,
         Requirements: newCourse.requirements,
         Difficulty: newCourse.difficulty,
-        Publicity: newCourse.publicity,
+        Publicity: newCourse.publicity ? 1 : 0,
         WhatToLearn: newCourse.whatToLearn,
         Chapters: newCourse.chapters,
         Views: state.Views,
     }
-
+    console.log(jsonData)
     const apiName = "lmsStudio";
     const path = "/courses";
     try {

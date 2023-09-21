@@ -61,6 +61,10 @@ amplify push
 ```
 
 - Similarly, do all the above steps in this section 3 for lms:
+- Open the Cognito User Pool console of **lms** to add a custom attribute for user:
+    - Choose **Sign-up** experience
+    - At **Custom attributes** section, click **Add custom attributes**
+    - Enter `name_on_certificate` for **Name**, then click **Save changes**
 - Open your local LMS root folder, then:
 
 ```

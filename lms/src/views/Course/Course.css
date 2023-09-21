@@ -1,123 +1,155 @@
 .course-main {
-    min-height: calc(100vh - 120px);
-    width: 1000px;
-    background-color: white;
-    box-shadow: 0px 1px 2px rgba(0, 28, 36, 0.6);
-    margin: 40px;
-    margin-left: calc(50% - 500px);
-    padding: 20px;
+  min-height: calc(100vh - 120px);
+  width: 1000px;
+  background-color: white;
+  box-shadow: 0px 1px 2px rgba(0, 28, 36, 0.6);
+  margin: 40px;
+  margin-left: calc(50% - 500px);
+  padding: 20px;
 }
 
 .course-info {
-    display: inline-block;
-    width: calc(100% - 300px);
-    padding-right: 20px;
+  display: inline-block;
+  width: calc(100% - 300px);
+  padding-right: 20px;
 }
 
 .course-title {
-    font-size: 24px;
-    margin-bottom: 12px;
+  font-size: 24px;
+  margin-bottom: 12px;
 }
 
 .course-property {
-    color: rgba(0,0,0,.87);
-    font-size: 14px;
-    margin-top: 4px;
+  color: rgba(0, 0, 0, 0.87);
+  font-size: 14px;
+  margin-top: 4px;
 }
 
 .course-property a {
-    text-decoration: none;
-    color: #0073bb;
+  text-decoration: none;
+  color: #0073bb;
 }
 
 .course-property-icon {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
 .course-desc {
-    color: rgba(0,0,0,.54);
-    font-size: 14px;
-    margin-top: 12px;
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 14px;
+  margin-top: 12px;
 }
 
 .course-separator {
-    border-bottom: solid 1px #D5DBDB;
-    margin: 20px -20px;
+  border-bottom: solid 1px #d5dbdb;
+  margin: 20px -20px;
 }
 
 .course-action {
-    text-align: end;
+  text-align: end;
 }
 
 .course-thumbnail {
-    display: inline-block;
-    width: 300px;
-    vertical-align: top; 
+  display: inline-block;
+  width: 300px;
+  vertical-align: top;
 }
 
 .course-thumbnail img {
-    max-width: 100%;
-    border-radius: 5px;
+  max-width: 100%;
+  border-radius: 5px;
 }
 
 .course-bottom {
-    padding: 0 80px;
+  padding: 0 80px;
 }
 
 .course-what-to-learn-title {
-    font-size: 20px;
-    margin: 20px 0 30px 0;
+  font-size: 20px;
+  margin: 20px 0 30px 0;
 }
 
 .course-what-to-learn-item {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .course-what-to-learn-item div {
-    display: inline-block;
-    width: calc(100% - 20px);
-    padding-left: 20px;
+  display: inline-block;
+  width: calc(100% - 20px);
+  padding-left: 20px;
 }
 
 .course-what-to-learn-item span {
-    color: #ec7211 !important;
+  color: #ec7211 !important;
 }
 
 .course-lectures {
-    border-bottom: solid 1px #D5DBDB;
-    padding: 15px;
-    margin: 0 -20px;
+  border-bottom: solid 1px #d5dbdb;
+  padding: 15px;
+  margin: 0 -20px;
 }
 
 .course-lectures:first-child {
-    margin-top: -20px;
+  margin-top: -20px;
 }
 
 .course-lectures:last-child {
-    margin-bottom: -20px;
+  margin-bottom: -20px;
 }
 
 .course-lecture-item {
-    margin: 0 40px;
-    padding: 10px 0;
-    border-bottom: solid 1px #D5DBDB;
-    color: #879596;
-    font-size: 12px;
+  margin: 0 40px;
+  padding: 10px 0;
+  border-bottom: solid 1px #d5dbdb;
+  color: #879596;
+  font-size: 12px;
 }
 
 .course-lecture-item:last-child {
-    border-bottom: none;
-    margin-bottom: -10px;
+  border-bottom: none;
+  margin-bottom: -10px;
 }
 
 .course-lectures > div:first-child {
-    border: none !important;
-    font-size: 14px;
-    font-weight: bold !important;
+  border: none !important;
+  font-size: 14px;
+  font-weight: bold !important;
 }
 
 .course-loading-gif {
-    height: 16px;
-    margin-left: 50%;
-    margin-top: 40vh;
+  height: 16px;
+  margin-left: 50%;
+  margin-top: 40vh;
+}
+
+@media only screen and (max-width: 768px) {
+  .course-main {
+    width: calc(100vw - 20px);
+    margin: 10px 10px;
+    padding: 20px;
+  }
+  .course-info {
+    display: block;
+    padding-right: 0px;
+    width: 100%;
+  }
+  .course-thumbnail {
+    width: 100%;
+  }
+  .course-thumbnail img {
+    width: 100%;
+    margin-top: 10px;
+  }
+  .course-bottom {
+    padding: 10px;
+  }
+  .course-bottom > div {
+    display: block !important;
+  }
+  .course-bottom > div > div {
+    max-width: calc(100vw - 20px) !important;
+  }
+  .board {
+    width: 100%;
+  }
 }

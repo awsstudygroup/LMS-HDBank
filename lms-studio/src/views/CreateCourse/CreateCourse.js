@@ -22,12 +22,13 @@ import {
     Pagination,
     CollectionPreferences,
     Flashbar,
+    Icon,
+    ExpandableSection
 } from "@cloudscape-design/components";
 import { useCollection } from '@cloudscape-design/collection-hooks';
+import { apiName, lecturePublicPath, myLecturePath } from "../../utils/api";
 import Footer from "../../components/Footer/Footer";
 import { withAuthenticator } from "@aws-amplify/ui-react";
-import Icon from "@cloudscape-design/components/icon";
-import ExpandableSection from "@cloudscape-design/components/expandable-section";
 import { API, Auth } from "aws-amplify";
 import "./Course.css";
 
@@ -105,29 +106,34 @@ function CreateCourse(props) {
     }
   );
 
-  useEffect(() => {
-    const apiName = "lmsStudio";
-    const path = "/lectures/public";
-
-    API.get(apiName, path)
-      .then((response) => {
-        // console.log(response)
-        setState({ ...state, existingLectures: response });
-      })
-      .catch((error) => {
-        console.log(error.response);
-      });
-  }, [])
-
-  const loadUserId = async (callback) => {
-    let credentials = await Auth.currentUserCredentials();
-    setState(
-      { ...state,
-        userId: credentials.identityId,
-      },
-      callback
-    );
+  const loadLectures = async () => {
+    let lectureList = [];
+    try {
+      const myLectures = await API.get(apiName, myLecturePath);
+      lectureList = [...lectureList, ...myLectures]
+    }catch(error){
+      console.log(error.response);
+    }finally {
+      const publicLectures = await API.get(apiName, lecturePublicPath);
+      lectureList = [...lectureList, ...publicLectures];
+      // console.log(lectureList)
+      setState({ ...state, existingLectures: lectureList });
+    }
   }
+  useEffect(() => {
+    // const apiName = "lmsStudio";
+    // const path = "/lectures/public";
+
+    // API.get(apiName, path)
+    //   .then((response) => {
+    //     // console.log(response)
+    //     setState({ ...state, existingLectures: response });
+    //   })
+    //   .catch((error) => {
+    //     console.log(error.response);
+    //   });
+    loadLectures()
+  }, [])
 
   const deleteRequirement = (index) => {
     let list = [...state.requirements]

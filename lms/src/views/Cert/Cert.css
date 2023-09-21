@@ -132,6 +132,7 @@
     border-radius: 10px;
     color: #ec7211;
     text-align: center;
+    object-fit: contain;
 }
 
 .cert-view-container div {
@@ -158,4 +159,39 @@
     font-weight: bold;
     position: relative;
     top: 240px;
+}
+
+@media only screen and (max-width: 768px) {
+    .cert-course-title {
+        font-size: 20px;
+    }
+    .cert-course-property, .cert-course-desc{
+        font-size: 13px;
+    }
+    .cert-wrapper{
+        width: calc(100vw - 20px);
+        margin: 10px;
+    }
+    .cert-course-thumbnail img {
+        width: 100px;
+        display: block;
+        margin-left: auto;
+        margin-right: 0px;
+      }
+    .cert-course-action span {
+        font-size: 12px;
+    }
+    .cert-view {
+        height: 200px;
+    }
+    .cert-view-container {
+        object-fit: cover;
+    }
+
+    .cert-view-container div {
+        font-size: 20px;
+        font-weight: bold;
+        position: relative;
+        top: 80px;
+    }
 }

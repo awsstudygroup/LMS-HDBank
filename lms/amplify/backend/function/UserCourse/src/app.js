@@ -76,9 +76,16 @@ app.get(path, function(req, res) {
     }
   }
 
+  // condition["Assign"] = {
+  //   ComparisonOperator: 'EQ',
+  //   AttributeValueList: ["ASSIGNED"]
+  // }
+
   let queryParams = {
     TableName: tableName,
-    KeyConditions: condition
+    KeyConditions: condition,
+    FilterExpression: 'Assign = :status',
+    ExpressionAttributeValues : {':status' : "ASSIGNED"}
   }
 
   dynamodb.query(queryParams, (err, data) => {
@@ -130,31 +137,30 @@ app.get(path + sortKeyPath, function(req, res) {
     } else {
       let response;
       if (data.Item) {
-        response = data.Item;
+        res.json(data.Item);
       } else {
-        response = data;
+        res.json(data);
       }
 
       //If this is the first time user access course, then enroll them to the course, else just save the last accessed time
-      if (Object.keys(response).length === 0) {
-        response = params;
-        response.Status = "IN_PROGRESS";
-      }
-    //   response.LastAccessed = new Date().getTime();
+      // if (Object.keys(response).length === 0) {
+      //   response = params;
+      //   response.Status = "IN_PROGRESS";
+      // }
 
-      let putItemParams = {
-        TableName: tableName,
-        Item: response
-      }
+      // let putItemParams = {
+      //   TableName: tableName,
+      //   Item: response
+      // }
 
-      dynamodb.put(putItemParams, (err, data) => {
-        if (err) {
-          res.statusCode = 500;
-          res.json({ error: err, url: req.url, body: req.body });
-        } else{
-          res.json(response);
-        }
-      });
+      // dynamodb.put(putItemParams, (err, data) => {
+      //   if (err) {
+      //     res.statusCode = 500;
+      //     res.json({ error: err, url: req.url, body: req.body });
+      //   } else{
+      //     res.json(response);
+      //   }
+      // });
     }
   });
 });
@@ -182,6 +188,55 @@ app.put(path, function(req, res) {
       res.json({ success: 'put call succeed!', url: req.url, data: data })
     }
   });
+});
+
+/************************************
+* HTTP put method for update object *
+*************************************/
+
+app.put(path + "/update" + sortKeyPath, function(req, res) {
+  const params = {};
+  if (userIdPresent) {
+    params[partitionKeyName] = req.apiGateway.event.requestContext.identity.cognitoAuthenticationProvider.split(':CognitoSignIn:')[1] || UNAUTH;
+  }
+
+  if (hasSortKey) {
+    try {
+      params[sortKeyName] = convertUrlType(req.params[sortKeyName], sortKeyType);
+    } catch(err) {
+      res.statusCode = 500;
+      res.json({error: 'Wrong column type ' + err});
+    }
+  }
+
+  let upadteItemParams = {
+    TableName: tableName,
+    Key: params,
+    // UpdateExpression: 'set #lastUpdated = :value ',
+    // ExpressionAttributeNames: {'#views' : 'LastAccessed'},
+    // ExpressionAttributeValues:{
+    //   ":value": req.body['LastAccessed'],
+    // }
+    AttributeUpdates: {
+      LastAccessed: {
+        Action : "PUT",
+        Value: req.body['LastAccessed']
+      },
+      Status: {
+        Action : "PUT",
+        Value: "IN_PROGRESS"
+      }
+    }
+  }
+
+  dynamodb.update(upadteItemParams, (err, data) => {
+    if(err) {
+      res.statusCode = 500;
+      res.json({error: 'Could not update item: ' + err.message});
+    } else {
+      res.json(data);
+    }
+  })
 });
 
 // /************************************

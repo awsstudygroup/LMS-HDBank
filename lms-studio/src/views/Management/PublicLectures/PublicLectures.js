@@ -7,30 +7,10 @@ import Header from "@cloudscape-design/components/header";
 import Pagination from "@cloudscape-design/components/pagination";
 import StatusIndicator from "@cloudscape-design/components/status-indicator";
 import Title from "../../../components/Title";
+import { transformDateTime } from "../../../utils/tool";
+import { apiName, lecturePublicPath } from "../../../utils/api";
+import { API, Storage } from "aws-amplify";
 import { getPublicLecturesService } from "../services/lecture";
-
-// const items = [
-//   {
-//     name: "AWS Lecture 1",
-//     updatedAt: "2023/6",
-//     state: "Enabled",
-//   },
-//   {
-//     name: "AWS Lecture 2",
-//     updatedAt: "2023/6",
-//     state: "Disabled",
-//   },
-//   {
-//     name: "AWS Lecture 3",
-//     updatedAt: "2023/6",
-//     state: "Enabled",
-//   },
-//   {
-//     name: "AWS Lecture 4",
-//     updatedAt: "2023/6",
-//     state: "Enabled",
-//   },
-// ];
 
 const PublicLectures = () => {
   const [selectedItems, setSelectedItems] = React.useState([]);
@@ -41,12 +21,19 @@ const PublicLectures = () => {
   const handleGetLectures = async () => {
     setLoading(true)
 
+    // try {
+    // const {data} = await getPublicLecturesService()
+    // setLectures(data)
+    // setLoading(false)
+    // } catch(_) {
+    //   setLoading(false)
+    // }
     try {
-    const {data} = await getPublicLecturesService()
-    setLectures(data)
-    setLoading(false)
-    } catch(_) {
-      setLoading(false)
+      const data = await API.get(apiName, lecturePublicPath);
+      setLectures(data);
+      setLoading(false);
+    } catch (_) {
+      setLoading(false);
     }
   }
 
@@ -84,10 +71,11 @@ const PublicLectures = () => {
             isRowHeader: true,
           },
           {
-            id: "Last Updated",
+            id: "updatedAt",
             header: "Last Updated",
-            cell: (e) => <span>{(new Date(e['Last Updated']).toDateString())}</span>,
-            sortingField: "updatedAt",
+            cell: (lecture) =>
+              lecture.LastUpdated ? transformDateTime(lecture.LastUpdated) : "",
+            sortingField: "name",
           },
           {
             id: "state",

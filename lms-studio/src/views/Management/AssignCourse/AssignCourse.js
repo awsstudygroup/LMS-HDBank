@@ -73,9 +73,10 @@ const AssignCourse = (props) => {
         CourseID: state.ID,
         OppID: oppId,
         OppValue: oppValue,
-        flexible: checked,
-        Status: "ASSIGNED",
-        CreatorID: state.CreatorID,
+        Flexible: checked,
+        Assign: "ASSIGNED",
+        Status: "NOT_YET",
+        // CreatorID: state.CreatorID,
       };
       assigedList.forEach((user) => {
         if(user?.UserID){
