@@ -5,7 +5,7 @@
   "dependencies": {
     "@aws-amplify/ui-react": "^5.0.1",
     "@cloudscape-design/component-toolkit": "^1.0.0-beta.23",
-    "@cloudscape-design/components": "^3.0.367",
+    "@cloudscape-design/components": "^3.0.388",
     "@cloudscape-design/global-styles": "^1.0.12",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",

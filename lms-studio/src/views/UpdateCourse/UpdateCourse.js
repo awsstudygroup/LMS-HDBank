@@ -500,7 +500,7 @@ function UpdateCourse(props) {
       <>
         <NavBar navigation={props.navigation} title="Cloud Academy" />
         <div className="dashboard-main">
-          <div>
+          <div className="course-body">
             <Outlet />
             <div style={{ paddingLeft: 20 }}>
               <BreadcrumbGroup
@@ -511,7 +511,7 @@ function UpdateCourse(props) {
                 ariaLabel="Breadcrumbs"
               />
             </div>
-            <div className="dashboard-main" style={{ padding: "0 20px" }}>
+            <div className="dashboard-main course-content">
               <Outlet />
               <Wizard
                 i18nStrings={{
@@ -529,6 +529,7 @@ function UpdateCourse(props) {
                 }}
                 isLoadingNextStep={isLoadingNextStep}
                 onSubmit={submitCourse}
+                onCancel={() => setNewCourse({ ...newCourse, redirectToHome: true })}
                 onNavigate={({ detail }) =>
                   setNewCourse({
                     ...newCourse,

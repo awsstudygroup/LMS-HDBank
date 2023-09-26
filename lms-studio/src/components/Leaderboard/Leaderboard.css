@@ -5,3 +5,10 @@
   margin: 40px;
   padding: 20px;
 }
+
+@media only screen and (max-width: 768px) {
+  .awsui_colspan-4_14yj0_14yem_152 {
+    flex: none !important;
+    max-width: 100% !important;
+  }
+}

@@ -275,12 +275,6 @@ const MyLectures = () => {
             ),
           },
         ]}
-        // columnDisplay={[
-        //   { id: "name", visible: true },
-        //   { id: "updatedAt", visible: true },
-        //   { id: "state", visible: true },
-        //   { id: "actions", visible: true },
-        // ]}
         visibleColumns={preferences.visibleContent}
         items={items}
         loading={loading}

@@ -20,8 +20,9 @@ import TextFilter from '@cloudscape-design/components/text-filter';
 import Pagination from '@cloudscape-design/components/pagination';
 import CollectionPreferences from '@cloudscape-design/components/collection-preferences';
 import BreadcrumbGroup from '@cloudscape-design/components/breadcrumb-group';
-
 import { useNavigate } from 'react-router-dom';
+import './Leaderboard.css'
+
 const Leaderboard = (props) => {
   const [activeHref, setActiveHref] = useState('leaderboard');
   const [selectedItems, setSelectedItems] = React.useState([
@@ -127,13 +128,14 @@ const Leaderboard = (props) => {
                 }
               >
                 <Grid
+                  className="top-attribute"
                   gridDefinition={[
                     { colspan: { default: 4, xxs: 4 } },
                     { colspan: { default: 4, xxs: 4 } },
                     { colspan: { default: 4, xxs: 4 } },
                   ]}
                 >
-                  <div style={{ paddingTop: 60 }}>
+                  <div style={{ paddingTop: 60 , maxWidth: "100%"}}>
                     <Container
                       media={{
                         content: (

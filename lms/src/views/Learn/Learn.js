@@ -1490,7 +1490,7 @@ export default class Learn extends React.Component {
                               {chapter.name}{" "}
                               <span>
                                 <IoTimeOutline />{" "}
-                                {this.formatTime(chapter.length)}
+                                {chapter.length > 0 ? this.formatTime(chapter.length) : ""}
                               </span>
                             </div>
                           ),

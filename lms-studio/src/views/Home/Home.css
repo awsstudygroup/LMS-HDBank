@@ -1,3 +1,17 @@
 .dashboard-main {
-    min-height: calc(100vh - 75px);
+    /* min-height: calc(100vh - 75px); */
+}
+
+.content {
+    padding: 32px;
+}
+
+
+@media only screen and (max-width: 768px) {
+    .content {
+        padding: 10px;
+    }
+    .dashboard-main div main {
+        --awsui-header-height-zw2xxa: 40px !important;
+    }
 }

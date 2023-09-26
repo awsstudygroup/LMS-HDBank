@@ -37,3 +37,18 @@
 .footer-div-right a {
     margin-left: 40px;
 }
+
+@media only screen and (max-width: 768px) {
+    .footer {
+        padding: 0 8px;
+    }
+    .footer a{
+        font-size: 7px;
+    }
+    .footer span{
+        font-size: 7px;
+    }
+    .footer-div-right a {
+        margin-left: 5px;
+    }
+}

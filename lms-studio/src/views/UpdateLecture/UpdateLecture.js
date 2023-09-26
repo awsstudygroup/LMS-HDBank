@@ -465,7 +465,7 @@ function UpdateLecture(props) {
             }}
             isLoadingNextStep={newLecture.isLoadingNextStep}
             onSubmit={submitRequest}
-            onCancel={() => <Navigate to={"/"} />}
+            onCancel={() => setNewLecture({ ...newLecture, redirectToHome: true })}
             onNavigate={({ detail }) =>
               setNewLecture({ ...newLecture, activeStepIndex: detail.requestedStepIndex })
             }

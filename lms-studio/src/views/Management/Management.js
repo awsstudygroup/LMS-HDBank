@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import NavBar from "../../components/NavBar/NavBar";
 import Footer from "../../components/Footer/Footer";
-import {  } from "@aws-amplify/ui-react";
+import {} from "@aws-amplify/ui-react";
 import SideNavigation from "@cloudscape-design/components/side-navigation";
 import Applayout from "@cloudscape-design/components/app-layout";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -15,23 +15,23 @@ const Management = (props) => {
   const location = useLocation();
 
   useEffect(() => {
-    setActiveHref(location.pathname.split('/').pop())
-  },[])
+    setActiveHref(location.pathname.split("/").pop());
+  }, []);
 
   return (
-    <>
+    <div>
       <NavBar navigation={props.navigation} title="Cloud Academy" />
       <div className="dashboard-main">
         <Applayout
-        breadcrumbs={
-          <BreadcrumbGroup
-            items={[
-              { text: "Home", href: "/management" },
-              // { text: "My Courses", href: "/management/myCourses"}
-            ]}
-            ariaLabel="Breadcrumbs"
-          />
-        }
+          breadcrumbs={
+            <BreadcrumbGroup
+              items={[
+                { text: "Home", href: "/management" },
+                // { text: "My Courses", href: "/management/myCourses"}
+              ]}
+              ariaLabel="Breadcrumbs"
+            />
+          }
           navigation={
             <SideNavigation
               activeHref={activeHref}
@@ -91,15 +91,15 @@ const Management = (props) => {
             />
           }
           content={
-            <div style={{ padding: 32 }}>
+            <div className="content">
               <Outlet />
             </div>
           }
         />
         <Footer />
       </div>
-    </>
+    </div>
   );
 };
 
-export default (Management);
+export default Management;
