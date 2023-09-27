@@ -138,7 +138,7 @@
       "function": {
         "UserCourse": {
           "deploymentBucketName": "amplify-lms-test-142735-deployment",
-          "s3Key": "amplify-builds/UserCourse-5274716f324931585655-build.zip"
+          "s3Key": "amplify-builds/UserCourse-3376704f315056325859-build.zip"
         },
         "categories": {
           "deploymentBucketName": "amplify-lms-test-142735-deployment",

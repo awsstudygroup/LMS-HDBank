@@ -15,10 +15,13 @@ export default class Course extends React.Component {
         this.state = { 
             course: null,
             redirectToLearn: false,
+            loading: true,
         };
     }
 
-    componentDidMount() {
+    async getCourse() {
+        this.setState({ loading: true });
+
         const apiName = 'courses';
         const path = '/courses/' + window.location.hash.split('/')[2];
         
@@ -35,11 +38,17 @@ export default class Course extends React.Component {
                 whatToLearn: response.WhatToLearn,
                 requirements: response.Requirements,
                 chapters: response.Chapters,
-            }});
+            },
+            loading: false});
         })
         .catch((error) => {
             console.log(error.response);
+            this.setState({ loading: false });
         });
+    }
+
+    componentDidMount() {
+        this.getCourse();
     }
 
     openLearn() {
@@ -76,7 +85,7 @@ export default class Course extends React.Component {
             <Navigate to={'/learn/' + course.id} /> :
             <div>
                 <NavBar navigation={this.props.navigation} title="Cloud Solutions Journey"/>
-                {!course ? <div className='course-main'>
+                {this.state.loading ? <div className='course-main'>
                     <img src={loadingGif} alt="loading..." className='course-loading-gif' />
                 </div>
                 : <div className='course-main'>

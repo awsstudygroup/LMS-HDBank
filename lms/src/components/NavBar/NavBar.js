@@ -94,21 +94,21 @@ export class NavBar extends React.Component {
                         />
                     }
                     utilities = {!this.state.authChecked ? [] : !this.state.authenticated ? [
-                        {
-                            type: "menu-dropdown",
-                            text: t('nav.language.title'),
-                            items: [
-                                { 
-                                    id: "vn", 
-                                    text: t('nav.language.item-vn'),
-                                },
-                                { 
-                                    id: "en", 
-                                    text: t('nav.language.item-en'),
-                                }
-                            ],
-                            onItemClick: (e) => this.onLanguageHandle(e)
-                        },
+                        // {
+                        //     type: "menu-dropdown",
+                        //     text: t('nav.language.title'),
+                        //     items: [
+                        //         { 
+                        //             id: "vn", 
+                        //             text: t('nav.language.item-vn'),
+                        //         },
+                        //         { 
+                        //             id: "en", 
+                        //             text: t('nav.language.item-en'),
+                        //         }
+                        //     ],
+                        //     onItemClick: (e) => this.onLanguageHandle(e)
+                        // },
                         {
                             type: "button",
                             text: t('nav.signIn'),
@@ -125,21 +125,21 @@ export class NavBar extends React.Component {
                             },
                         }
                     ] : [
-                        {
-                            type: "menu-dropdown",
-                            text: t('nav.language.title'),
-                            items: [
-                                { 
-                                    id: "vn", 
-                                    text: t('nav.language.item-vn'),
-                                },
-                                { 
-                                    id: "eng", 
-                                    text: t('nav.language.item-en'),
-                                }
-                            ],
-                            onItemClick: (e) => this.onLanguageHandle(e)
-                        },
+                        // {
+                        //     type: "menu-dropdown",
+                        //     text: t('nav.language.title'),
+                        //     items: [
+                        //         { 
+                        //             id: "vn", 
+                        //             text: t('nav.language.item-vn'),
+                        //         },
+                        //         { 
+                        //             id: "eng", 
+                        //             text: t('nav.language.item-en'),
+                        //         }
+                        //     ],
+                        //     onItemClick: (e) => this.onLanguageHandle(e)
+                        // },
                         {
                             type: "menu-dropdown",
                             text: this.state.user.attributes.email,

@@ -7,12 +7,13 @@ import Footer from '../../components/Footer/Footer';
 import MyLearningCourse from './MyLearningCourse';
 
 import loadingGif from '../../assets/images/loading.gif';
+import { apiName, myLearningPath } from "../../utils/api"
 
 export default class MyLearning extends React.Component {
     constructor(props) {
         super(props);
         this.state = { 
-            loading: true,
+            loading: false,
             courseToRedirect: null,
             mostRecentCourse: null,
             assignedCourses: [],
@@ -25,10 +26,8 @@ export default class MyLearning extends React.Component {
     }
 
     loadUserCourses() {
-        const apiName = 'courses';
-        const path = '/users/courses';
-        
-        API.get(apiName, path)
+        this.setState({ loading: true });
+        API.get(apiName, myLearningPath)
             .then((response) => {
                 let mostRecentCourse;
                 let assignedCourses = [];
@@ -37,10 +36,10 @@ export default class MyLearning extends React.Component {
                     let transformedCourse = {
                         id: course.CourseID,
                         lastAccessed: course.LastAccessed,
-                        assignedBy: course.AssignedBy,
+                        assigned: course.Assign,
                     }
 
-                    if (!!transformedCourse.assignedBy) {
+                    if (!!transformedCourse.assigned) {
                         assignedCourses.push(transformedCourse.id);
                     } else {
                         selfEnrolledCourses.push(transformedCourse.id);
@@ -61,6 +60,7 @@ export default class MyLearning extends React.Component {
             })
             .catch((error) => {
                 console.log(error.response);
+                this.setState({ loading: false });
             });
     }
 

@@ -15,9 +15,9 @@ i18n
         vn: languageVN
     },
     /* default language when load the website in browser */
-    lng: "vn",
+    lng: "en",
     /* When react i18next not finding any language to as default in borwser */
-    fallbackLng: "vn",
+    fallbackLng: "en",
     /* debugger For Development environment */
     debug: true,
     ns: ["translation"],
