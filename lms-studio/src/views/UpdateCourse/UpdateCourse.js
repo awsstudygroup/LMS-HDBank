@@ -29,6 +29,7 @@ import { withAuthenticator } from "@aws-amplify/ui-react";
 import Icon from "@cloudscape-design/components/icon";
 import { useNavigate } from "react-router-dom";
 import ExpandableSection from "@cloudscape-design/components/expandable-section";
+import { apiName, lecturePublicPath, myLecturePath } from "../../utils/api";
 import { API } from "aws-amplify";
 import "./Course.css";
 
@@ -105,17 +106,23 @@ function UpdateCourse(props) {
     }
   );
 
-  useEffect(() => {
-    const apiName = "lmsStudio";
-    const path = "/lectures/public";
+  const loadLectures = async () => {
+    let lectureList = [];
+    try {
+      const myLectures = await API.get(apiName, myLecturePath);
+      lectureList = [...lectureList, ...myLectures]
+    }catch(error){
+      console.log(error.response);
+    }finally {
+      const publicLectures = await API.get(apiName, lecturePublicPath);
+      lectureList = [...lectureList, ...publicLectures];
+      // console.log(lectureList)
+      setExistingLectures(lectureList);
+    }
+  }
 
-    API.get(apiName, path)
-      .then((response) => {
-        setExistingLectures(response);
-      })
-      .catch((error) => {
-        console.log(error.response);
-      });
+  useEffect(() => {
+    loadLectures()
   }, [])
 
   let str_categories = "";

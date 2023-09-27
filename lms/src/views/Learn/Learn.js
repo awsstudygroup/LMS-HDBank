@@ -344,6 +344,7 @@ class QuizContent extends React.Component {
   };
 
   getAnswerCheckBox = () => {
+    console.log(this.state.selectedMultiAnswer);
     const checkboxGroup = [];
     for (let i = 0; i < 6; i++) {
       if (this.state.questions[this.state.currentQuestion][`A${i}`]) {
@@ -415,6 +416,7 @@ class QuizContent extends React.Component {
       return false;
     }
   };
+
   componentDidMount() {
     this.convertCSVtoJSON(this.props.url);
     this.props.countView();
@@ -796,6 +798,8 @@ class QuizContent extends React.Component {
                       currentQuestion: nextQuestion,
                       currentQuestionAnswered: false,
                       selectedAnswer: null,
+                      selectedMultiAnswer: [],
+                      checkedAnswer: Array(6).fill(false),
                     });
                   }
                 }}
@@ -1429,6 +1433,7 @@ export default class Learn extends React.Component {
         />
         <AppLayout
           headerSelector="#h"
+          navigationWidth= "350"
           navigation={
             <SideNavigation
               activeHref={

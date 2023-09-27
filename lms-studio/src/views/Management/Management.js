@@ -7,6 +7,7 @@ import SideNavigation from "@cloudscape-design/components/side-navigation";
 import Applayout from "@cloudscape-design/components/app-layout";
 import { useNavigate, useLocation } from "react-router-dom";
 import { BreadcrumbGroup } from "@cloudscape-design/components";
+import { withAuthenticator } from "@aws-amplify/ui-react";
 
 const Management = (props) => {
   const [activeHref, setActiveHref] = useState();
@@ -102,4 +103,4 @@ const Management = (props) => {
   );
 };
 
-export default Management;
+export default withAuthenticator(Management);

@@ -22,6 +22,7 @@ import { transformDateTime } from "../../../utils/tool";
 import { useCollection } from "@cloudscape-design/collection-hooks";
 import { getMyLecturesService } from "../services/lecture";
 
+
 const successMes = "Delete success";
 const errorMess = "Error! An error occurred. Please try again later";
 
@@ -394,4 +395,4 @@ const MyLectures = () => {
   );
 };
 
-export default MyLectures;
+export default (MyLectures);

@@ -389,7 +389,7 @@ a.learn-fill-div:hover {
 }
 
 .learn-navigation-chapter, .learn-navigation-lecture {
-    width: 230px;
+    width: 280px;
 }
 
 .learn-navigation-chapter span {
@@ -491,4 +491,23 @@ a.learn-fill-div:hover {
     .learn-auto-next-control input {
         width: 0.7em;
     } */
+}
+
+@media only screen and (min-width: 768px) and (max-width: 992px) {
+    nav[aria-hidden="false"]{
+        width: 250px
+    }
+    .learn-navigation-chapter, .learn-navigation-lecture {
+        width: 180px;
+    }
+
+}
+
+@media only screen and (min-width: 993px) and (max-width: 1500px) {
+    nav[aria-hidden="false"]{
+        width: 300px
+    }
+    .learn-navigation-chapter, .learn-navigation-lecture {
+        width: 230px;
+    }
 }
