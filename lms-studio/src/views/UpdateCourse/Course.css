@@ -5,3 +5,25 @@
     margin: 40px;
     padding: 20px;
 }
+
+.course-content{
+    padding: 0 20px;
+}
+
+.course-body {
+    margin-bottom: 40px;
+}
+
+@media only screen and (max-width: 768px) {
+    .course-content{
+        padding: 0 10px;
+    }
+
+    .awsui-context-content-header {
+        padding: 0 10px;
+    }
+
+    .requirement-item-haft {
+        max-width: 100%;
+    }
+}
