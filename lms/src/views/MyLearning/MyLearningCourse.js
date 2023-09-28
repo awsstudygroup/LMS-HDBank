@@ -118,8 +118,16 @@ export default class MyLearningCourse extends React.Component {
                     </div>
                     <div className='mylearning-course-property'>
                         <Icon variant='subtle' name='status-pending' className='mylearning-course-property-icon'/> 
-                        {Math.floor(course.length / 60) > 0 ? Math.floor(course.length / 60) + " hours " : ""}
-                        {course.length % 60 > 0 ? course.length % 60 + " minutes" : ""}
+                        {Math.floor(course.length / 3600) > 0
+                          ? Math.floor(course.length / 3600) + " hours "
+                          : ""}
+                        {(course.length % 3600) / 60 > 0
+                          ? Math.floor((course.length % 3600) / 60) +
+                            " minutes "
+                          : ""}
+                        {(course.length % 3600) % 60 > 0
+                          ? ((course.length % 3600) % 60) + " seconds"
+                          : ""}
                     </div>
                     <div className='mylearning-course-desc'>
                         {!!course.description ? course.description : ""}

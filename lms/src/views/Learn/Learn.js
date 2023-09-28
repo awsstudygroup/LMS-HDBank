@@ -1498,11 +1498,12 @@ export default class Learn extends React.Component {
                           type: "section",
                           text: (
                             <div className="learn-navigation-chapter">
+                              <div style={{ width: "70%" }}>
                               {chapter.name}{" "}
-                              <span>
-                                <IoTimeOutline />{" "}
-                                {chapter.length > 0 ? this.formatTime(chapter.length) : ""}
-                              </span>
+                              </div>
+                              <div className="learn-chapter-time">
+                                {chapter.length > 0 ? (<><IoTimeOutline />{this.formatTime(chapter.length)}</>) : ""}
+                              </div>
                             </div>
                           ),
                           defaultExpanded:

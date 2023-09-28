@@ -4,6 +4,7 @@ import { API, Auth } from 'aws-amplify';
 import { Navigate } from "react-router-dom";
 import NavBar from '../../components/NavBar/NavBar';
 import Footer from '../../components/Footer/Footer';
+import { transformDateTime } from "../../utils/tools"
 
 import { Button, Icon, Modal, Box, SpaceBetween } from '@cloudscape-design/components';
 
@@ -229,7 +230,20 @@ export default class Cert extends React.Component {
                                 ? <img src={loadingGif} alt="loading..." className='cert-view-loading-gif' />
                                 : <div className='cert-view-container'>
                                     {/* <div>{this.state.cert.UserEmail}</div> */}
-                                    <div>{this.state.cert.UserName}</div>
+                                    <div className="cert-view-user-name">{this.state.cert.UserName}</div>
+                                    <div className="cert-view-course-name">
+                                        {(() => {
+                                            let courseNameList = this.state.course.name.split("-");
+                                            return courseNameList.pop().toUpperCase()
+                                        })()}
+                                    </div>
+                                    <div className="cert-view-issued-date">
+                                        ISSUED DATE - {this.state.cert ? transformDateTime(this.state.cert.CompletedTime).toUpperCase() : new Date().toDateString().toUpperCase()}
+                                        {/* {(() => {
+                                            let courseNameList = this.state.course.name.split("-");
+                                            return courseNameList.pop().toUpperCase()
+                                        })()} */}
+                                    </div>
                                 </div>}
                         </div>
                     </div>}

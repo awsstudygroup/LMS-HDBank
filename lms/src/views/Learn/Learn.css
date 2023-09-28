@@ -390,6 +390,13 @@ a.learn-fill-div:hover {
 
 .learn-navigation-chapter, .learn-navigation-lecture {
     width: 280px;
+    display: flex;
+}
+
+.learn-chapter-time {
+    display:inline-block;
+    text-align: end;
+    width: 30%;
 }
 
 .learn-navigation-chapter span {
@@ -476,7 +483,7 @@ a.learn-fill-div:hover {
     max-height: 100%;
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 500px) {
     .learn-content-control{
         height: 25px;
     }
@@ -492,6 +499,17 @@ a.learn-fill-div:hover {
         width: 0.7em;
     } */
 }
+@media only screen and (min-width: 500px) and (max-width: 768px){
+    nav[aria-hidden="false"]{
+        width: 200px
+    }
+    .learn-navigation-chapter, .learn-navigation-lecture {
+        width: 150px;
+    }
+    .learn-navigation-chapter, .learn-navigation-progress, .learn-navigation-lecture{
+        font-size: 10px;
+    }
+}
 
 @media only screen and (min-width: 768px) and (max-width: 992px) {
     nav[aria-hidden="false"]{
@@ -499,6 +517,10 @@ a.learn-fill-div:hover {
     }
     .learn-navigation-chapter, .learn-navigation-lecture {
         width: 180px;
+        font-size: 12px;
+    }
+    .learn-navigation-chapter, .learn-navigation-progress {
+        font-size: 12px;
     }
 
 }

@@ -66,7 +66,7 @@ export default class MyLearning extends React.Component {
 
     render() {
         return <div>
-            <NavBar navigation={this.props.navigation}/>
+            <NavBar navigation={this.props.navigation} href="/mylearning"/>
             <div className='mylearning-wrapper'>
                 {this.state.loading 
                     ? <div className='mylearning-main-container-loading'>

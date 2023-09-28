@@ -50,16 +50,18 @@ export class NavBar extends React.Component {
             console.log('error signing out: ', error);
             Auth.userHasAuthenticated(false);
         }
-
-        this.setState({
-            authChecked: true,
-            authenticated: false,
-        })
         if ( this.props.href != "/" ){
             this.setState({
                 redirectHome: true,
             })
         }
+        else {
+            window.location.reload();
+        }
+        this.setState({
+            authChecked: true,
+            authenticated: false,
+        })
     }
 
     onLanguageHandle = (event) => {
@@ -156,9 +158,11 @@ export class NavBar extends React.Component {
                             ],
                             onItemClick: (e) => {
                                 if (e.detail.id === 'mylearning') {
-                                    this.setState({
-                                        redirectMyLearning: true,
-                                    })
+                                    if ( this.props.href != "/mylearning" ){
+                                        this.setState({
+                                            redirectMyLearning: true,
+                                        })
+                                    }
                                 } else if (e.detail.id === 'signout') {
                                     this.startSignOut();
                                 }
