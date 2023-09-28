@@ -63,7 +63,6 @@ export default class Course extends React.Component {
         let videoCount = 0;
         let labCount = 0;
         let quiz = 0;
-
         if (!!course) {
             chapters = course.chapters;
             chapters.forEach(chapter => {
@@ -154,8 +153,8 @@ export default class Course extends React.Component {
                                             <div>{labCount} hands-on labs</div>
                                         </div>
                                         {/* <div className='course-what-to-learn-item'>
-                                            <Icon variant='subtle' name='thumbs-up-filled'/>
-                                            <div>{quiz} Quizzes</div>
+                                            <Icon variant='subtle' name='calendar'/>
+                                            <div>{quiz} quizzes</div>
                                         </div> */}
                                     </div>
                                     <div className='board-footer'>

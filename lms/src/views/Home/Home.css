@@ -233,3 +233,41 @@
     margin-right: auto;
   }
 }
+
+
+@media only screen and (min-width: 768px) and (max-width: 992px) {
+  .dashboard-banner {
+    padding: 20px 40px;
+    height: 300px;
+  }
+
+  .dashboard-banner-title {
+    color: white;
+    font-size: 36px;
+    margin-top: 0px;
+  }
+  .dashboard-banner-desc{
+    font-size: 17px;
+    line-height: 1.2;
+  }
+  .dashboard-highlight > div {
+    display: block !important;
+  }
+  .dashboard-highlight > div > div {
+    max-width: 100% !important;
+  }
+  .dashboard-highlight-icon {
+    height: 40px;
+  }
+  .dashboard-highlight-title {
+    font-size: 16px;
+    line-height: 1.2;
+  }
+  .dashboard-highlight-desc {
+    font-size: 14px;
+    line-height: 1.2;
+  }
+  .dashboard-courses {
+    padding: 20px 30px;
+  }
+}

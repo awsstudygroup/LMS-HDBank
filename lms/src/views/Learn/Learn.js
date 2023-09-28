@@ -41,6 +41,7 @@ import {
   IoTimeOutline,
   IoEllipseSharp,
   IoCheckmarkSharp,
+  IoFemaleSharp,
 } from "react-icons/io5";
 import { Navigate } from "react-router-dom";
 import { 
@@ -344,7 +345,7 @@ class QuizContent extends React.Component {
   };
 
   getAnswerCheckBox = () => {
-    console.log(this.state.selectedMultiAnswer);
+    // console.log(this.state.selectedMultiAnswer);
     const checkboxGroup = [];
     for (let i = 0; i < 6; i++) {
       if (this.state.questions[this.state.currentQuestion][`A${i}`]) {
@@ -352,12 +353,15 @@ class QuizContent extends React.Component {
           <Checkbox
             onChange={({ detail }) => {
               let preChecked = this.state.checkedAnswer;
+              let preSelectedMultiAns = this.state.selectedMultiAnswer
               preChecked[i] = detail.checked;
               this.setState({ checkedAnswer: preChecked });
-              this.setState((prevState) => ({
-                selectedMultiAnswer: [...prevState.selectedMultiAnswer, i],
-              }));
-              console.log(this.state.checkedAnswer);
+              if ( detail.checked ){
+                preSelectedMultiAns = [...preSelectedMultiAns, i];
+              }else{
+                preSelectedMultiAns = preSelectedMultiAns.filter( item => item != i );
+              }
+              this.setState({ selectedMultiAnswer: preSelectedMultiAns })
             }}
             checked={this.state.checkedAnswer[i]}
             disabled={this.state.currentQuestionAnswered}
@@ -370,38 +374,39 @@ class QuizContent extends React.Component {
     return checkboxGroup;
   };
 
+  getCorrectAnswer = () => {
+    let j = 0;
+    let correctAnswer = [];
+    while (j < MAX_ANSWERS){
+      let answer = parseInt(this.state.questions[this.state.currentQuestion][`C${j}`])
+      if (this.state.questions[this.state.currentQuestion][`C${j}`] !== ""){
+        correctAnswer.push(answer)
+      }
+      j++;
+    }
+    return correctAnswer;
+  }
+
   checkAnswer = () => {
     if (
       this.state.questions[
         this.state.currentQuestion
       ].Multichoice.localeCompare("1") === 0
     ) {
-      let i = 0,
-        j = 0;
-      while (i < this.state.selectedMultiAnswer.length && j < MAX_ANSWERS) {
-        if (
-          this.state.selectedMultiAnswer[i] ===
-          parseInt(this.state.questions[this.state.currentQuestion][`C${j}`])
-        ) {
-          i++;
-          j++;
-        } else {
+      let countAnswer = 0;
+      const correctAnswer = this.getCorrectAnswer();
+      if (this.state.selectedMultiAnswer.length != correctAnswer.length){
+        return false;
+      } else {
+        for ( let i = 0; i < this.state.selectedMultiAnswer.length; i++){
+          if (correctAnswer.includes(this.state.selectedMultiAnswer[i])){
+            countAnswer++;
+          }
+        }
+
+        if (countAnswer != correctAnswer.length){
           return false;
         }
-      }
-
-      if (
-        j < MAX_ANSWERS - 1 &&
-        this.state.questions[this.state.currentQuestion][`C${j}`]
-      ) {
-        return false;
-      }
-
-      if (
-        i < this.state.selectedMultiAnswer.length - 1 &&
-        this.state.selectedMultiAnswer[i]
-      ) {
-        return false;
       }
 
       return true;
@@ -654,7 +659,7 @@ class QuizContent extends React.Component {
                           });
                         }
                       }
-                      console.log(answers);
+                      // console.log(answers);
                       return answers;
                     })()}
                   />
