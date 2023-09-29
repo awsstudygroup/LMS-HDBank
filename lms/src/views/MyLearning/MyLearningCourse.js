@@ -17,13 +17,14 @@ export default class MyLearningCourse extends React.Component {
             completedLectures: null,
             totalLectures: null,
             course: null,
+            loading: true,
         };
     }
 
     loadCourse() {
         const apiName = 'courses';
         const path = '/courses/' + this.props.courseId;
-        
+        this.setState({ loading: true })
         API.get(apiName, path)
             .then((response) => {
                 let totalLectures = 0;
@@ -42,7 +43,8 @@ export default class MyLearningCourse extends React.Component {
                         chapters: response.Chapters,
                         totalLecture: 0,
                     },
-                    totalLectures: totalLectures
+                    totalLectures: totalLectures,
+                    loading: false,
                 }, () => {
                     if (!!this.state.allCompletedLectures)
                         this.calculateProgress();
@@ -50,6 +52,7 @@ export default class MyLearningCourse extends React.Component {
             })
             .catch((error) => {
                 console.log(error.response);
+                this.setState({ loading: false })
             });
     }
     
@@ -99,7 +102,7 @@ export default class MyLearningCourse extends React.Component {
             : !!this.state.redirectToLearn
             ? <Navigate to={'/learn/' + course.id} />
             : !course
-            ? <div><img src={loadingGif} alt="loading..." className='mylearning-loading-gif' /></div>
+            ? <div>{this.state.loading ? <img src={loadingGif} alt="loading..." className='mylearning-loading-gif' /> : <></>}</div>
             : <div className='mylearning-course'>
                 <div className='mylearning-course-info'>
                     <div className='mylearning-course-title'>

@@ -32,6 +32,7 @@ export default class MyLearning extends React.Component {
                 let mostRecentCourse;
                 let assignedCourses = [];
                 let selfEnrolledCourses = [];
+                console.log(response)
                 response.forEach(course => {
                     let transformedCourse = {
                         id: course.CourseID,
@@ -89,6 +90,7 @@ export default class MyLearning extends React.Component {
                         <div>
                             <p className='mylearning-courses-header'>Self-enrolled courses</p>
                             <div className='mylearning-courses-header-decor' />
+                            {console.log(this.state.selfEnrolledCourses)}
                             {this.state.selfEnrolledCourses.length === 0
                                 ? <div>
                                     You didn't enrolled any course.
