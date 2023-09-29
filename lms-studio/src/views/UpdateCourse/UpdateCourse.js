@@ -333,6 +333,7 @@ function UpdateCourse(props) {
     })
 
     const jsonData = {
+        OldID: newCourse.name.trim() !== state.Name ? state.ID : "",
         ID: newCourse.name.trim() ? convertNameToID(newCourse.name) : state.ID,
         Name: newCourse.name.trim() ? newCourse.name.trim() : state.name,
         Description: newCourse.description,

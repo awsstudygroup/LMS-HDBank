@@ -286,10 +286,23 @@ app.post(path, function(req, res) {
   
   req.body['CreatorID'] = req.apiGateway.event.requestContext.identity.cognitoAuthenticationProvider.split(':CognitoSignIn:')[1] || UNAUTH;
 
+  // check if item exist or not
+  if ( req.body['OldID'] ){
+    let deleteParams = {
+      TableName: tableName,
+      Key: { ID: req.body['OldID'] }
+    }
+    dynamodb.delete(params, function(err, data) {
+      if (err) console.log(err);
+      else console.log(data);
+    });
+  }
+  req.body = { ...req.body, OldID: _ }
   let putItemParams = {
     TableName: tableName,
     Item: req.body
   }
+  console.log(req.body)
   dynamodb.put(putItemParams, (err, data) => {
     if (err) {
       res.statusCode = 500;

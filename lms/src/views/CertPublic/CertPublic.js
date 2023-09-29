@@ -5,6 +5,7 @@ import NavBar from '../../components/NavBar/NavBar';
 import Footer from '../../components/Footer/Footer';
 
 import loadingGif from '../../assets/images/loading.gif';
+import { transformDateTime } from "../../utils/tools"
 
 export default class CertPublic extends React.Component {
     constructor(props) {
@@ -46,7 +47,16 @@ export default class CertPublic extends React.Component {
                         {!this.state.cert 
                             ? <img src={loadingGif} alt="loading..." className='cert-view-loading-gif' />
                             : <div className='publiccert-view-container'>
-                                <div>{cert.UserEmail}</div>
+                                <div className="cert-view-user-name">{cert.UserName}</div>
+                                <div className="cert-view-course-name">
+                                    {(() => {
+                                        let courseName = cert.CourseID.split("---").pop();
+                                        return courseName.replace(/-/g, " ").toUpperCase();
+                                    })()}
+                                </div>
+                                <div className="cert-view-issued-date">
+                                    ISSUED DATE - {transformDateTime(cert.CompletedTime).toUpperCase()}
+                                </div>
                             </div>}
                     </div>
                 </div>}
