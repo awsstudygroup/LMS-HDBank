@@ -22,6 +22,7 @@ import {
   publicCoursePath,
   userCoursePath,
 } from "../../utils/api";
+import { calcTime } from "../../utils/tools"
 
 export class Home extends React.Component {
   constructor(props) {
@@ -275,7 +276,7 @@ export class Home extends React.Component {
                           name="status-pending"
                           className="dashboard-courses-list-item-property-icon"
                         />
-                        {Math.floor(course.length / 3600) > 0
+                        {/* {Math.floor(course.length / 3600) > 0
                           ? Math.floor(course.length / 3600) + " hours "
                           : ""}
                         {(course.length % 3600) / 60 > 0
@@ -284,7 +285,8 @@ export class Home extends React.Component {
                           : ""}
                         {(course.length % 3600) % 60 > 0
                           ? ((course.length % 3600) % 60) + " seconds"
-                          : ""}
+                          : ""} */}
+                          {calcTime(course.length)}
                       </div>
                       <div className="dashboard-courses-list-item-desc">
                         {course.description}

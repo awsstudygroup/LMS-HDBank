@@ -4,7 +4,7 @@ import { API, Auth } from 'aws-amplify';
 import { Navigate } from "react-router-dom";
 import NavBar from '../../components/NavBar/NavBar';
 import Footer from '../../components/Footer/Footer';
-import { transformDateTime } from "../../utils/tools"
+import { transformDateTime, calcTime } from "../../utils/tools"
 
 import { Button, Icon, Modal, Box, SpaceBetween } from '@cloudscape-design/components';
 
@@ -202,8 +202,7 @@ export default class Cert extends React.Component {
                             </div>
                             <div className='cert-course-property'>
                                 <Icon variant='subtle' name='status-pending' className='cert-course-property-icon'/> 
-                                {Math.floor(course.length / 60) > 0 ? Math.floor(course.length / 60) + " hours " : ""}
-                                {course.length % 60 > 0 ? course.length % 60 + " minutes" : ""}
+                                {calcTime(course.length)}
                             </div>
                             <div className='cert-course-desc'>
                                 {!!course.description ? course.description : ""}

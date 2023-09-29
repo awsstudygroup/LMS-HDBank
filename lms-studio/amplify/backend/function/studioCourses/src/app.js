@@ -297,7 +297,8 @@ app.post(path, function(req, res) {
       else console.log(data);
     });
   }
-  req.body = { ...req.body, OldID: _ }
+  // req.body = { ...req.body, OldID: _ }
+  delete req.body['OldID']
   let putItemParams = {
     TableName: tableName,
     Item: req.body

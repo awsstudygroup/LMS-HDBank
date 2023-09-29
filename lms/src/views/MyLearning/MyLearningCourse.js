@@ -5,14 +5,16 @@ import { Button, Icon, ProgressBar } from '@cloudscape-design/components';
 
 import loadingGif from '../../assets/images/loading.gif';
 import courseDefaultThumbnail from '../../assets/images/course-default-thumbnail.png';
+import { calcTime } from "../../utils/tools"
 
 export default class MyLearningCourse extends React.Component {
     constructor(props) {
         super(props);
         this.state = { 
             redirectToLearn: false,
+            redirectToCert: false,
             allCompletedLectures: null,
-            completedLecture: null,
+            completedLectures: null,
             totalLectures: null,
             course: null,
         };
@@ -118,16 +120,7 @@ export default class MyLearningCourse extends React.Component {
                     </div>
                     <div className='mylearning-course-property'>
                         <Icon variant='subtle' name='status-pending' className='mylearning-course-property-icon'/> 
-                        {Math.floor(course.length / 3600) > 0
-                          ? Math.floor(course.length / 3600) + " hours "
-                          : ""}
-                        {(course.length % 3600) / 60 > 0
-                          ? Math.floor((course.length % 3600) / 60) +
-                            " minutes "
-                          : ""}
-                        {(course.length % 3600) % 60 > 0
-                          ? ((course.length % 3600) % 60) + " seconds"
-                          : ""}
+                          {calcTime(course.length)}
                     </div>
                     <div className='mylearning-course-desc'>
                         {!!course.description ? course.description : ""}
