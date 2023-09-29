@@ -33,9 +33,11 @@ export default class Cert extends React.Component {
     }
     
     async loadUserId(callback) {
-        let credentials = await Auth.currentUserCredentials();
+        // let credentials = await Auth.currentUserCredentials();
+        const credentials = await Auth.currentAuthenticatedUser({ bypassCache: false });
+        // console.log(credentials)
         this.setState({
-            userId: credentials.identityId,
+            userId: credentials.UserID,
         }, callback);
 
 
@@ -175,7 +177,6 @@ export default class Cert extends React.Component {
 
         return this.state.redirectToCourse ?
             <Navigate to={'/course/' + course.id} /> :
-            this.state.shareCertOpen ? <Navigate to={'/certPublic/' + this.state.cert.ID} /> :
             <div>
                 <NavBar navigation={this.props.navigation}/>
                 <div className='cert-wrapper'>

@@ -140,6 +140,7 @@
     font-weight: bold;
     position: relative;
     top: 270px;
+    font-family: Arial;
 }
 
 .cert-view-course-name {
