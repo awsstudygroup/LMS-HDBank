@@ -13,6 +13,9 @@ import {
   RadioGroup,
   Alert,
   Checkbox,
+  Modal,
+  Box,
+  SpaceBetween,
 } from "@cloudscape-design/components";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import { csv } from "csvtojson";
@@ -136,6 +139,7 @@ function LectureContent(props) {
           markLectureCompleted={props.markLectureCompleted}
           setQuestionLength={props.setQuestionLength}
           countView={props.countView}
+          isLast={props.isLast}
         />
       );
     default:
@@ -305,6 +309,7 @@ class QuizContent extends React.Component {
       selectedMultiAnswer: [],
       checkedAnswer: Array(6).fill(false),
       correctedAnswer: 0,
+      visible: false,
     };
   }
 
@@ -748,6 +753,9 @@ class QuizContent extends React.Component {
                   onClick={() => {
                     this.props.markLectureCompleted();
                     this.props.nextLecture();
+                    if ( this.props.isLast ) {
+                      this.setState({ visible: true })
+                    }
                   }}
                 >
                   Finish
@@ -814,6 +822,22 @@ class QuizContent extends React.Component {
             )}
           </div>
         </div>
+        <Modal
+          onDismiss={() => this.setState({visible: false, quizStarted: false, quizDone: false})}
+          visible={this.state.visible}
+          footer={
+            <Box float="right">
+              <SpaceBetween direction="horizontal" size="xs">
+                <Button variant="link" onClick={() => this.setState({visible: false, quizStarted: false, quizDone: false})}>
+                  OK
+                </Button>
+              </SpaceBetween>
+            </Box>
+          }
+          header="Congratulation"
+        >
+          Congratulations on completing the quiz
+        </Modal>
       </div>
     );
   }
@@ -890,6 +914,7 @@ function MainContent(props) {
               markLectureCompleted={props.markLectureCompleted}
               setQuestionLength={props.setQuestionLength}
               countView={countView}
+              isLast={props.isLast}
             />
           )}
         </div>
@@ -1290,6 +1315,7 @@ export default class Learn extends React.Component {
   nextLecture() {
     let chapterId = this.state.lecture.chapterId;
     let lectureId = this.state.lecture.lectureId;
+    let isLastLesson = false;
 
     lectureId++;
     if (lectureId === this.state.course.chapters[chapterId].lectures.length) {

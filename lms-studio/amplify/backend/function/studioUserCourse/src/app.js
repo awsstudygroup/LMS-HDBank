@@ -266,6 +266,67 @@ app.delete(path, function(req, res) {
   })
 });
 
+
+// /**************************************
+// * HTTP remove method to delete object *
+// ***************************************/
+
+app.delete(path + sortKeyPath, function(req, res) {
+  let condition = {};
+  
+  condition[sortKeyName] = {
+    ComparisonOperator: 'EQ'
+  }
+  
+  condition[sortKeyName]['AttributeValueList'] = [req.params[sortKeyName]];
+  
+  let scanItemParams = {
+    TableName: tableName,
+    ScanFilter: condition
+  }
+
+  dynamodb.scan(scanItemParams, function(err, data) {
+    if (err) {
+      res.statusCode = 500;
+      res.json({error: 'Could not load items: ' + err.message});
+    }
+    else {
+      let promises = data.Items.map((item) => {
+        const params = {};
+        params[partitionKeyName] = item[partitionKeyName];
+        params[sortKeyName] = item[sortKeyName];
+    
+        let removeItemParams = {
+          TableName: tableName,
+          Key: params
+        }
+        
+        return dynamodb.delete(removeItemParams).promise().then((err, data) => {
+          if (err) {
+            console.log("delete error ", err)
+            return err
+          } else{
+            return data
+          }
+        })
+      })
+      Promise.all(promises).then(function(results) {
+        console.log(results)
+        res.json({results})
+      })
+    };
+  });
+
+  // dynamodb.delete(removeItemParams).promise().then((err, data) => {
+  //   if (err) {
+  //     console.log(err)
+  //     return err
+  //   } else{
+  //     return data
+  //   }
+  // })
+});
+
 app.listen(3000, function() {
   console.log("App started")
 });

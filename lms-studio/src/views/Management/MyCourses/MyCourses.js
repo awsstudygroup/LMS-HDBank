@@ -12,7 +12,7 @@ import Modal from "@cloudscape-design/components/modal";
 import Flashbar from "@cloudscape-design/components/flashbar";
 import Title from "../../../components/Title";
 import { getMyCoursesService } from "../services/course";
-import { apiName, coursePath } from "../../../utils/api"
+import { apiName, coursePath, userCourse } from "../../../utils/api"
 import { API } from "aws-amplify";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -139,6 +139,7 @@ const MyCourses = () => {
     for (let i = 0; i < countDeleteItems; i++) {
       try {
         await API.del(apiName, coursePath + "/object/" + deleteItems[i].ID);
+        await API.del(apiName, userCourse + `/${deleteItems[i].ID}`)
         courseList = courseList.filter(course => course.ID != deleteItems[i].ID);
         if ( i === countDeleteItems - 1){
           resetSuccess();

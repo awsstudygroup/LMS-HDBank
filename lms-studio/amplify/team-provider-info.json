@@ -240,7 +240,7 @@
       "function": {
         "studioCourses": {
           "deploymentBucketName": "amplify-lmsstudio-test-144203-deployment",
-          "s3Key": "amplify-builds/studioCourses-716b5634667a70657077-build.zip"
+          "s3Key": "amplify-builds/studioCourses-526f4b78716d65507958-build.zip"
         },
         "studioLectures": {
           "deploymentBucketName": "amplify-lmsstudio-test-144203-deployment",
@@ -248,7 +248,7 @@
         },
         "studioUserCourse": {
           "deploymentBucketName": "amplify-lmsstudio-test-144203-deployment",
-          "s3Key": "amplify-builds/studioUserCourse-4b764f4b48612b665a7a-build.zip"
+          "s3Key": "amplify-builds/studioUserCourse-334e4934665242786274-build.zip"
         },
         "studiousers": {
           "deploymentBucketName": "amplify-lmsstudio-test-144203-deployment",
