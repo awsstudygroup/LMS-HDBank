@@ -268,6 +268,7 @@ a.learn-fill-div:hover {
     margin-bottom: 5px;
     white-space: pre-line;
     line-height: 150%;
+    overflow-y: auto;
 }
   
 .learn-lab-content-link button {

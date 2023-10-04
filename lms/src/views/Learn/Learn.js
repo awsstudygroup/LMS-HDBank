@@ -153,6 +153,7 @@ class VideoContent extends React.Component {
     this.state = {
       videoSrc: null,
       updateView: false,
+      isFullscreenEnabled: false,
       // uploading: false,
     };
     this.uploadingRef = React.createRef();
@@ -162,12 +163,12 @@ class VideoContent extends React.Component {
   componentDidMount() {
     this.getVideoURL(this.props.videoSrc);
     this.player.subscribeToStateChange(this.handleStateChange.bind(this));
-    this.player.actions.toggleFullscreen = () => {
-      this.props.handleFullScreen();
-    };
+    // this.player.actions.toggleFullscreen = () => {
+    //   this.props.handleFullScreen();
+    // };
   }
 
-  handleStateChange(state) {
+  handleStateChange(state, prevState) {
     this.props.setTimeLeft(Math.floor(state.duration - state.currentTime));
     if (state.ended) this.props.handleVideoEnded();
     // if (!this.uploadingRef.current && !this.state.updateView && state.currentTime / state.duration > 0.05) {
@@ -176,24 +177,10 @@ class VideoContent extends React.Component {
     if (state.currentTime / state.duration > 0.05) {
       this.props.countView();
     }
+    if (prevState.isFullscreen !== state.isFullscreen){
+      this.setState({ isFullscreenEnabled: state.isFullscreen })
+    }
   }
-
-  // countView() {
-  //   this.uploadingRef.current = true;
-  //   let lectureId = this.props.lectureId
-  //   const apiName = "courses";
-  //   const path = "/lectures/" + lectureId;
-  //   API.put(apiName, path, { body: {} })
-  //     .then((response) => {
-  //       this.setState((prevState) => ({ ...prevState, updateView: true }));
-  //       this.uploadingRef.current = false;
-  //       console.log(this.state.updateView);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error.response);
-  //       this.uploadingRef.current = false;
-  //     });
-  // }
 
   getVideoURL = async (key) => {
     const signedURL = await Storage.get(key, { level: "public" });
@@ -206,7 +193,7 @@ class VideoContent extends React.Component {
         ref={(player) => {
           this.player = player;
         }}
-        className="learn-transparent-player"
+        className={!this.state.isFullscreenEnabled ? "learn-transparent-player" : ""}
         autoPlay
         playsInline
         fluid={false}
@@ -224,7 +211,7 @@ class VideoContent extends React.Component {
             order={7}
           />
           <VolumeMenuButton order={8} />
-          <FullscreenToggle disabled />
+          {/* <FullscreenToggle disabled/> */}
         </ControlBar>
       </Player>
     );
@@ -433,15 +420,6 @@ class QuizContent extends React.Component {
   }
 
   render() {
-    // let questions = this.props.questions;
-    // console.log(questions)
-    // console.log(
-    //   !!this.state.selectedAnswer
-    //     ? questions[this.state.currentQuestion].answers[
-    //         this.state.selectedAnswer
-    //       ].correct
-    //     : "Hihi"
-    // );
 
     return (
       <div className="learn-lab-content-container learn-lab-content-container-quiz">
@@ -844,7 +822,7 @@ class QuizContent extends React.Component {
 }
 
 function MainContent(props) {
-  const handle = useFullScreenHandle();
+  // const handle = useFullScreenHandle();
   const [fullscreen, setFullscreen] = useState(false);
   const [autoNext, setAutoNext] = useState(true);
   const [timeLeft, setTimeLeft] = useState(100);
@@ -872,12 +850,14 @@ function MainContent(props) {
     }
   };
 
+
   useEffect(() => {
     setUpdateView(false);
   }, [props.lecture]);
 
   return (
-    <FullScreen handle={handle}>
+    // <FullScreen handle={handle}>
+    <div>
       <div
         className={
           fullscreen
@@ -899,9 +879,9 @@ function MainContent(props) {
                 setTimeLeft(timeLeft);
               }}
               handleFullScreen={() => {
-                if (fullscreen) handle.exit();
-                else handle.enter();
-                setFullscreen(!fullscreen);
+                // if (fullscreen) handle.exit();
+                // else handle.enter();
+                // setFullscreen(!fullscreen);
               }}
               handleVideoEnded={() => {
                 props.markLectureCompleted();
@@ -968,7 +948,7 @@ function MainContent(props) {
             </Toggle>
           </div>
           <div className="learn-content-control-right">
-            <button
+            {/* <button
               className="learn-content-control-btn"
               onClick={() => {
                 if (fullscreen) handle.exit();
@@ -976,8 +956,8 @@ function MainContent(props) {
                 setFullscreen(!fullscreen);
               }}
             >
-              {fullscreen ? <IoContract /> : <IoExpand />}
-            </button>
+              {isFullscreenEnabled ? <IoContract /> : <IoExpand />}
+            </button> */}
           </div>
         </div>
         {autoNext && !props.isLast && timeLeft !== null && timeLeft <= 5 ? (
@@ -1004,7 +984,8 @@ function MainContent(props) {
           <></>
         )}
       </div>
-    </FullScreen>
+    {/* </FullScreen> */}
+    </div>
   );
 }
 
