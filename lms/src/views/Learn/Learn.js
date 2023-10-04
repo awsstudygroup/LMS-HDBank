@@ -857,7 +857,7 @@ function MainContent(props) {
 
   return (
     // <FullScreen handle={handle}>
-    <div>
+    <div className="fullscreen">
       <div
         className={
           fullscreen
