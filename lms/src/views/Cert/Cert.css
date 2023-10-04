@@ -126,7 +126,7 @@
     width: 100%;
     height: 100%;
     background-image: url('../../assets/images/cert.png');   
-    background-size:     cover;
+    background-size:     100% 100%;
     background-repeat:   no-repeat;
     background-position: center center;
     border-radius: 10px;
@@ -149,7 +149,7 @@
     font-family: 'Amazon Ember';
     position: relative;
     color: white;
-    top: 350px;
+    top: 340px;
 }
 
 .cert-view-issued-date {
@@ -157,7 +157,7 @@
     position: relative;
     font-weight: 300;
     color: white;
-    top: 473px;
+    top: 439px;
 }
 
 .publiccert-view-container {
@@ -200,7 +200,7 @@
         font-size: 12px;
     }
     .cert-view {
-        height: 200px;
+        height: 250px;
     }
     .cert-view-container {
         object-fit: cover;
@@ -208,15 +208,15 @@
 
     .cert-view-user-name{
         font-size: 20px;
-        top: 80px;
+        top: 110px;
     }
     .cert-view-course-name {
-        font-size: 12px;
-        top: 105px;
+        font-size: 11px;
+        top: 135px;
     }
     
     .cert-view-issued-date {
         font-size: 4px;
-        top: 143px;
+        top: 180px;
     }
 }
