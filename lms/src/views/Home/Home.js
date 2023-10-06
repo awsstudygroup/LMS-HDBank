@@ -22,7 +22,7 @@ import {
   publicCoursePath,
   userCoursePath,
 } from "../../utils/api";
-import { calcTime } from "../../utils/tools"
+import { calcTime } from "../../utils/tools";
 
 export class Home extends React.Component {
   constructor(props) {
@@ -34,22 +34,26 @@ export class Home extends React.Component {
       loading: false,
       authChecked: false,
       authenticated: false,
+      searchKey: "",
+      foundCourses: [],
     };
   }
 
-  async checkLoggedIn() {
+  async checkLoggedIn(callback) {
     try {
       const user = await Auth.currentAuthenticatedUser({ bypassCache: false });
-      console.log(user)
+      // console.log(user)
       this.setState({
         authChecked: true,
         authenticated: true,
-      });
+      },
+      callback
+      );
     } catch {
       this.setState({
         authChecked: true,
         authenticated: false,
-      });
+      }, callback);
     }
   }
 
@@ -58,29 +62,31 @@ export class Home extends React.Component {
     this.setState({ loading: true });
 
     // Assigned course
-    try {
-      const userCourseResp = await API.get(apiName, userCoursePath);
-      console.log(userCourseResp);
-      if (userCourseResp.length > 0) {
-        for (let i = 0; i < userCourseResp.length; i++) {
-          const courseResp = await API.get(
-            apiName,
-            coursePath + `${userCourseResp[i].CourseID}`
-          );
-          transformedCourses.push({
-            id: courseResp.ID,
-            name: courseResp.Name,
-            categories: courseResp.Categories,
-            tags: courseResp.Tags,
-            level: courseResp.Level,
-            length: courseResp.Length,
-            description: courseResp.Description,
-          });
+    if ( this.state.authChecked ){
+      try {
+        const userCourseResp = await API.get(apiName, userCoursePath);
+        console.log(userCourseResp);
+        if (userCourseResp.length > 0) {
+          for (let i = 0; i < userCourseResp.length; i++) {
+            const courseResp = await API.get(
+              apiName,
+              coursePath + `${userCourseResp[i].CourseID}`
+            );
+            transformedCourses.push({
+              id: courseResp.ID,
+              name: courseResp.Name,
+              categories: courseResp.Categories,
+              tags: courseResp.Tags,
+              level: courseResp.Level,
+              length: courseResp.Length,
+              description: courseResp.Description,
+            });
+          }
         }
+      } catch (error) {
+        console.log(error);
+        // this.setState({ loading: false });
       }
-    } catch (error) {
-      console.log(error);
-      // this.setState({ loading: false });
     }
 
     // Public course
@@ -105,9 +111,17 @@ export class Home extends React.Component {
     }
   }
 
+  searchCourses = () => {
+    let foundCourses = [];
+    for(let i=0; i < this.state.courses.length; i++){
+      if ( this.state.courses[i].name.toLowerCase().includes(this.state.searchKey)){
+        foundCourses.push(this.state.courses[i])
+      }
+    }
+    this.setState({ foundCourses: foundCourses })
+  }
   componentDidMount() {
-    this.getCourse();
-    this.checkLoggedIn();
+    this.checkLoggedIn(() => this.getCourse());
   }
 
   redirectToCourse(courseId) {
@@ -160,6 +174,77 @@ export class Home extends React.Component {
     );
   };
 
+  renderCourses = (course) => {
+    return (
+      <div className="dashboard-courses-list-item" key={course.id}>
+        <div className="dashboard-courses-list-item-info">
+          <div className="dashboard-courses-list-item-title">{course.name}</div>
+          <div className="dashboard-courses-list-item-property">
+            <Icon
+              variant="subtle"
+              name="ticket"
+              className="dashboard-courses-list-item-property-icon"
+            />{" "}
+            Level: {course.level}
+          </div>
+          <div className="dashboard-courses-list-item-property">
+            <Icon
+              variant="subtle"
+              name="check"
+              className="dashboard-courses-list-item-property-icon"
+            />
+            Category:
+            {course.categories.map((category, index) => (
+              <span key={index}>
+                {index !== 0 ? ", " : " "}
+                <a href="/#">{category}</a>
+              </span>
+            ))}
+          </div>
+          <div className="dashboard-courses-list-item-property">
+            <Icon
+              variant="subtle"
+              name="check"
+              className="dashboard-courses-list-item-property-icon"
+            />
+            Tag:
+            {course.tags &&
+              course.tags.map((tag, index) => (
+                <span key={index}>
+                  {index !== 0 ? ", " : " "}
+                  <a href="/#">{tag}</a>
+                </span>
+              ))}
+          </div>
+          <div className="dashboard-courses-list-item-property">
+            <Icon
+              variant="subtle"
+              name="status-pending"
+              className="dashboard-courses-list-item-property-icon"
+            />
+            {calcTime(course.length)}
+          </div>
+          <div className="dashboard-courses-list-item-desc">
+            {course.description}
+          </div>
+        </div>
+        <div className="dashboard-courses-list-item-thumbnail">
+          <img src={courseDefaultThumbnail} alt="Course Thumbnail" />
+        </div>
+        <div className="dashboard-courses-list-item-separator" />
+        <div className="dashboard-courses-list-item-action">
+          <Button
+            variant="primary"
+            className="btn-orange"
+            onClick={() => this.redirectToCourse(course.id)}
+          >
+            Get Started <Icon name="arrow-left" className="rotate-180" />
+          </Button>
+        </div>
+      </div>
+    );
+  };
+
   render() {
     const { t } = this.props;
     // console.log("props ", this.props);
@@ -173,6 +258,9 @@ export class Home extends React.Component {
           href="/"
           navigation={this.props.navigation}
           title="Cloud Solutions Journey"
+          setSearchKey={(key) => this.setState({ searchKey: key })}
+          searchKey={this.state.searchKey}
+          searchCourse={() => this.searchCourses()}
         />
         <div className="dashboard-main">
           <div className="dashboard-banner">
@@ -191,21 +279,6 @@ export class Home extends React.Component {
             </Grid>
           </div>
           <div className="dashboard-highlight">
-            {/* {window.innerWidth < 768 ? (
-              <div>
-                {this.renderHighLight(hightLight)}
-              </div>
-            ) : (
-              <Grid
-                gridDefinition={[
-                  { colspan: 4 },
-                  { colspan: 4 },
-                  { colspan: 4 },
-                ]}
-              >
-                {this.renderHighLight(hightLight)}
-              </Grid>
-            )} */}
             <Grid
               gridDefinition={[{ colspan: 4 }, { colspan: 4 }, { colspan: 4 }]}
             >
@@ -226,91 +299,12 @@ export class Home extends React.Component {
                   alt="loading..."
                   className="dashboard-loading-gif"
                 />
+              ) : this.state.searchKey ? (
+                this.state.foundCourses.map((course) =>
+                  this.renderCourses(course)
+                )
               ) : (
-                this.state.courses.map((course) => (
-                  <div className="dashboard-courses-list-item" key={course.id}>
-                    <div className="dashboard-courses-list-item-info">
-                      <div className="dashboard-courses-list-item-title">
-                        {course.name}
-                      </div>
-                      <div className="dashboard-courses-list-item-property">
-                        <Icon
-                          variant="subtle"
-                          name="ticket"
-                          className="dashboard-courses-list-item-property-icon"
-                        />{" "}
-                        Level: {course.level}
-                      </div>
-                      <div className="dashboard-courses-list-item-property">
-                        <Icon
-                          variant="subtle"
-                          name="check"
-                          className="dashboard-courses-list-item-property-icon"
-                        />
-                        Category:
-                        {course.categories.map((category, index) => (
-                          <span key={index}>
-                            {index !== 0 ? ", " : " "}
-                            <a href="/#">{category}</a>
-                          </span>
-                        ))}
-                      </div>
-                      <div className="dashboard-courses-list-item-property">
-                        <Icon
-                          variant="subtle"
-                          name="check"
-                          className="dashboard-courses-list-item-property-icon"
-                        />
-                        Tag:
-                        {course.tags &&
-                          course.tags.map((tag, index) => (
-                            <span key={index}>
-                              {index !== 0 ? ", " : " "}
-                              <a href="/#">{tag}</a>
-                            </span>
-                          ))}
-                      </div>
-                      <div className="dashboard-courses-list-item-property">
-                        <Icon
-                          variant="subtle"
-                          name="status-pending"
-                          className="dashboard-courses-list-item-property-icon"
-                        />
-                        {/* {Math.floor(course.length / 3600) > 0
-                          ? Math.floor(course.length / 3600) + " hours "
-                          : ""}
-                        {(course.length % 3600) / 60 > 0
-                          ? Math.floor((course.length % 3600) / 60) +
-                            " minutes "
-                          : ""}
-                        {(course.length % 3600) % 60 > 0
-                          ? ((course.length % 3600) % 60) + " seconds"
-                          : ""} */}
-                          {calcTime(course.length)}
-                      </div>
-                      <div className="dashboard-courses-list-item-desc">
-                        {course.description}
-                      </div>
-                    </div>
-                    <div className="dashboard-courses-list-item-thumbnail">
-                      <img
-                        src={courseDefaultThumbnail}
-                        alt="Course Thumbnail"
-                      />
-                    </div>
-                    <div className="dashboard-courses-list-item-separator" />
-                    <div className="dashboard-courses-list-item-action">
-                      <Button
-                        variant="primary"
-                        className="btn-orange"
-                        onClick={() => this.redirectToCourse(course.id)}
-                      >
-                        Get Started{" "}
-                        <Icon name="arrow-left" className="rotate-180" />
-                      </Button>
-                    </div>
-                  </div>
-                ))
+                this.state.courses.map((course) => this.renderCourses(course))
               )}
             </div>
           </div>

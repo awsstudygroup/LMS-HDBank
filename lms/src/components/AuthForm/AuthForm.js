@@ -11,7 +11,7 @@ import {
   ThemeProvider
 } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import './AuthForm.css';
 
 
@@ -31,7 +31,7 @@ const formFields = {
       order: 3,
     },
     'custom:name_on_certificate': {
-      placeHolder: 'Enter your Name on Certificate',
+      placeholder: 'Enter your Name on Certificate',
       isRequired: true,
       label: "Name on Certificate",
       order: 4
@@ -41,9 +41,10 @@ const formFields = {
 
 // const signUpAttributes= ['family_name', 'name_on_certificate']
 
-export default function AuthForm() {
+export default function AuthForm(props) {
   const { tokens } = useTheme();
-  console.log(tokens);
+  const location = useLocation();
+  console.log(location.state);
   const theme: Theme = {
     name: 'Auth Example Theme',
     tokens: {
@@ -85,7 +86,7 @@ export default function AuthForm() {
   };
   return (
     <ThemeProvider theme={theme}>
-    <Authenticator formFields={formFields} >
+    <Authenticator initialState={location.state} formFields={formFields} >
       <Navigate to="/" replace={true} />
     </Authenticator>
     </ThemeProvider>

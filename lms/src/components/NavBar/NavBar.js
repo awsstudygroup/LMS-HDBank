@@ -15,6 +15,8 @@ export class NavBar extends React.Component {
             redirectHome: false,
             redirectMyLearning: false,
             user: null,
+            action: "",
+            searchKey: "",
         };
     }
 
@@ -37,9 +39,10 @@ export class NavBar extends React.Component {
         });
     }
 
-    startAuthentication() {
+    startAuthentication(action) {
         this.setState({
-            redirectAuth: true
+            redirectAuth: true,
+            action: action
         })
     }
 
@@ -72,11 +75,11 @@ export class NavBar extends React.Component {
     render() {
         const {t} = this.props
         return this.state.redirectAuth ?
-            <Navigate to="/auth" /> :
+            <Navigate to="/auth" state={this.state.action}/> :
             this.state.redirectHome ? 
             <Navigate to="/" /> :
             this.state.redirectMyLearning ? 
-            <Navigate to="/mylearning" /> :
+            <Navigate to="/mylearning"/> :
             <div id="h" style={{ position: 'sticky', top: 0, zIndex: 1002 }}>
                 <TopNavigation
                     identity={{
@@ -92,7 +95,11 @@ export class NavBar extends React.Component {
                             type="search"
                             placeholder={t('nav.search')}
                             ariaLabel="Search"
-                            onChange={() => {}}
+                            value={this.props.searchKey}
+                            onChange={({ detail }) => {
+                                this.props.setSearchKey(detail.value)
+                                this.props.searchCourse();
+                            }}
                         />
                     }
                     utilities = {!this.state.authChecked ? [] : !this.state.authenticated ? [
@@ -115,7 +122,7 @@ export class NavBar extends React.Component {
                             type: "button",
                             text: t('nav.signIn'),
                             onClick: () => {
-                                this.startAuthentication()
+                                this.startAuthentication("signIn")
                             },
                         },
                         {
@@ -123,7 +130,7 @@ export class NavBar extends React.Component {
                             variant: "primary-button",
                             text: t('nav.signUp'),
                             onClick: () => {
-                                this.startAuthentication()
+                                this.startAuthentication("signUp")
                             },
                         }
                     ] : [
@@ -162,6 +169,9 @@ export class NavBar extends React.Component {
                                         this.setState({
                                             redirectMyLearning: true,
                                         })
+                                    }
+                                    else {
+                                        window.location.reload();
                                     }
                                 } else if (e.detail.id === 'signout') {
                                     this.startSignOut();
