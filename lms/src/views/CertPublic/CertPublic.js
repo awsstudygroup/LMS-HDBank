@@ -6,6 +6,7 @@ import Footer from '../../components/Footer/Footer';
 
 import loadingGif from '../../assets/images/loading.gif';
 import { transformDateTime } from "../../utils/tools"
+import './CertPublic.css';
 
 export default class CertPublic extends React.Component {
     constructor(props) {

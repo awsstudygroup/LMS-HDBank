@@ -7,7 +7,10 @@
     padding: 32px;
 }
 
-
+.input-container {
+    display: block !important;
+    margin: 15px 0;
+}
 @media only screen and (max-width: 768px) {
     .content {
         padding: 10px;

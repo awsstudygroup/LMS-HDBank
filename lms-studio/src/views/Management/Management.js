@@ -9,6 +9,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { BreadcrumbGroup } from "@cloudscape-design/components";
 import { withAuthenticator } from "@aws-amplify/ui-react";
 
+import "./Management.css"
+
 const Management = (props) => {
   const [activeHref, setActiveHref] = useState();
   const navigate = useNavigate();

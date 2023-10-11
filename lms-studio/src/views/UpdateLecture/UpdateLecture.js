@@ -141,6 +141,7 @@ function UpdateLecture(props) {
       WorkshopUrl: newLecture.workshopUrl ? newLecture.workshopUrl : state.WorkshopUrl,
       WorkshopDescription: newLecture.workshopDescription,
       LastUpdated: new Date().toISOString(),
+      State: "Enabled",
       Views: state.Views,
     };
     const apiName = "lmsStudio";

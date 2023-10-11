@@ -244,11 +244,11 @@
         },
         "studioLectures": {
           "deploymentBucketName": "amplify-lmsstudio-test-144203-deployment",
-          "s3Key": "amplify-builds/studioLectures-70556636724f4b365733-build.zip"
+          "s3Key": "amplify-builds/studioLectures-36564a63345737497451-build.zip"
         },
         "studioUserCourse": {
           "deploymentBucketName": "amplify-lmsstudio-test-144203-deployment",
-          "s3Key": "amplify-builds/studioUserCourse-334e4934665242786274-build.zip"
+          "s3Key": "amplify-builds/studioUserCourse-627534684d2f4472474c-build.zip"
         },
         "studiousers": {
           "deploymentBucketName": "amplify-lmsstudio-test-144203-deployment",

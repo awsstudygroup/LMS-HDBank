@@ -177,6 +177,8 @@ export default class Cert extends React.Component {
 
         return this.state.redirectToCourse ?
             <Navigate to={'/course/' + course.id} /> :
+            this.state.shareCertOpen ?
+            <Navigate to={`/certPublic/${this.state.cert.ID}`}/> :
             <div>
                 <NavBar navigation={this.props.navigation}/>
                 <div className='cert-wrapper'>

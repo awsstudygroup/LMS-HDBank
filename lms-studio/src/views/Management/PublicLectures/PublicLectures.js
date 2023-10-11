@@ -43,7 +43,7 @@ const PublicLectures = () => {
 
   return (
     <>
-      <Title text="Public Lectures" />
+      {/* <Title text="Public Lectures" /> */}
       <Table
         onSelectionChange={({ detail }) =>
           setSelectedItems(detail.selectedItems)
@@ -81,10 +81,10 @@ const PublicLectures = () => {
             id: "state",
             header: "State",
             cell: (e) =>
-              e.state === "Enabled" ? (
-                <StatusIndicator>{e.state}</StatusIndicator>
+              e.State === "Enabled" ? (
+                <StatusIndicator>{e.State}</StatusIndicator>
               ) : (
-                <StatusIndicator type="error">{e.state}</StatusIndicator>
+                <StatusIndicator type="error">{e.State}</StatusIndicator>
               ),
             sortingField: "state",
           },
@@ -109,7 +109,9 @@ const PublicLectures = () => {
           </Box>
         }
         filter={
-          <TextFilter filteringPlaceholder="Find resources" filteringText="" />
+          <div className="input-container">
+            <TextFilter filteringPlaceholder="Find resources" filteringText="" />
+          </div>
         }
         header={
           <Header

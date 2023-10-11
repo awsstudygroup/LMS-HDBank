@@ -1,0 +1,10 @@
+.cert-view-issued-date {
+  top: 473px;
+}
+
+@media only screen and (max-width: 768px) {
+  .cert-view-issued-date {
+    font-size: 4px;
+    top: 178px;
+  }
+}

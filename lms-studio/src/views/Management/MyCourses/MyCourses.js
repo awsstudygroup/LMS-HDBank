@@ -15,7 +15,7 @@ import { getMyCoursesService } from "../services/course";
 import { apiName, coursePath, userCourse } from "../../../utils/api"
 import { API } from "aws-amplify";
 import { Link, useNavigate } from "react-router-dom";
-
+import { transformDateTime } from "../../../utils/tool";
 
 const successMes = "Delete success";
 const errorMess = "Error! An error occurred. Please try again later";
@@ -155,7 +155,7 @@ const MyCourses = () => {
   return (
     <>
       <Flashbar items={flashItem} />
-      <Title text="My Courses" />
+      {/* <Title text="My Courses" /> */}
       <Table
         onSelectionChange={({ detail }) => {
           if (detail.selectedItems.length > 1) {
@@ -195,17 +195,17 @@ const MyCourses = () => {
           {
             id: "LastUpdated",
             header: "Last Updated",
-            cell: (e) => <span>{(new Date(e['Last Updated']).toDateString())}</span>,
+            cell: (e) => e.LastUpdated ? transformDateTime(e.LastUpdated) : "",
             sortingField: "updatedAt",
           },
           {
             id: "state",
             header: "State",
             cell: (e) =>
-              e.state === "Enabled" ? (
-                <StatusIndicator>{e.state}</StatusIndicator>
+              e.State === "Enabled" ? (
+                <StatusIndicator>{e.State}</StatusIndicator>
               ) : (
-                <StatusIndicator type="error">{e.state}</StatusIndicator>
+                <StatusIndicator type="error">{e.State}</StatusIndicator>
               ),
             sortingField: "state",
           },

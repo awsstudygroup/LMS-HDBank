@@ -3,6 +3,10 @@
     font-family: 'Amazon Ember' !important;
 }
 
+:root{
+    --font-family-base-dnvic8: Amazon Ember, sans-serif !important;
+}
+
 body {
     margin: 0;
     font-family: Amazon Ember, sans-serif;

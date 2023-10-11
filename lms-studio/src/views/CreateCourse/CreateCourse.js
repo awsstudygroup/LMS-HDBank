@@ -1,29 +1,30 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useLayoutEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { Navigate, useNavigate } from "react-router-dom";
 import NavBar from "../../components/NavBar/NavBar";
 import {
-    BreadcrumbGroup,
-    Wizard,
-    FormField,
-    Input,
-    Container,
-    Modal,
-    Header,
-    SpaceBetween,
-    Button,
-    Toggle,
-    Box,
-    ColumnLayout,
-    Cards,
-    TextFilter,
-    Textarea,
-    Alert,
-    Pagination,
-    CollectionPreferences,
-    Flashbar,
-    Icon,
-    ExpandableSection
+  BreadcrumbGroup,
+  Wizard,
+  FormField,
+  Input,
+  Container,
+  Modal,
+  Header,
+  SpaceBetween,
+  Button,
+  Toggle,
+  Box,
+  ColumnLayout,
+  Cards,
+  TextFilter,
+  Textarea,
+  Alert,
+  Pagination,
+  CollectionPreferences,
+  Flashbar,
+  Icon,
+  ExpandableSection,
+  Select,
 } from "@cloudscape-design/components";
 import { useCollection } from '@cloudscape-design/collection-hooks';
 import { apiName, lecturePublicPath, myLecturePath } from "../../utils/api";
@@ -34,20 +35,26 @@ import "./Course.css";
 
 const successMes = "Created success";
 const errorMess = "Error! An error occurred. Please try again later";
+const SEARCHABLE_COLUMNS = ['Name', 'Type', 'Desc', 'Owner', 'Publicity', 'Type', 'WorkshopDescription', 'Content'];
+const defaultAllLecture = { value: '0', label: 'Any Lecture' };
 
 function EmptyState({ title, subtitle, action }) {
-    return (
-      <Box textAlign="center" color="inherit">
-        <Box variant="strong" textAlign="center" color="inherit">
-          {title}
-        </Box>
-        <Box variant="p" padding={{ bottom: 's' }} color="inherit">
-          {subtitle}
-        </Box>
-        {action}
+  return (
+    <Box textAlign="center" color="inherit">
+      <Box variant="strong" textAlign="center" color="inherit">
+        {title}
       </Box>
-    );
-  }
+      <Box variant="p" padding={{ bottom: 's' }} color="inherit">
+        {subtitle}
+      </Box>
+      {action}
+    </Box>
+  );
+}
+
+function matchesOwner(item, selectedOwner) {
+  return selectedOwner === defaultAllLecture || item.Owner === selectedOwner.label;
+}
 
 function CreateCourse(props) {
   const navigate  = useNavigate();
@@ -86,6 +93,8 @@ function CreateCourse(props) {
   })
   const draggedItem = useRef(null)
   let draggedIdx;
+  const selectLecturesOptions = prepareSelectOptions('Owner', defaultAllLecture);
+  const [owner, setOwner] = useState(defaultAllLecture);
 
   const [preferences, setPreferences] = useState({ pageSize: 6, visibleContent: ["description", "type", "size"] });
   const { items, actions, filteredItemsCount, collectionProps, filterProps, paginationProps } = useCollection(
@@ -99,6 +108,16 @@ function CreateCourse(props) {
             action={<Button onClick={() => actions.setFiltering('')}>Clear filter</Button>}
           />
         ),
+        filteringFunction: (item, filteringText) =>{
+          if (!matchesOwner(item, owner)) {
+            return false;
+          }
+          const filteringTextLowerCase = filteringText.toLowerCase();
+
+          return SEARCHABLE_COLUMNS.map(key => item[key]).some(
+            value => typeof value === 'string' && value.toLowerCase().indexOf(filteringTextLowerCase) > -1
+          );
+        },
       },
       pagination: { pageSize: preferences.pageSize },
       sorting: {},
@@ -106,17 +125,47 @@ function CreateCourse(props) {
     }
   );
 
+  function prepareSelectOptions(field, defaultOption) {
+    const optionSet = [];
+    // Building a non redundant list of the field passed as parameter.
+  
+    state.existingLectures.forEach(item => {
+      if (optionSet.indexOf(item[field]) === -1) {
+        optionSet.push(item[field]);
+      }
+    });
+    optionSet.sort();
+  
+    // The first element is the default one.
+    const options = [defaultOption];
+  
+    // Adding the other element ot the list.
+    optionSet.forEach((item, index) => options.push({ label: item, value: (index + 1).toString() }));
+    return options;
+  }
+
+  useLayoutEffect(() => {
+    collectionProps.ref.current?.scrollToTop();
+  }, [owner, collectionProps.ref, filterProps.filteringText]);
+
+  function clearFilter() {
+    actions.setFiltering('');
+    setOwner(defaultAllLecture);
+  }
+
   const loadLectures = async () => {
     let lectureList = [];
     try {
       const myLectures = await API.get(apiName, myLecturePath);
+      myLectures.forEach((item) => item["Owner"] = "My Lecture")
       lectureList = [...lectureList, ...myLectures]
     }catch(error){
       console.log(error.response);
     }finally {
       const publicLectures = await API.get(apiName, lecturePublicPath);
+      publicLectures.forEach((item) => item["Owner"] = "Public")
       lectureList = [...lectureList, ...publicLectures];
-      // console.log(lectureList)
+      console.log(lectureList)
       setState({ ...state, existingLectures: lectureList });
     }
   }
@@ -189,6 +238,7 @@ function CreateCourse(props) {
       </>
   };
 
+  const getTextFilterCounterText = (count) => `${count} ${count === 1 ? 'match' : 'matches'}`
 
   const onDragLectureStart = (e, index) => {
     draggedItem.current = state.editChapter.lectures[index];
@@ -330,7 +380,9 @@ function CreateCourse(props) {
         Publicity: state.publicity ? 1 : 0,
         WhatToLearn: state.whatToLearn,
         Chapters: state.chapters,
+        State: "Enabled",
         Views: 0,
+        LastUpdated: new Date().toISOString(),
     }
 
     const apiName = "lmsStudio";
@@ -497,7 +549,7 @@ function CreateCourse(props) {
   };
 
     return state.redirectToHome ? (
-      <Navigate to={"/"} />
+      <Navigate to={"/management/myCourses"} />
     ) : (
       <>
         <NavBar navigation={props.navigation} title="Cloud Academy" />
@@ -850,10 +902,46 @@ function CreateCourse(props) {
                                     </Box>
                                   }
                                   filter={
-                                    <TextFilter
-                                      {...filterProps}
-                                      filteringPlaceholder="Find lectures"
-                                    />
+                                    <div className="input-container">
+                                      {/* <TextFilter
+                                        {...filterProps}
+                                        filteringPlaceholder="Find lectures"
+                                      /> */}
+                                      <div className="input-filter">
+                                        <Input
+                                          data-testid="input-filter"
+                                          type="search"
+                                          value={filterProps.filteringText}
+                                          onChange={event => {
+                                            actions.setFiltering(event.detail.value);
+                                          }}
+                                          ariaLabel="Find lectures"
+                                          placeholder="Find lectures"
+                                          clearAriaLabel="clear"
+                                          ariaDescribedby={null}
+                                        />
+                                      </div>
+                                      <div className="select-filter">
+                                        <FormField>
+                                          <Select
+                                            data-testid="engine-filter"
+                                            options={selectLecturesOptions}
+                                            selectedAriaLabel="Selected"
+                                            selectedOption={owner}
+                                            onChange={event => {
+                                              setOwner(event.detail.selectedOption);
+                                            }}
+                                            ariaDescribedby={null}
+                                            expandToViewport={true}
+                                          />
+                                        </FormField>
+                                      </div>
+                                      <div className="match-number" aria-live="polite">
+                                        {(filterProps.filteringText || owner !== defaultAllLecture ) && (
+                                          <span className="filtering-results">{getTextFilterCounterText(filteredItemsCount)}</span>
+                                        )}
+                                      </div>
+                                    </div>
                                   }
                                   header={
                                     <Header

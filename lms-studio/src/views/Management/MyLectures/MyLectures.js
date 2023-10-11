@@ -204,7 +204,7 @@ const MyLectures = () => {
   return (
     <>
       <Flashbar items={flashItem} />
-      <Title text="My Lectures" />
+      {/* <Title text="My Lectures" /> */}
       <Table
         {...collectionProps}
         onSelectionChange={({ detail }) => {
@@ -250,10 +250,10 @@ const MyLectures = () => {
             id: "state",
             header: "State",
             cell: (lecture) =>
-              lecture.state === "Enabled" ? (
-                <StatusIndicator>{lecture.state}</StatusIndicator>
+              lecture.State === "Enabled" ? (
+                <StatusIndicator>{lecture.State}</StatusIndicator>
               ) : (
-                <StatusIndicator type="error">{lecture.state}</StatusIndicator>
+                <StatusIndicator type="error">{lecture.State}</StatusIndicator>
               ),
             sortingField: "state",
           },
@@ -292,9 +292,12 @@ const MyLectures = () => {
           </Box>
         }
         filter={
-          <TextFilter {...filterProps} filteringPlaceholder="Find resources" />
+          <div className="input-container">
+            <TextFilter {...filterProps} filteringPlaceholder="Find resources" />
+          </div>
         }
         header={
+          <div className="header">
           <Header
             counter={
               selectedItems.length
@@ -329,6 +332,7 @@ const MyLectures = () => {
           >
             My Lectures
           </Header>
+          </div>
         }
         pagination={<Pagination {...paginationProps} />}
         preferences={

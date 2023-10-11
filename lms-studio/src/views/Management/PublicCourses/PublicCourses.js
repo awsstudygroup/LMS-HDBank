@@ -14,6 +14,7 @@ import {
 } from "@cloudscape-design/components"
 import Title from "../../../components/Title";
 import { getPublicCoursesService } from "../services/course";
+import { transformDateTime } from "../../../utils/tool";
 import { apiName, coursePath } from "../../../utils/api";
 import { API } from "aws-amplify";
 import { Link, useNavigate } from "react-router-dom";
@@ -155,7 +156,7 @@ const PublicCourses = () => {
   return (
     <>
       <Flashbar items={flashItem} />
-      <Title text="Public Courses" />
+      {/* <Title text="Public Courses" /> */}
       <Table
         onSelectionChange={({ detail }) =>{
           if (detail.selectedItems.length > 1) {
@@ -196,17 +197,17 @@ const PublicCourses = () => {
           {
             id: "updatedAt",
             header: "Last Updated",
-            cell: (e) => <span>{(new Date(e['Last Updated']).toDateString())}</span>,
+            cell: (e) => e.LastUpdated ? transformDateTime(e.LastUpdated) : "",
             sortingField: "updatedAt",
           },
           {
             id: "state",
             header: "State",
             cell: (e) =>
-              e.state === "Enabled" ? (
-                <StatusIndicator>{e.state}</StatusIndicator>
+              e.State === "Enabled" ? (
+                <StatusIndicator>{e.State}</StatusIndicator>
               ) : (
-                <StatusIndicator type="error">{e.state}</StatusIndicator>
+                <StatusIndicator type="error">{e.State}</StatusIndicator>
               ),
             sortingField: "state",
           },
@@ -250,7 +251,9 @@ const PublicCourses = () => {
           </Box>
         }
         filter={
-          <TextFilter filteringPlaceholder="Find resources" filteringText="" />
+          <div className="input-container">
+            <TextFilter filteringPlaceholder="Find resources" filteringText="" />
+          </div>
         }
         header={
           <Header

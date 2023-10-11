@@ -120,14 +120,20 @@ app.get(path + "/public", function(req, res) {
   //     res.json({error: 'Wrong column type ' + err});
   //   }
   // }
-
   let queryParams = {
     TableName: tableName,
-    // KeyConditions: condition,
     IndexName: publicityIndex,
-    KeyConditionExpression: "Publicity = :value",
-    ExpressionAttributeValues: {
-      ":value": 1
+    KeyConditions: {
+      "Publicity": {
+        ComparisonOperator: 'EQ',
+        AttributeValueList: [1]
+      },
+    },
+    QueryFilter: {
+      "CreatorID": {
+        ComparisonOperator: "NE",
+        AttributeValueList: [req.apiGateway.event.requestContext.identity.cognitoAuthenticationProvider.split(':CognitoSignIn:')[1]]
+      }
     }
   }
 

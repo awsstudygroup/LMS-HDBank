@@ -1,7 +1,54 @@
 .course-main {
-    min-height: calc(100vh - 120px);
-    background-color: white;
-    box-shadow: 0px 1px 2px rgba(0, 28, 36, 0.6);
-    margin: 40px;
-    padding: 20px;
+  min-height: calc(100vh - 120px);
+  background-color: white;
+  box-shadow: 0px 1px 2px rgba(0, 28, 36, 0.6);
+  margin: 40px;
+  padding: 20px;
+}
+
+.input-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  order: 0;
+  flex-grow: 10;
+  margin-right: 0;
+  /* margin-bottom: calc(-1 * #{cs.$space-scaled-m}); */
+}
+.input-container > *:not(:empty) {
+  margin-right: 20px;
+}
+
+.input-filter {
+  order: 0;
+  flex-grow: 6;
+  width: auto;
+  max-width: 728px;
+}
+
+.select-filter {
+  max-width: 130px;
+  flex-grow: 2;
+  width: auto;
+}
+
+.filtering-results {
+  margin-left: 1rem;
+  line-height: 2rem;
+  /* color: cs.$color-text-form-default; */
+}
+
+@media (max-width: 1152px) {
+  .input-container {
+    margin-right: 10px;
+  }
+
+  .select-filter {
+    max-width: none;
+  }
+
+  .input-filter {
+    width: 100%;
+    max-width: none;
+  }
 }

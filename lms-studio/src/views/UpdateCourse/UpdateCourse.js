@@ -345,7 +345,9 @@ function UpdateCourse(props) {
         Publicity: newCourse.publicity ? 1 : 0,
         WhatToLearn: newCourse.whatToLearn,
         Chapters: newCourse.chapters,
+        State: "Enabled",
         Views: state.Views,
+        LastUpdated: new Date().toISOString(),
     }
     console.log(jsonData)
     const apiName = "lmsStudio";
