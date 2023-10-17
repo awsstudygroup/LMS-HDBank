@@ -321,11 +321,19 @@
     }
   },
   "storage": {
+    "AccessCode": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
+    },
     "Categories": {
       "providerPlugin": "awscloudformation",
       "service": "DynamoDB"
     },
     "Cert": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
+    },
+    "CourseCode": {
       "providerPlugin": "awscloudformation",
       "service": "DynamoDB"
     },

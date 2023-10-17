@@ -181,7 +181,9 @@
         "UserCourse": {},
         "UserLecture": {},
         "courses": {},
-        "lectureresource": {}
+        "lectureresource": {},
+        "CourseCode": {},
+        "AccessCode": {}
       }
     }
   },

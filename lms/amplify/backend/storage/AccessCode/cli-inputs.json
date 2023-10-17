@@ -1,0 +1,10 @@
+{
+  "resourceName": "AccessCode",
+  "tableName": "AccessCode",
+  "partitionKey": {
+    "fieldName": "Info",
+    "fieldType": "string"
+  },
+  "gsi": [],
+  "triggerFunctions": []
+}

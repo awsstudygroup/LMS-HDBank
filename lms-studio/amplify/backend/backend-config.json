@@ -33,6 +33,22 @@
           ],
           "category": "function",
           "resourceName": "studioLectures"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "accessCode"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "courseCode"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -68,6 +84,25 @@
     }
   },
   "function": {
+    "accessCode": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "BucketName"
+          ],
+          "category": "storage",
+          "resourceName": "lmsstudiodcbd5e2f"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "courseCode": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "studioCourses": {
       "build": true,
       "dependsOn": [],
@@ -103,6 +138,38 @@
     }
   },
   "parameters": {
+    "AMPLIFY_function_accessCode_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "accessCode"
+        }
+      ]
+    },
+    "AMPLIFY_function_accessCode_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "accessCode"
+        }
+      ]
+    },
+    "AMPLIFY_function_courseCode_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "courseCode"
+        }
+      ]
+    },
+    "AMPLIFY_function_courseCode_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "courseCode"
+        }
+      ]
+    },
     "AMPLIFY_function_studioCourses_deploymentBucketName": {
       "usedBy": [
         {

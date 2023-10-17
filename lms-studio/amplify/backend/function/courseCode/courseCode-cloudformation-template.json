@@ -47,12 +47,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "userOverview",
+            "courseCode",
             {
               "Fn::Join": [
                 "",
                 [
-                  "userOverview",
+                  "courseCode",
                   "-",
                   {
                     "Ref": "env"
@@ -89,12 +89,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "lmsstudioLambdaRole4e464f4d",
+            "lmsstudioLambdaRole68c7c0a4",
             {
               "Fn::Join": [
                 "",
                 [
-                  "lmsstudioLambdaRole4e464f4d",
+                  "lmsstudioLambdaRole68c7c0a4",
                   "-",
                   {
                     "Ref": "env"
@@ -174,7 +174,13 @@
           "Statement": [
             {
               "Action": [
-                "cognito-idp:ListUsers"
+                "dynamodb:DescribeTable",
+                "dynamodb:GetItem",
+                "dynamodb:Query",
+                "dynamodb:Scan",
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem"
               ],
               "Resource": [
                 "*"

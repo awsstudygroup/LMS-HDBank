@@ -1,0 +1,14 @@
+{
+  "resourceName": "CourseCode",
+  "tableName": "CourseCode",
+  "partitionKey": {
+    "fieldName": "CourseID",
+    "fieldType": "string"
+  },
+  "sortKey": {
+    "fieldName": "AccessCode",
+    "fieldType": "string"
+  },
+  "gsi": [],
+  "triggerFunctions": []
+}

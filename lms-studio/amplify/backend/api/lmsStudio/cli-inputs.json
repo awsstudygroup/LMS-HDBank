@@ -40,6 +40,20 @@
           "delete"
         ]
       }
+    },
+    "/accesscode": {
+      "name": "/accesscode",
+      "lambdaFunction": "accessCode",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/courseCode": {
+      "name": "/courseCode",
+      "lambdaFunction": "courseCode",
+      "permissions": {
+        "setting": "open"
+      }
     }
   }
 }
