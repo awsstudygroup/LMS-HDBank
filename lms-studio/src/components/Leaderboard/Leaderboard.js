@@ -111,6 +111,7 @@ const Leaderboard = (props) => {
                   text: 'Leaderboard',
                   href: 'leaderboard',
                 },
+                { type: "link", text: "Sale", href: "sale" },
               ]}
             />
           }

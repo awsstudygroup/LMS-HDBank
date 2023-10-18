@@ -62,7 +62,7 @@ export class Home extends React.Component {
     this.setState({ loading: true });
 
     // Assigned course
-    if ( this.state.authChecked ){
+    if ( this.state.authenticated ){
       try {
         const userCourseResp = await API.get(apiName, userCoursePath);
         console.log(userCourseResp);

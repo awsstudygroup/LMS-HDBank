@@ -1436,7 +1436,7 @@ export default class Learn extends React.Component {
 
   render() {
     return this.state.loggedIn === false ? (
-      <Navigate to="/auth" />
+      <Navigate to="/auth" state={{path: "/learn/" + `${window.location.hash.split("/")[2]}`}}/>
     ) : (
       <div>
         <NavBar

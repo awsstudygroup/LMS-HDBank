@@ -86,8 +86,8 @@ export default function AuthForm(props) {
   };
   return (
     <ThemeProvider theme={theme}>
-    <Authenticator initialState={location.state} formFields={formFields} >
-      <Navigate to="/" replace={true} />
+    <Authenticator initialState={location.state.action ? location.state.action : "signIn"} formFields={formFields} >
+      <Navigate to={location.state.path ? location.state.path : "/"} replace={true} />
     </Authenticator>
     </ThemeProvider>
   );

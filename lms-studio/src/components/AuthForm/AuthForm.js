@@ -1,8 +1,10 @@
+import { useState } from "react";
 import {
   Authenticator,
   Theme,
   ThemeProvider,
   useTheme,
+  SelectField,
 } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
 import { Navigate } from "react-router-dom";
@@ -10,7 +12,8 @@ import "./AuthForm.css";
 
 export default function AuthForm() {
   const { tokens } = useTheme();
-  console.log(tokens);
+  // console.log(tokens);
+
   const theme: Theme = {
     name: "Auth Example Theme",
     tokens: {
@@ -52,7 +55,27 @@ export default function AuthForm() {
   };
   return (
     <ThemeProvider theme={theme}>
-      <Authenticator>
+      <Authenticator
+        // Customize `Authenticator.SignUp.FormFields`
+        components={{
+          SignUp: {
+            FormFields() {
+              return (
+                <>
+                  {/* Re-use default `Authenticator.SignUp.FormFields` */}
+                  <Authenticator.SignUp.FormFields />
+
+                  {/* Append & require Terms & Conditions field to sign up  */}
+                  <SelectField label="Role" name="custom:role">
+                    <option value="teacher">Teacher</option>
+                    <option value="saler">Saler</option>
+                  </SelectField>
+                </>
+              );
+            },
+          },
+        }}
+      >
         <Navigate to="/" replace={true} />
       </Authenticator>
     </ThemeProvider>

@@ -75,7 +75,7 @@ export class NavBar extends React.Component {
     render() {
         const {t} = this.props
         return this.state.redirectAuth ?
-            <Navigate to="/auth" state={this.state.action}/> :
+            <Navigate to="/auth" state={{action: this.state.action}}/> :
             this.state.redirectHome ? 
             <Navigate to="/" /> :
             this.state.redirectMyLearning ? 

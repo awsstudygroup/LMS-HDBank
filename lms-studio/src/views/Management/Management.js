@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, Navigate } from "react-router-dom";
 import NavBar from "../../components/NavBar/NavBar";
 import Footer from "../../components/Footer/Footer";
 import {} from "@aws-amplify/ui-react";
@@ -8,20 +8,33 @@ import Applayout from "@cloudscape-design/components/app-layout";
 import { useNavigate, useLocation } from "react-router-dom";
 import { BreadcrumbGroup } from "@cloudscape-design/components";
 import { withAuthenticator } from "@aws-amplify/ui-react";
+import { Auth } from "aws-amplify";
 
 import "./Management.css"
 
 const Management = (props) => {
   const [activeHref, setActiveHref] = useState();
+  const [loggedIn, setLoggedIn] = useState(false);
   const navigate = useNavigate();
 
   const location = useLocation();
 
   useEffect(() => {
     setActiveHref(location.pathname.split("/").pop());
+    ionViewCanEnter();
   }, []);
 
+  const ionViewCanEnter = async () => {
+    try {
+      await Auth.currentAuthenticatedUser();
+      setLoggedIn(true)
+    } catch {
+      setLoggedIn(false)
+    }
+  }
   return (
+    loggedIn === false ? (
+      <Navigate to="/auth" />) :
     <div>
       <NavBar navigation={props.navigation} title="Cloud Academy" />
       <div className="dashboard-main">
@@ -106,4 +119,5 @@ const Management = (props) => {
   );
 };
 
-export default withAuthenticator(Management);
+// export default withAuthenticator(Management);
+export default (Management);
