@@ -14,14 +14,16 @@ import hightlightIcon2 from "../../assets/images/dashboard-highlight-2.png";
 import hightlightIcon3 from "../../assets/images/dashboard-highlight-3.png";
 import courseDefaultThumbnail from "../../assets/images/course-default-thumbnail.png";
 import loadingGif from "../../assets/images/loading.gif";
-import { Auth } from "aws-amplify";
+import { Auth, Storage } from "aws-amplify";
 import { withTranslation } from "react-i18next";
 import {
   apiName,
   coursePath,
   publicCoursePath,
   userCoursePath,
+  configUI,
 } from "../../utils/api";
+import { uiConfigId } from "../../utils/uiConfig";
 import { calcTime } from "../../utils/tools";
 
 export class Home extends React.Component {
@@ -36,6 +38,10 @@ export class Home extends React.Component {
       authenticated: false,
       searchKey: "",
       foundCourses: [],
+      uiSet: null,
+      banner: null,
+      bannerIcon: null,
+      HLImages: [],
     };
   }
 
@@ -43,17 +49,21 @@ export class Home extends React.Component {
     try {
       const user = await Auth.currentAuthenticatedUser({ bypassCache: false });
       // console.log(user)
-      this.setState({
-        authChecked: true,
-        authenticated: true,
-      },
-      callback
+      this.setState(
+        {
+          authChecked: true,
+          authenticated: true,
+        },
+        callback
       );
     } catch {
-      this.setState({
-        authChecked: true,
-        authenticated: false,
-      }, callback);
+      this.setState(
+        {
+          authChecked: true,
+          authenticated: false,
+        },
+        callback
+      );
     }
   }
 
@@ -62,7 +72,7 @@ export class Home extends React.Component {
     this.setState({ loading: true });
 
     // Assigned course
-    if ( this.state.authenticated ){
+    if (this.state.authenticated) {
       try {
         const userCourseResp = await API.get(apiName, userCoursePath);
         console.log(userCourseResp);
@@ -113,28 +123,79 @@ export class Home extends React.Component {
 
   searchCourses = () => {
     let foundCourses = [];
-    for(let i=0; i < this.state.courses.length; i++){
-      if ( this.state.courses[i].name.toLowerCase().includes(this.state.searchKey)){
-        foundCourses.push(this.state.courses[i])
+    for (let i = 0; i < this.state.courses.length; i++) {
+      if (
+        this.state.courses[i].name.toLowerCase().includes(this.state.searchKey)
+      ) {
+        foundCourses.push(this.state.courses[i]);
       }
     }
-    this.setState({ foundCourses: foundCourses })
-  }
+    this.setState({ foundCourses: foundCourses });
+  };
+
+  loadUISet = () => {
+    API.get(apiName, configUI + uiConfigId)
+      .then((data) => {
+        console.log(data)
+        if ( data ) {
+          this.setState({ uiSet: data });
+          this.loadImage(data)
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   componentDidMount() {
     this.checkLoggedIn(() => this.getCourse());
+    let localParams = localStorage.getItem("AWSLIBVN_UISET");
+    // console.log(localParams)
+    let data = JSON.parse(localParams)
+    if (data) {
+      this.setState({ uiSet: data });
+      this.loadImage(JSON.parse(localParams))
+    } else {
+      this.loadUISet();
+    }
   }
 
   redirectToCourse(courseId) {
     this.setState({ courseToRedirect: courseId });
   }
 
+  async loadImage(data) {
+    console.log(data)
+    Storage.get(data.Banner, { level: "public" }).then((res) => {
+      this.setState({ banner: res });
+      // console.log(res);
+    });
+    Storage.get(data.BannerIcon, { level: "public" }).then((res) => {
+      this.setState({ bannerIcon: res });
+      // console.log(res);
+    });
+
+    var currentHLImage = [];
+    for(let i=0; i < data.HLImages.length; i++){
+      Storage.get(data.HLImages[i], { level: "public" }).then((res) => {
+        currentHLImage.push(res)
+        if ( i === data.HLImages.length - 1 ){
+          this.setState({ HLImages: currentHLImage })
+        }
+        // console.log(res);
+      });
+    }
+    // while()
+  }
+
   renderHighLight = (hightLight) => {
+    // console.log(this.state.HLImages)
     return (
       <>
         <div className="hightLight-items">
           <img
             className="dashboard-highlight-icon"
-            src={hightlightIcon1}
+            src={this.state.HLImages[0] ? this.state.HLImages[0] : hightlightIcon1}
             alt="Highlight Icon 1"
           />
           <div className="dashboard-highlight-text-container">
@@ -147,7 +208,7 @@ export class Home extends React.Component {
         <div className="hightLight-items">
           <img
             className="dashboard-highlight-icon"
-            src={hightlightIcon2}
+            src={this.state.HLImages[1] ? this.state.HLImages[1] : hightlightIcon2}
             alt="Highlight Icon 2"
           />
           <div className="dashboard-highlight-text-container">
@@ -160,7 +221,7 @@ export class Home extends React.Component {
         <div className="hightLight-items">
           <img
             className="dashboard-highlight-icon"
-            src={hightlightIcon3}
+            src={this.state.HLImages[2] ? this.state.HLImages[2] : hightlightIcon3}
             alt="Highlight Icon 3"
           />
           <div className="dashboard-highlight-text-container">
@@ -249,12 +310,13 @@ export class Home extends React.Component {
     const { t } = this.props;
     // console.log("props ", this.props);
     const hightLight = t("home.highlight", { returnObjects: true });
-    // console.log(hightLight);
+    // const hightLight = this.state.uiSet ? this.state.uiSet.Highlight : t("home.highlight", { returnObjects: true });
+    // console.log(this.state.uiSet.Highlight[0]['desc']);
     return !!this.state.courseToRedirect ? (
       <Navigate to={"/course/" + this.state.courseToRedirect} />
-    ) : (
+    ) : !this.state.uiSet ? (
       <>
-        <NavBar
+      <NavBar
           href="/"
           navigation={this.props.navigation}
           title="Cloud Solutions Journey"
@@ -283,6 +345,75 @@ export class Home extends React.Component {
               gridDefinition={[{ colspan: 4 }, { colspan: 4 }, { colspan: 4 }]}
             >
               {this.renderHighLight(hightLight)}
+            </Grid>
+          </div>
+          <div className="dashboard-courses">
+            <p className="dashboard-courses-header">
+              {this.state.authChecked
+                ? t("home.list_title")
+                : t("home.list_title_unauthen")}
+            </p>
+            <div className="dashboard-courses-header-decor" />
+            <div className="dashboard-courses-list">
+              {this.state.loading ? (
+                <img
+                  src={loadingGif}
+                  alt="loading..."
+                  className="dashboard-loading-gif"
+                />
+              ) : this.state.searchKey ? (
+                this.state.foundCourses.map((course) =>
+                  this.renderCourses(course)
+                )
+              ) : (
+                this.state.courses.map((course) => this.renderCourses(course))
+              )}
+            </div>
+          </div>
+        </div>
+        <Footer />
+      </>
+    ) : (
+      <>
+        <NavBar
+          href="/"
+          navigation={this.props.navigation}
+          title="Cloud Solutions Journey"
+          setSearchKey={(key) => this.setState({ searchKey: key })}
+          searchKey={this.state.searchKey}
+          searchCourse={() => this.searchCourses()}
+        />
+        <div className="dashboard-main">
+          <div className="dashboard-banner" style={{backgroundImage: `url(${this.state.banner})`}}>
+            <Grid gridDefinition={[{ colspan: 10 }, { colspan: 2 }]}>
+              <div>
+                <p className="dashboard-banner-title">
+                  {
+                    //t("home.title")
+                    this.state.uiSet.WebTitle
+                  }
+                </p>
+                <p className="dashboard-banner-desc">
+                  {
+                    // t("home.des")
+                    this.state.uiSet.WebDesc
+                  }
+                </p>
+              </div>
+              <div className="dashboard-banner-icon-container">
+                <img
+                  className="dashboard-banner-icon"
+                  src={this.state.bannerIcon}
+                  alt="Banner Icon"
+                />
+              </div>
+            </Grid>
+          </div>
+          <div className="dashboard-highlight">
+            <Grid
+              gridDefinition={[{ colspan: 4 }, { colspan: 4 }, { colspan: 4 }]}
+            >
+              {this.renderHighLight(this.state.uiSet.Highlight)}
             </Grid>
           </div>
           <div className="dashboard-courses">

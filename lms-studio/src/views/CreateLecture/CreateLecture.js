@@ -414,7 +414,7 @@ class CreateLecture extends React.Component {
   renderReviewSection = () => {
     if (this.state.lectureType === "Video") {
       return (
-        <ColumnLayout columns={2} variant="text-grid">
+        <ColumnLayout columns={2} vareiant="text-grid">
           <div>
             <Box variant="awsui-key-label">File name</Box>
             <div>

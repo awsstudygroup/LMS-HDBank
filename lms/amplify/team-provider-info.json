@@ -163,7 +163,11 @@
         "Categories": {},
         "Cert": {},
         "Lectures": {},
-        "UserLecture": {}
+        "UserLecture": {},
+        "uiConfig": {
+          "deploymentBucketName": "amplify-lms-test-142735-deployment",
+          "s3Key": "amplify-builds/uiConfig-3459476656484b583276-build.zip"
+        }
       },
       "hosting": {
         "amplifyhosting": {
@@ -183,7 +187,8 @@
         "courses": {},
         "lectureresource": {},
         "CourseCode": {},
-        "AccessCode": {}
+        "AccessCode": {},
+        "UIConfig": {}
       }
     }
   },

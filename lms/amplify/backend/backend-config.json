@@ -49,6 +49,14 @@
           ],
           "category": "function",
           "resourceName": "certs"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "uiConfig"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -179,6 +187,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "uiConfig": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "usersLectures": {
       "build": true,
       "dependsOn": [
@@ -287,6 +300,22 @@
         }
       ]
     },
+    "AMPLIFY_function_uiConfig_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "uiConfig"
+        }
+      ]
+    },
+    "AMPLIFY_function_uiConfig_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "uiConfig"
+        }
+      ]
+    },
     "AMPLIFY_function_usersLectures_deploymentBucketName": {
       "usedBy": [
         {
@@ -338,6 +367,10 @@
       "service": "DynamoDB"
     },
     "Lectures": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
+    },
+    "UIConfig": {
       "providerPlugin": "awscloudformation",
       "service": "DynamoDB"
     },

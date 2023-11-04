@@ -18,14 +18,14 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "function": {
-    "accessCode": {
+    "studioAccessCode": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",
       "Name": "string",
       "Region": "string"
     },
-    "courseCode": {
+    "studioCourseCode": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",
@@ -40,6 +40,13 @@ export type AmplifyDependentResourcesAttributes = {
       "Region": "string"
     },
     "studioLectures": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
+    "studioUIConfig": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",

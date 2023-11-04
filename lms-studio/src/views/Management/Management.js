@@ -10,11 +10,12 @@ import { BreadcrumbGroup } from "@cloudscape-design/components";
 import { withAuthenticator } from "@aws-amplify/ui-react";
 import { Auth } from "aws-amplify";
 
-import "./Management.css"
+import "./Management.css";
 
-const Management = (props) => {
+function Management(props) {
   const [activeHref, setActiveHref] = useState();
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
+  const [authenticated, setAuthenticated] = useState(false);
   const navigate = useNavigate();
 
   const location = useLocation();
@@ -27,97 +28,108 @@ const Management = (props) => {
   const ionViewCanEnter = async () => {
     try {
       await Auth.currentAuthenticatedUser();
-      setLoggedIn(true)
+      setAuthChecked(true);
+      setAuthenticated(true);
     } catch {
-      setLoggedIn(false)
+      setAuthChecked(true);
+      setAuthenticated(false);
     }
-  }
+  };
+  
   return (
-    loggedIn === false ? (
-      <Navigate to="/auth" />) :
-    <div>
-      <NavBar navigation={props.navigation} title="Cloud Academy" />
-      <div className="dashboard-main">
-        <Applayout
-          breadcrumbs={
-            <BreadcrumbGroup
-              items={[
-                { text: "Home", href: "/management" },
-                // { text: "My Courses", href: "/management/myCourses"}
-              ]}
-              ariaLabel="Breadcrumbs"
+    <>
+      {authChecked === false ? [] : !authenticated ? (
+        <Navigate to="/auth" />
+        // console.log(loggedIn)
+      ) : (
+        <div>
+          <NavBar navigation={props.navigation} title="Cloud Academy" />
+          <div className="dashboard-main">
+            <Applayout
+              className="management"
+              breadcrumbs={
+                <BreadcrumbGroup
+                  items={[
+                    { text: "Home", href: "/management" },
+                    // { text: "My Courses", href: "/management/myCourses"}
+                  ]}
+                  ariaLabel="Breadcrumbs"
+                />
+              }
+              navigation={
+                <SideNavigation
+                  activeHref={activeHref}
+                  header={{ href: "/", text: "Management" }}
+                  // className="side-nav-custom"
+                  onFollow={(event) => {
+                    if (!event.detail.external) {
+                      event.preventDefault();
+                      const href =
+                        event.detail.href === "/"
+                          ? "myLectures"
+                          : event.detail.href;
+                      setActiveHref(href);
+                      navigate(`/management/${href}`);
+                    }
+                  }}
+                  items={[
+                    {
+                      type: "section",
+                      text: "Lectures",
+                      items: [
+                        {
+                          type: "link",
+                          text: "My Lectures",
+                          href: "myLectures",
+                        },
+                        {
+                          type: "link",
+                          text: "Public Lectures",
+                          href: "publicLectures",
+                        },
+                      ],
+                    },
+                    {
+                      type: "section",
+                      text: "Courses",
+                      items: [
+                        {
+                          type: "link",
+                          text: "My Courses",
+                          href: "myCourses",
+                        },
+                        {
+                          type: "link",
+                          text: "Public Courses",
+                          href: "publicCourses",
+                        },
+                        {
+                          type: "link",
+                          text: "Private Courses",
+                          href: "privateCourses",
+                        },
+                      ],
+                    },
+                    { type: "link", text: "User", href: "user" },
+                    { type: "link", text: "Leaderboard", href: "leaderboard" },
+                    { type: "link", text: "Sale", href: "sale" },
+                    { type: "link", text: "Set UI", href: "setUI" },
+                  ]}
+                />
+              }
+              content={
+                <div className="content">
+                  <Outlet checkAuthen={ionViewCanEnter}/>
+                </div>
+              }
             />
-          }
-          navigation={
-            <SideNavigation
-              activeHref={activeHref}
-              header={{ href: "/", text: "Management" }}
-              onFollow={(event) => {
-                if (!event.detail.external) {
-                  event.preventDefault();
-                  const href =
-                    event.detail.href === "/"
-                      ? "myLectures"
-                      : event.detail.href;
-                  setActiveHref(href);
-                  navigate(`/management/${href}`);
-                }
-              }}
-              items={[
-                {
-                  type: "section",
-                  text: "Lectures",
-                  items: [
-                    {
-                      type: "link",
-                      text: "My Lectures",
-                      href: "myLectures",
-                    },
-                    {
-                      type: "link",
-                      text: "Public Lectures",
-                      href: "publicLectures",
-                    },
-                  ],
-                },
-                {
-                  type: "section",
-                  text: "Courses",
-                  items: [
-                    {
-                      type: "link",
-                      text: "My Courses",
-                      href: "myCourses",
-                    },
-                    {
-                      type: "link",
-                      text: "Public Courses",
-                      href: "publicCourses",
-                    },
-                    {
-                      type: "link",
-                      text: "Private Courses",
-                      href: "privateCourses",
-                    },
-                  ],
-                },
-                { type: "link", text: "User", href: "user" },
-                { type: "link", text: "Leaderboard", href: "leaderboard" },
-                { type: "link", text: "Sale", href: "sale" },
-              ]}
-            />
-          }
-          content={
-            <div className="content">
-              <Outlet />
-            </div>
-          }
-        />
-        <Footer />
-      </div>
-    </div>
+            <Footer />
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
 // export default withAuthenticator(Management);
-export default (Management);
+export default Management;

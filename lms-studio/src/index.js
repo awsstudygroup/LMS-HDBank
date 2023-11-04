@@ -40,6 +40,8 @@ import CourseDetail from './views/Management/MyCourses/CourseDetail'
 import PrivateCourses from './views/Management/PrivateCourses/PrivateCourses'
 import AccessCodes from './views/Management/Sale/AccessCodes'
 import GenerateCode from './views/GenerateCode/GenerateCode'
+import SetUI from './views/Management/SetUI/SetUI'
+import CreateSetUI from './views/CreateSetUI/CreateSetUI'
 
 // Configure Amplify
 Amplify.configure(awsExports);
@@ -98,6 +100,15 @@ const router = createHashRouter([
         path: "myCourses/detail/:id",
         element: <CourseDetail />
       },
+      {
+        path: "setUI",
+        element: <SetUI />
+      },
+      {
+        path: "setUI/createSetUI",
+        element: <CreateSetUI />
+      },
+      
     ],
   },
   {
@@ -107,6 +118,10 @@ const router = createHashRouter([
   {
     path: "/course/:id",
     element: <Course />,
+  },
+  {
+    path: "/createSetUI",
+    element: <CreateSetUI />
   },
   // {
   //   path: "/assignCourse/:id",
@@ -164,6 +179,10 @@ const router = createHashRouter([
         path: "myCourses/detail/:id",
         element: <CourseDetail />
       },
+      {
+        path: "setUI",
+        element: <SetUI />
+      },
     ],
   },
   {
@@ -186,7 +205,6 @@ const router = createHashRouter([
     path: '/leaderboard',
     element: <Leaderboard />,
   },
-
   {
     path: '/addChapter',
     element: <AddChapter />,
@@ -198,6 +216,10 @@ const router = createHashRouter([
   {
     path: "/editCourse/:id",
     element: <UpdateCourse/>,
+  },
+  {
+    path: "/createSetUI",
+    element: <CreateSetUI />
   },
 ]);
 

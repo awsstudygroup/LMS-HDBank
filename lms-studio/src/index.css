@@ -1,63 +1,108 @@
 @font-face {
-    src: url("./assets/fonts/AmazonEmber/Amazon-Ember-Medium.ttf");
-    font-family: 'Amazon Ember' !important;
+  src: url("./assets/fonts/AmazonEmber/Amazon-Ember-Medium.ttf");
+  font-family: "Amazon Ember" !important;
 }
 
-:root{
-    --font-family-base-dnvic8: Amazon Ember, sans-serif !important;
+:root {
+  --font-family-base-dnvic8: Amazon Ember, sans-serif !important;
+  /* Binh teacher Mode */
+  /* --bg-binh-white: #fff; */
+  --bg-binh-white: #000;
+  --button-color-binh: rgb(0, 204, 255);
+  --text-color-blue-binh: rgb(0, 204, 255);
+  --text-color-white-binh: #fff;
+
+  /* default mode*/
+}
+
+@media (prefers-color-scheme: binh) {
+  :root {
+    --bg: var(--bg-binh-white);
+    --button-color: var(--button-color-binh);
+    --text-color-blue: var(--text-color-blue-binh);
+    --text-color-white: var(--text-color-white-binh);
+    color-scheme: binh;
+  }
+}
+
+/* @media (prefers-color-scheme: light) {
+    :root {
+      --bg: var(--bg--light);
+      --txt: var(--txt--light);
+      --accent: var(--accent--light);
+      --accent1: var(--accent1--light);
+      --muted: var(--muted--light);
+      color-scheme: light;
+    }
+  } */
+
+:root[color-scheme="binh"] {
+  --bg: var(--bg-binh-white);
+  --button-color: var(--button-color-binh);
+  --text-color-blue: var(--text-color-blue-binh);
+  --text-color-white: var(--text-color-white-binh);
+  color-scheme: binh;
 }
 
 body {
-    margin: 0;
-    font-family: Amazon Ember, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    background-color: #fafafa;
+  margin: 0;
+  font-family: Amazon Ember, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: hsl(var(--bg));
+}
+
+/* nav {
+    background-color: hsl(var(--bg)) !important;
+} */
+
+.side-nav-custom {
+    background-color: #eb5f07 !important;
 }
 
 .btn-orange {
-    background-color: #EB5F07 !important;
-    border-color: #EB5F07 !important;
+  background-color: #eb5f07 !important;
+  border-color: #eb5f07 !important;
 }
 
 .rotate-180 {
-    transform: rotate(180deg);
+  transform: rotate(180deg);
 }
 
 .space-20 {
-    height: 20px;
+  height: 20px;
 }
 
 .space-40 {
-    height: 40px;
+  height: 40px;
 }
 
 .space-60 {
-    height: 60px;
+  height: 60px;
 }
 
 .board {
-    box-shadow: 0px 1px 2px rgba(0, 28, 36, 0.6);
+  box-shadow: 0px 1px 2px rgba(0, 28, 36, 0.6);
 }
 
 .board-header {
-    background-color: #FAFAFA;
-    height: 62px;
-    font-size: 18px;
-    font-weight: bold;
-    padding: 20px;
-    border-bottom: solid 1px #EAEDED;
+  background-color: #fafafa;
+  height: 62px;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 20px;
+  border-bottom: solid 1px #eaeded;
 }
 
 .board-content {
-    background-color: white !important;
-    padding: 20px;
-    font-size: 14px;
+  background-color: white !important;
+  padding: 20px;
+  font-size: 14px;
 }
 
 .board-footer {
-    height: 56px;
-    border-top: solid 1px #EAEDED;
-    text-align: right;
-    padding: 12px 20px 12px 20px;
+  height: 56px;
+  border-top: solid 1px #eaeded;
+  text-align: right;
+  padding: 12px 20px 12px 20px;
 }

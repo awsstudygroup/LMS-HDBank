@@ -15,10 +15,6 @@
     },
     "s3Key": {
       "Type": "String"
-    },
-    "storagelmsstudiodcbd5e2fBucketName": {
-      "Type": "String",
-      "Default": "storagelmsstudiodcbd5e2fBucketName"
     }
   },
   "Conditions": {
@@ -51,12 +47,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "accessCode",
+            "studioUIConfig",
             {
               "Fn::Join": [
                 "",
                 [
-                  "accessCode",
+                  "studioUIConfig",
                   "-",
                   {
                     "Ref": "env"
@@ -73,9 +69,6 @@
             },
             "REGION": {
               "Ref": "AWS::Region"
-            },
-            "STORAGE_LMSSTUDIODCBD5E2F_BUCKETNAME": {
-              "Ref": "storagelmsstudiodcbd5e2fBucketName"
             }
           }
         },
@@ -96,12 +89,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "lmsstudioLambdaRolef76fb268",
+            "lmsstudioLambdaRolecf718302",
             {
               "Fn::Join": [
                 "",
                 [
-                  "lmsstudioLambdaRolef76fb268",
+                  "lmsstudioLambdaRolecf718302",
                   "-",
                   {
                     "Ref": "env"
@@ -167,64 +160,6 @@
                   }
                 ]
               }
-            }
-          ]
-        }
-      }
-    },
-    "AmplifyResourcesPolicy": {
-      "DependsOn": [
-        "LambdaExecutionRole"
-      ],
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyName": "amplify-lambda-execution-policy",
-        "Roles": [
-          {
-            "Ref": "LambdaExecutionRole"
-          }
-        ],
-        "PolicyDocument": {
-          "Version": "2012-10-17",
-          "Statement": [
-            {
-              "Effect": "Allow",
-              "Action": "s3:ListBucket",
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:s3:::",
-                      {
-                        "Ref": "storagelmsstudiodcbd5e2fBucketName"
-                      }
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
-                "s3:PutObject",
-                "s3:GetObject",
-                "s3:DeleteObject"
-              ],
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:s3:::",
-                      {
-                        "Ref": "storagelmsstudiodcbd5e2fBucketName"
-                      },
-                      "/*"
-                    ]
-                  ]
-                }
-              ]
             }
           ]
         }

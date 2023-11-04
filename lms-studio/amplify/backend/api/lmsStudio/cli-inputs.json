@@ -41,16 +41,23 @@
         ]
       }
     },
-    "/accesscode": {
-      "name": "/accesscode",
-      "lambdaFunction": "accessCode",
+    "/accessCode": {
+      "name": "/accessCode",
+      "lambdaFunction": "studioAccessCode",
       "permissions": {
         "setting": "open"
       }
     },
     "/courseCode": {
       "name": "/courseCode",
-      "lambdaFunction": "courseCode",
+      "lambdaFunction": "studioCourseCode",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/configUI": {
+      "name": "/configUI",
+      "lambdaFunction": "studioUIConfig",
       "permissions": {
         "setting": "open"
       }

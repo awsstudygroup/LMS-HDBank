@@ -548,7 +548,7 @@ function CreateCourse(props) {
     );
   };
 
-    return state.redirectToHome ? (
+  return state.redirectToHome ? (
       <Navigate to={"/management/myCourses"} />
     ) : (
       <>

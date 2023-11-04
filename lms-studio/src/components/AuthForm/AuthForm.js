@@ -76,7 +76,7 @@ export default function AuthForm() {
           },
         }}
       >
-        <Navigate to="/" replace={true} />
+        <Navigate to="/management/myLectures" />
       </Authenticator>
     </ThemeProvider>
   );

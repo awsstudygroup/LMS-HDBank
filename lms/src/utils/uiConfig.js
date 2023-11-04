@@ -1,0 +1,1 @@
+export const uiConfigId = "uet-university-397860"

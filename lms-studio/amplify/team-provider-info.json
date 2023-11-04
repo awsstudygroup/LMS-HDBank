@@ -258,13 +258,17 @@
           "deploymentBucketName": "amplify-lmsstudio-test-144203-deployment",
           "s3Key": "amplify-builds/userOverview-63464a714b3537445044-build.zip"
         },
-        "accessCode": {
+        "studioAccessCode": {
           "deploymentBucketName": "amplify-lmsstudio-test-144203-deployment",
-          "s3Key": "amplify-builds/accessCode-633875416272502f3938-build.zip"
+          "s3Key": "amplify-builds/studioAccessCode-6b385076336c58766658-build.zip"
         },
-        "courseCode": {
+        "studioCourseCode": {
           "deploymentBucketName": "amplify-lmsstudio-test-144203-deployment",
-          "s3Key": "amplify-builds/courseCode-364c32667339374e5757-build.zip"
+          "s3Key": "amplify-builds/studioCourseCode-364c32667339374e5757-build.zip"
+        },
+        "studioUIConfig": {
+          "deploymentBucketName": "amplify-lmsstudio-test-144203-deployment",
+          "s3Key": "amplify-builds/studioUIConfig-53792b412b7550415473-build.zip"
         }
       },
       "hosting": {

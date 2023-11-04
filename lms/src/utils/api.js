@@ -8,4 +8,6 @@ export const userLecturePath = "/users/lectures/"
 export const userCoursePath = "/users/courses/";
 export const myLearningPath = "/users/courses/myLearning"
 export const userCourseUpdatePath = "/users/courses/update/"
+export const configUI = "/configUI/"
+
 

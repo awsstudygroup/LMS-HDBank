@@ -60,6 +60,13 @@
       "permissions": {
         "setting": "open"
       }
+    },
+    "/configUI": {
+      "name": "/configUI",
+      "lambdaFunction": "uiConfig",
+      "permissions": {
+        "setting": "open"
+      }
     }
   }
 }
