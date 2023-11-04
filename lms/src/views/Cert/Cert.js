@@ -224,7 +224,7 @@ export default class Cert extends React.Component {
                             <Button variant="primary" className='cert-continue-btn' onClick={() => this.setState({redirectToCourse: course.id})}>
                                 Review course <Icon name='external' />
                             </Button>
-                            <Button variant="primary" className='btn-orange cert-continue-btn' onClick={() => this.setState({shareCertOpen: true})}>
+                            <Button variant="primary" className='btn-blue-light cert-continue-btn' onClick={() => this.setState({shareCertOpen: true})}>
                                 Share certificate <Icon name='share' />
                             </Button>
                         </div>

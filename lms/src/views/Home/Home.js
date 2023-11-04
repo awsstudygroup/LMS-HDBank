@@ -296,7 +296,7 @@ export class Home extends React.Component {
         <div className="dashboard-courses-list-item-action">
           <Button
             variant="primary"
-            className="btn-orange"
+            className="btn-blue-light"
             onClick={() => this.redirectToCourse(course.id)}
           >
             Get Started <Icon name="arrow-left" className="rotate-180" />

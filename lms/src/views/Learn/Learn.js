@@ -706,7 +706,7 @@ class QuizContent extends React.Component {
             {!this.state.quizStarted ? (
               <Button
                 variant="primary"
-                className="btn-orange"
+                className="btn-blue-light"
                 onClick={() =>
                   this.setState({
                     quizStarted: true,
@@ -727,7 +727,7 @@ class QuizContent extends React.Component {
               this.state.quizPassed ? (
                 <Button
                   variant="primary"
-                  className="btn-orange"
+                  className="btn-blue-light"
                   onClick={() => {
                     this.props.markLectureCompleted();
                     this.props.nextLecture();
@@ -741,7 +741,7 @@ class QuizContent extends React.Component {
               ) : (
                 <Button
                   variant="primary"
-                  className="btn-orange"
+                  className="btn-blue-light"
                   onClick={() =>
                     this.setState({ quizStarted: false, quizDone: false })
                   }
@@ -752,7 +752,7 @@ class QuizContent extends React.Component {
             ) : !this.state.currentQuestionAnswered ? (
               <Button
                 variant="primary"
-                className="btn-orange"
+                className="btn-blue-light"
                 onClick={() => {
                   if (
                     this.state.selectedAnswer !== null ||
@@ -766,7 +766,7 @@ class QuizContent extends React.Component {
             ) : (
               <Button
                 variant="primary"
-                className="btn-orange"
+                className="btn-blue-light"
                 onClick={() => {
                   let currentQuestion = this.state.currentQuestion;
                   let nextQuestion = this.state.currentQuestion + 1;

@@ -158,7 +158,7 @@ export default class Course extends React.Component {
                                         </div> */}
                                     </div>
                                     <div className='board-footer'>
-                                        <Button variant='primary' className='btn-orange' onClick={() => this.openLearn()}>
+                                        <Button variant='primary' className='btn-blue-light' onClick={() => this.openLearn()}>
                                             Start Course
                                         </Button>
                                     </div>
