@@ -332,11 +332,11 @@ export class Home extends React.Component {
                 <p className="dashboard-banner-desc">{t("home.des")}</p>
               </div>
               <div className="dashboard-banner-icon-container">
-                <img
+                {/* <img
                   className="dashboard-banner-icon"
                   src={bannerIcon}
                   alt="Banner Icon"
-                />
+                /> */}
               </div>
             </Grid>
           </div>
