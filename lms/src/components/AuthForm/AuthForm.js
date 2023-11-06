@@ -1,3 +1,4 @@
+import { I18n } from 'aws-amplify';
 import {
   Authenticator,
   View,
@@ -13,27 +14,56 @@ import {
 import "@aws-amplify/ui-react/styles.css";
 import { Navigate, useLocation } from "react-router-dom";
 import './AuthForm.css';
+import { translations } from '@aws-amplify/ui-react';
+I18n.putVocabularies(translations);
+I18n.setLanguage('vn');
 
+I18n.putVocabularies({
+  vn: {
+    'Sign In': 'Đăng Nhập',
+    'Sign in': 'Đăng nhập',
+    'Create Account': "Tạo tài khoản",
+    'Forgot your password?': 'Quên mật khẩu?',
+    'Signing in': "Đăng nhập ...",
+    'Creating Account': "Tạo tài khoản ..."
+  },
+});
 
 const formFields = {
-  signUp: {
-    email: {
+  signIn: {
+    username: {
+      label: "Email:",
+      placeholder: "Nhập email của bạn",
       order: 1
     },
     password: {
-      label: "Password:",
-      placeholder: "Enter your Password:",
+      label: "Mật khẩu:",
+      placeholder: "Nhập mật khẩu của bạn",
+      isRequired: false,
+      order: 2,
+    },
+  },
+  signUp: {
+    email: {
+      label: "Email:",
+      placeholder: "Nhập email của bạn",
+      order: 1
+    },
+    password: {
+      label: "Mật khẩu:",
+      placeholder: "Nhập mật khẩu của bạn",
       isRequired: false,
       order: 2,
     },
     confirm_password: {
-      label: "Confirm Password:",
+      label: "Xác nhận mật khẩu:",
+      placeholder: "Mời bạn nhập lại mật khẩu lần nữa",
       order: 3,
     },
     'custom:name_on_certificate': {
-      placeholder: 'Enter your Name on Certificate',
+      placeholder: 'Nhập tên bạn muốn để trên chứng chỉ',
       isRequired: true,
-      label: "Name on Certificate",
+      label: "Nhập tên trên chứng chỉ",
       order: 4
     }
   },
@@ -43,8 +73,8 @@ const formFields = {
 
 export default function AuthForm(props) {
   const { tokens } = useTheme();
+  console.log(tokens)
   const location = useLocation();
-  console.log(location.state);
   const theme: Theme = {
     name: 'Auth Example Theme',
     tokens: {
@@ -63,24 +93,24 @@ export default function AuthForm(props) {
           item: {
             _focus: {
               color: {
-                value: '#EC7211',
+                value: '#0073bb',
               }
             },
             _hover: {
               color: {
-                value: '#ffa963',
+                value: '#0073bb',
               },
             },
             _active: {
               color: {
-                value: '#EC7211',
+                value: '#0073bb',
               },
               borderColor: {
-                value: '#EC7211'
+                value: '#0073bb'
               }
             },
           },
-        },
+        }
       },
     },
   };

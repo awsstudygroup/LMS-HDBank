@@ -15,7 +15,7 @@ import { createHashRouter, RouterProvider } from "react-router-dom";
 
 // Import locale context
 import { I18nextProvider } from 'react-i18next';
-import i18n from './views/i18n'
+import i18n from './i18n'
 // import { I18nProvider } from '@cloudscape-design/components/i18n';
 
 // Import Views

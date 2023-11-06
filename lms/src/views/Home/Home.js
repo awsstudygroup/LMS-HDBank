@@ -136,7 +136,7 @@ export class Home extends React.Component {
   loadUISet = () => {
     API.get(apiName, configUI + uiConfigId)
       .then((data) => {
-        console.log(data)
+        // console.log(data)
         if ( data ) {
           this.setState({ uiSet: data });
           this.loadImage(data)
@@ -308,7 +308,7 @@ export class Home extends React.Component {
 
   render() {
     const { t } = this.props;
-    // console.log("props ", this.props);
+    console.log("t ", t);
     const hightLight = t("home.highlight", { returnObjects: true });
     // const hightLight = this.state.uiSet ? this.state.uiSet.Highlight : t("home.highlight", { returnObjects: true });
     // console.log(this.state.uiSet.Highlight[0]['desc']);

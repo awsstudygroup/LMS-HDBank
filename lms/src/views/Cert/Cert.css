@@ -125,7 +125,7 @@
     margin-top: 20px;
     width: 100%;
     height: 100%;
-    background-image: url('../../assets/images/cert.png');   
+    background-image: url('../../assets/images/mrbinh-cert.png');   
     background-size:     100% 100%;
     background-repeat:   no-repeat;
     background-position: center center;
@@ -139,7 +139,7 @@
     font-size: 40px;
     font-weight: bold;
     position: relative;
-    top: 270px;
+    top: 250px;
     font-family: Arial;
 }
 
@@ -148,28 +148,30 @@
     font-weight: 900;
     font-family: 'Amazon Ember';
     position: relative;
-    color: white;
-    top: 340px;
+    color: black;
+    top: 330px;
 }
 
 .cert-view-issued-date {
     font-size: 13px;
     position: relative;
     font-weight: 300;
-    color: white;
+    color: black;
+    font-weight: 500;
     top: 439px;
 }
 
 .publiccert-view-container {
     width: 100%;
     height: 100%;
-    background-image: url('../../assets/images/cert.png');   
-    background-size:     cover;
+    background-image: url('../../assets/images/mrbinh-cert.png');   
+    background-size:     100% 100%;
     background-repeat:   no-repeat;
     background-position: center center;
     border-radius: 10px;
     color: #ec7211;
     text-align: center;
+    object-fit: contain;
 }
 
 .publiccert-view-container .publiccert-view-container {
