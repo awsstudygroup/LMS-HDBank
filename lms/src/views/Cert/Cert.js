@@ -22,6 +22,7 @@ export default class Cert extends React.Component {
             userEmail: "",
             userName: "",
             redirectToCourse: null,
+            disabled: true,
         };
     }
 
@@ -100,6 +101,7 @@ export default class Cert extends React.Component {
             .then((response) => {
                 this.setState({
                     cert: response,
+                    disabled: false,
                 });
             })
             .catch((error) => {
@@ -224,7 +226,7 @@ export default class Cert extends React.Component {
                             <Button variant="primary" className='cert-continue-btn' onClick={() => this.setState({redirectToCourse: course.id})}>
                                 Xem lại khoá học <Icon name='external' />
                             </Button>
-                            <Button variant="primary" className='btn-blue-light cert-continue-btn' onClick={() => this.setState({shareCertOpen: true})}>
+                            <Button variant="primary" className='btn-blue-light cert-continue-btn' disabled={this.state.disabled} onClick={() => this.setState({shareCertOpen: true})}>
                                 Chia sẻ chứng chỉ <Icon name='share' />
                             </Button>
                         </div>
