@@ -939,7 +939,7 @@ function MainContent(props) {
               checked={autoNext}
               onChange={(e) => setAutoNext(!autoNext)}
             >
-              Auto Next
+              Tự động chuyển bài
               {autoNext ? (
                 <IoCheckmarkCircleOutline className="learn-auto-next-control-icon" />
               ) : (
@@ -1488,14 +1488,14 @@ export default class Learn extends React.Component {
                             this.state.course.totalLecture >=
                           0.8 ? (
                             <span className="learn-navigation-progress-completed">
-                              Completed {this.state.completedLectures.length}{" "}
-                              out of {this.state.course.totalLecture} lectures{" "}
+                              Đã hoàn tất {this.state.completedLectures.length}{" "}
+                              trên {this.state.course.totalLecture} bài học{" "}
                               <IoCheckmarkSharp />
                             </span>
                           ) : (
                             <span className="learn-navigation-progress">
-                              Completed {this.state.completedLectures.length}{" "}
-                              out of {this.state.course.totalLecture} lectures
+                              Đã hoàn tất {this.state.completedLectures.length}{" "}
+                              trên {this.state.course.totalLecture} bài học{" "}
                             </span>
                           ),
                       },
@@ -1580,7 +1580,7 @@ export default class Learn extends React.Component {
             <BreadcrumbGroup
               items={[
                 {
-                  text: "My Learning",
+                  text: "Bài học",
                   href: "#/mylearning",
                 },
                 {

@@ -24,7 +24,7 @@ import {
   configUI,
 } from "../../utils/api";
 import { uiConfigId } from "../../utils/uiConfig";
-import { calcTime } from "../../utils/tools";
+import { calcTime, calcTimeBrief } from "../../utils/tools";
 
 export class Home extends React.Component {
   constructor(props) {
@@ -283,7 +283,7 @@ export class Home extends React.Component {
               name="status-pending"
               className="dashboard-courses-list-item-property-icon"
             />
-            {calcTime(course.length)}
+            {calcTimeBrief(course.length)}
           </div>
           <div className="dashboard-courses-list-item-desc">
             {course.description}
@@ -348,11 +348,11 @@ export class Home extends React.Component {
             </Grid>
           </div>
           <div className="dashboard-courses">
-            <p className="dashboard-courses-header">
+            <div className="dashboard-courses-header">
               {this.state.authChecked
                 ? t("home.list_title")
                 : t("home.list_title_unauthen")}
-            </p>
+            </div>
             <div className="dashboard-courses-header-decor" />
             <div className="dashboard-courses-list">
               {this.state.loading ? (
