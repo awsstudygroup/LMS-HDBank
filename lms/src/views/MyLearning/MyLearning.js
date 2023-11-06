@@ -75,7 +75,7 @@ export default class MyLearning extends React.Component {
                     </div> 
                     : <div className='mylearning-main-container'>
                         {!this.state.mostRecentCourse ? "" : <div>
-                            <p className='mylearning-courses-header'>Hoạt động gần đây</p>
+                            <p className='mylearning-courses-header'>Hoạt động học tập</p>
                             <div className='mylearning-courses-header-decor' />
                             <MyLearningCourse courseId={this.state.mostRecentCourse} />
                         </div>}
