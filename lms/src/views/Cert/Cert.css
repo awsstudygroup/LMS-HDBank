@@ -146,10 +146,10 @@
 .cert-view-course-name {
     font-size: 25px;
     font-weight: 900;
-    font-family: 'Amazon Ember';
+    font-family: Tahoma;
     position: relative;
     color: black;
-    top: 330px;
+    top: 300px;
 }
 
 .cert-view-issued-date {

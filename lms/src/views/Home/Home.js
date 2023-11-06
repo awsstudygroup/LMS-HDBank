@@ -299,7 +299,7 @@ export class Home extends React.Component {
             className="btn-blue-light"
             onClick={() => this.redirectToCourse(course.id)}
           >
-            Get Started <Icon name="arrow-left" className="rotate-180" />
+            Bắt đầu <Icon name="arrow-left" className="rotate-180" />
           </Button>
         </div>
       </div>

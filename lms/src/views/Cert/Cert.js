@@ -190,18 +190,18 @@ export default class Cert extends React.Component {
                                 {!!course.name ? course.name : ""}
                             </div>
                             <div className='cert-course-property'>
-                                <Icon variant='subtle' name='ticket' className='cert-course-property-icon'/> Level: {!!course.level ? course.level : ""}
+                                <Icon variant='subtle' name='ticket' className='cert-course-property-icon'/> Mức độ: {!!course.level ? course.level : ""}
                             </div>
                             <div className='cert-course-property'>
                                 <Icon variant='subtle' name='check' className='cert-course-property-icon'/> 
-                                Category: 
+                                Nhóm: 
                                 {!!course.categories ? course.categories.map((category, index) => <span key={index}>{index !== 0 ? ', ' : ' '}<a href='/#'>{category}</a></span>) : ""}
                             </div>
-                            <div className='cert-course-property'>
+                            {/* <div className='cert-course-property'>
                                 <Icon variant='subtle' name='check' className='cert-course-property-icon'/> 
                                 Tag:
                                 {!!course.tags ? course.tags.map((tag, index) => <span key={index}>{index !== 0 ? ', ' : ' '}<a href='/#'>{tag}</a></span>) : ""}
-                            </div>
+                            </div> */}
                             <div className='cert-course-property'>
                                 <Icon variant='subtle' name='status-pending' className='cert-course-property-icon'/> 
                                 {calcTime(course.length)}
@@ -222,10 +222,10 @@ export default class Cert extends React.Component {
                         </div> */}
                         <div className='cert-course-action'>
                             <Button variant="primary" className='cert-continue-btn' onClick={() => this.setState({redirectToCourse: course.id})}>
-                                Review course <Icon name='external' />
+                                Xem lại khoá học <Icon name='external' />
                             </Button>
                             <Button variant="primary" className='btn-blue-light cert-continue-btn' onClick={() => this.setState({shareCertOpen: true})}>
-                                Share certificate <Icon name='share' />
+                                Chia sẻ chứng chỉ <Icon name='share' />
                             </Button>
                         </div>
                         <div className='cert-view'>
