@@ -88,7 +88,7 @@ export default class MyLearning extends React.Component {
                             }
                         </div>
                         <div>
-                            <p className='mylearning-courses-header'>Khoá học miễn phí đã đăng ký</p>
+                            <p className='mylearning-courses-header'>Khoá học đã đăng ký</p>
                             <div className='mylearning-courses-header-decor' />
                             {console.log(this.state.selfEnrolledCourses)}
                             {this.state.selfEnrolledCourses.length === 0
