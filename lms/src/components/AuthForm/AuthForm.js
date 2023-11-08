@@ -11,6 +11,7 @@ import {
   Theme,
   ThemeProvider
 } from "@aws-amplify/ui-react";
+import { Auth } from 'aws-amplify';
 import "@aws-amplify/ui-react/styles.css";
 import { Navigate, useLocation } from "react-router-dom";
 import './AuthForm.css';
@@ -73,8 +74,29 @@ const formFields = {
 
 export default function AuthForm(props) {
   const { tokens } = useTheme();
-  console.log(tokens)
+  // console.log(tokens)
   const location = useLocation();
+  const services = {
+    async handleSignIn(formData) {
+      let { username, password, attributes } = formData;
+      try {
+        await Auth.signOut({ global: true });
+        console.log("Log out all session")
+      } catch (error) {
+        console.log('error signing out: ', error);
+      }
+
+      return Auth.signIn({
+        username,
+        password,
+        attributes,
+        autoSignIn: {
+          enabled: true,
+        },
+      });
+    },
+  };
+
   const theme: Theme = {
     name: 'Auth Example Theme',
     tokens: {
@@ -116,7 +138,7 @@ export default function AuthForm(props) {
   };
   return (
     <ThemeProvider theme={theme}>
-    <Authenticator initialState={location.state.action ? location.state.action : "signIn"} formFields={formFields} >
+    <Authenticator initialState={location.state.action ? location.state.action : "signIn"} formFields={formFields} services={services}>
       <Navigate to={location.state.path ? location.state.path : "/"} replace={true} />
     </Authenticator>
     </ThemeProvider>

@@ -308,7 +308,6 @@ export class Home extends React.Component {
 
   render() {
     const { t } = this.props;
-    console.log("t ", t);
     const hightLight = t("home.highlight", { returnObjects: true });
     // const hightLight = this.state.uiSet ? this.state.uiSet.Highlight : t("home.highlight", { returnObjects: true });
     // console.log(this.state.uiSet.Highlight[0]['desc']);
