@@ -80,20 +80,35 @@ export default function AuthForm(props) {
     async handleSignIn(formData) {
       let { username, password, attributes } = formData;
       try {
-        await Auth.signOut({ global: true });
-        console.log("Log out all session")
+        await Auth.signIn({
+          username,
+          password,
+          attributes,
+          autoSignIn: {
+            enabled: true,
+          },
+        });
+        await Auth.signOut({ global: true }).then();
+        return Auth.signIn({
+          username,
+          password,
+          attributes,
+          autoSignIn: {
+            enabled: true,
+          },
+        });
       } catch (error) {
         console.log('error signing out: ', error);
       }
 
-      return Auth.signIn({
-        username,
-        password,
-        attributes,
-        autoSignIn: {
-          enabled: true,
-        },
-      });
+      // return Auth.signIn({
+      //   username,
+      //   password,
+      //   attributes,
+      //   autoSignIn: {
+      //     enabled: true,
+      //   },
+      // });
     },
   };
 
