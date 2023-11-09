@@ -80,8 +80,8 @@ export default function AuthForm(props) {
     async handleSignIn(formData) {
       let { username, password, attributes } = formData;
       try {
-        await Auth.signOut({ global: true }).then();
-        console.log()
+        const res = await Auth.signOut({ global: true });
+        console.log(res)
       } catch (error) {
         console.log('error signing out: ', error);
       }

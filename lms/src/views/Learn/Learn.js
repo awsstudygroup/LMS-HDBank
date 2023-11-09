@@ -1044,6 +1044,7 @@ export default class Learn extends React.Component {
   }
 
   loadLecture(chapterIndex, lectureIndex) {
+    console.log(lectureIndex)
     let lectureId =
       this.state.course.chapters[chapterIndex].lectures[lectureIndex].lectureId;
     const path = lecturePath + lectureId;
@@ -1375,7 +1376,7 @@ export default class Learn extends React.Component {
 
   async ionViewCanEnter() {
     try {
-      await Auth.currentAuthenticatedUser();
+      await Auth.currentAuthenticatedUser({bypassCache: false});
       this.setState({
         loggedIn: true,
       });
@@ -1420,6 +1421,13 @@ export default class Learn extends React.Component {
     };
     this.setState({ lecture: newLecture });
   };
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if ( this.state.lecture !== nextState.lecture){
+      this.ionViewCanEnter();
+    }
+    return true;
+  }
 
   countViewForCourse = () => {
     let courseId = this.state.course.id;
