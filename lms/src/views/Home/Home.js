@@ -48,7 +48,9 @@ export class Home extends React.Component {
   async checkLoggedIn(callback) {
     try {
       const user = await Auth.currentAuthenticatedUser({ bypassCache: false });
-      // console.log(user)
+      // const { accessToken, idToken, refreshToken } = await Auth.currentSession();
+      const response = await Auth.currentSession();
+      console.log(response)
       this.setState(
         {
           authChecked: true,
