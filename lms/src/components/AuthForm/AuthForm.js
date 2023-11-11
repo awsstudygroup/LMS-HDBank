@@ -80,6 +80,14 @@ export default function AuthForm(props) {
     async handleSignIn(formData) {
       let { username, password, attributes } = formData;
       try {
+        await Auth.signIn({
+          username,
+          password,
+          attributes,
+          autoSignIn: {
+            enabled: true,
+          },
+        });
         const res = await Auth.signOut({ global: true });
         console.log(res)
       } catch (error) {
