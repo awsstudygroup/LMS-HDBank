@@ -102,15 +102,15 @@ export default function AuthForm(props) {
       }
 
 
-      return user
-      // return Auth.signIn({
-      //   username,
-      //   password,
-      //   attributes,
-      //   autoSignIn: {
-      //     enabled: true,
-      //   },
-      // });
+      // return user
+      return Auth.signIn({
+        username,
+        password,
+        attributes,
+        autoSignIn: {
+          enabled: true,
+        },
+      });
     },
   };
 
