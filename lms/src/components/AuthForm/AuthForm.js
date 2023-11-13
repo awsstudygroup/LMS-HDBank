@@ -80,27 +80,29 @@ export default function AuthForm(props) {
   const { tokens } = useTheme();
   // console.log(tokens)
   const location = useLocation();
+
+  const startSignOut = async() => {
+    try {
+      await Auth.signOut({global: true});
+      console.log("log out")
+    } catch (error) {
+      console.log("error signing out: ", error);
+    }
+  }
+  
   const services = {
     async handleSignIn(formData) {
       let { username, password, attributes } = formData;
       let user = null;
-      try {
-        user = await Auth.signIn({
-          username,
-          password,
-          attributes,
-          autoSignIn: {
-            enabled: true,
-          },
-        });
-        console.log(user)
-        // const res = await Auth.signOut({ global: true });
-        await API.get(apiName, usersPath + user.signInUserSession.refreshToken.token)
-        console.log("Revoke done")
-      } catch (error) {
-        console.log('error signing out: ', error);
-      }
+      // try {
+      //   const res = await Auth.signOut({ global: true });
+      //   // await API.get(apiName, usersPath + user.signInUserSession.refreshToken.token)
+      //   // console.log("Revoke done")
+      // } catch (error) {
+      //   console.log('error signing out: ', error);
+      // }
 
+      startSignOut();
 
       // return user
       return Auth.signIn({
