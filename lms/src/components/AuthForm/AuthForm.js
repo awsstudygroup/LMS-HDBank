@@ -95,7 +95,7 @@ export default function AuthForm(props) {
         });
         console.log(user)
         // const res = await Auth.signOut({ global: true });
-        await API.get(apiName, usersPath + user.signInUserSession.accessToken.jwtToken)
+        await API.get(apiName, usersPath + user.signInUserSession.refreshToken.token)
         console.log("Revoke done")
       } catch (error) {
         console.log('error signing out: ', error);
