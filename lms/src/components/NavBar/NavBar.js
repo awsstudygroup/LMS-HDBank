@@ -73,7 +73,7 @@ export class NavBar extends React.Component {
 
   async startSignOut() {
     try {
-      await Auth.signOut({global: true});
+      await Auth.signOut();
     } catch (error) {
       console.log("error signing out: ", error);
       Auth.userHasAuthenticated(false);

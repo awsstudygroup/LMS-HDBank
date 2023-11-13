@@ -8,8 +8,6 @@ See the License for the specific language governing permissions and limitations 
 
 import {
   CognitoIdentityProviderClient,
-  ListUsersCommand,
-  ListUserPoolsCommand,
   RevokeTokenCommand
 } from "@aws-sdk/client-cognito-identity-provider";
 
@@ -18,7 +16,7 @@ import bodyParser from "body-parser";
 import awsServerlessExpressMiddleware from "aws-serverless-express/middleware.js";
 
 const client = new CognitoIdentityProviderClient({ });
-const clientId = "lmsbc7a393d_app_client";
+const clientId = "25q4fkglgfefobfa1iv2bo52ot";
 const path = "/users";
 const token = "Token";
 const tokenKey = "/:" + token;
@@ -52,6 +50,7 @@ app.get(path + tokenKey, function (req, res) {
     // RevokeTokenRequest
     Token: req.params[token], // required
     ClientId: clientId, // required
+    // ClientSecret: clientSecret,
   };
   console.log("input", input)
   const command = new RevokeTokenCommand(input);

@@ -11,11 +11,15 @@ import {
   Theme,
   ThemeProvider
 } from "@aws-amplify/ui-react";
-import { Auth } from 'aws-amplify';
+import { Auth, API } from 'aws-amplify';
 import "@aws-amplify/ui-react/styles.css";
 import { Navigate, useLocation } from "react-router-dom";
 import './AuthForm.css';
 import { translations } from '@aws-amplify/ui-react';
+import { 
+  apiName, 
+  usersPath
+} from "../../utils/api"
 I18n.putVocabularies(translations);
 I18n.setLanguage('vn');
 
@@ -79,8 +83,9 @@ export default function AuthForm(props) {
   const services = {
     async handleSignIn(formData) {
       let { username, password, attributes } = formData;
+      let user = null;
       try {
-        await Auth.signIn({
+        user = await Auth.signIn({
           username,
           password,
           attributes,
@@ -88,20 +93,24 @@ export default function AuthForm(props) {
             enabled: true,
           },
         });
-        const res = await Auth.signOut({ global: true });
-        console.log(res)
+        console.log(user)
+        // const res = await Auth.signOut({ global: true });
+        await API.get(apiName, usersPath + user.signInUserSession.accessToken.jwtToken)
+        console.log("Revoke done")
       } catch (error) {
         console.log('error signing out: ', error);
       }
 
-      return Auth.signIn({
-        username,
-        password,
-        attributes,
-        autoSignIn: {
-          enabled: true,
-        },
-      });
+
+      return user
+      // return Auth.signIn({
+      //   username,
+      //   password,
+      //   attributes,
+      //   autoSignIn: {
+      //     enabled: true,
+      //   },
+      // });
     },
   };
 
