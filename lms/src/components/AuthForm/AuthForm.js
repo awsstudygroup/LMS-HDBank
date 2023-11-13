@@ -99,6 +99,8 @@ export default function AuthForm(props) {
       authenticated: false,
     });
   }
+
+  const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
   
   const services = {
     async handleSignIn(formData) {
@@ -114,7 +116,9 @@ export default function AuthForm(props) {
 
       startSignOut();
       console.log("after log out");
-      // return user
+      await sleep(2000)
+      console.log("after sleep");
+      // return user;
       return Auth.signIn({
         username,
         password,
