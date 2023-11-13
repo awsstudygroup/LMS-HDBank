@@ -1,4 +1,5 @@
 import { I18n } from 'aws-amplify';
+import { useState } from 'react';
 import {
   Authenticator,
   View,
@@ -77,6 +78,10 @@ const formFields = {
 // const signUpAttributes= ['family_name', 'name_on_certificate']
 
 export default function AuthForm(props) {
+  const [state, setState] = useState({
+    authChecked: false,
+    authenticated: false,
+  })
   const { tokens } = useTheme();
   // console.log(tokens)
   const location = useLocation();
@@ -84,10 +89,15 @@ export default function AuthForm(props) {
   const startSignOut = async() => {
     try {
       await Auth.signOut({global: true});
-      console.log("log out")
+      console.log("log out");
     } catch (error) {
       console.log("error signing out: ", error);
+      Auth.userHasAuthenticated(false);
     }
+    setState({
+      authChecked: true,
+      authenticated: false,
+    });
   }
   
   const services = {
@@ -103,7 +113,7 @@ export default function AuthForm(props) {
       // }
 
       startSignOut();
-
+      console.log("after log out");
       // return user
       return Auth.signIn({
         username,
