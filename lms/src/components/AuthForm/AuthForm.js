@@ -78,10 +78,6 @@ const formFields = {
 // const signUpAttributes= ['family_name', 'name_on_certificate']
 
 export default function AuthForm(props) {
-  const [state, setState] = useState({
-    authChecked: false,
-    authenticated: false,
-  })
   const { tokens } = useTheme();
   // console.log(tokens)
   const location = useLocation();
@@ -92,12 +88,7 @@ export default function AuthForm(props) {
       console.log("log out");
     } catch (error) {
       console.log("error signing out: ", error);
-      Auth.userHasAuthenticated(false);
     }
-    setState({
-      authChecked: true,
-      authenticated: false,
-    });
   }
 
   const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -113,6 +104,14 @@ export default function AuthForm(props) {
       // } catch (error) {
       //   console.log('error signing out: ', error);
       // }
+      await Auth.signIn({
+        username,
+        password,
+        attributes,
+        autoSignIn: {
+          enabled: true,
+        },
+      });
 
       startSignOut();
       console.log("after log out");
