@@ -115,7 +115,7 @@ export default function AuthForm(props) {
 
       startSignOut();
       console.log("after log out");
-      await sleep(5000)
+      await sleep(2000)
       console.log("after sleep");
       // return user;
       return Auth.signIn({
