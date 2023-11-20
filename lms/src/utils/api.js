@@ -10,5 +10,6 @@ export const myLearningPath = "/users/courses/myLearning"
 export const userCourseUpdatePath = "/users/courses/update/"
 export const configUI = "/configUI/"
 export const usersPath = "/users/"
+export const fqasPath = "/faqs/"
 
 

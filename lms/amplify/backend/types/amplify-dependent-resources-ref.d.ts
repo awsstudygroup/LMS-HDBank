@@ -19,6 +19,13 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "function": {
+    "FAQs": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "UserCourse": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
@@ -109,6 +116,14 @@ export type AmplifyDependentResourcesAttributes = {
       "Region": "string",
       "SortKeyName": "string",
       "SortKeyType": "string",
+      "StreamArn": "string"
+    },
+    "FAQs": {
+      "Arn": "string",
+      "Name": "string",
+      "PartitionKeyName": "string",
+      "PartitionKeyType": "string",
+      "Region": "string",
       "StreamArn": "string"
     },
     "Lectures": {

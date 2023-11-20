@@ -17,6 +17,7 @@ export class NavBar extends React.Component {
       authenticated: false,
       redirectAuth: false,
       redirectHome: false,
+      redirectHelp: false,
       redirectMyLearning: false,
       user: null,
       action: "",
@@ -104,6 +105,8 @@ export class NavBar extends React.Component {
       <Navigate to="/" />
     ) : this.state.redirectMyLearning ? (
       <Navigate to="/mylearning" />
+    ) : this.state.redirectHelp ? (
+      <Navigate to="/help" />
     ) : (
       <div id="h" style={{ position: "sticky", top: 0, zIndex: 1002 }}>
         <TopNavigation
@@ -192,6 +195,10 @@ export class NavBar extends React.Component {
                         id: "signout",
                         text: t("nav.user.signOut"),
                       },
+                      {
+                        id: "help",
+                        text: t("nav.user.help"),
+                      },
                     ],
                     onItemClick: (e) => {
                       if (e.detail.id === "mylearning") {
@@ -204,6 +211,11 @@ export class NavBar extends React.Component {
                         }
                       } else if (e.detail.id === "signout") {
                         this.startSignOut();
+                      }
+                      if (e.detail.id === "help"){
+                        this.setState({
+                          redirectHelp: true,
+                        })
                       }
                     },
                   },

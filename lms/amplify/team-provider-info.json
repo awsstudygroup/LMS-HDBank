@@ -379,6 +379,10 @@
         "users": {
           "deploymentBucketName": "amplify-lms-mrbinh-233313-deployment",
           "s3Key": "amplify-builds/users-7039616471474c733758-build.zip"
+        },
+        "FAQs": {
+          "deploymentBucketName": "amplify-lms-mrbinh-233313-deployment",
+          "s3Key": "amplify-builds/FAQs-42535278566a724a3766-build.zip"
         }
       },
       "hosting": {
@@ -400,7 +404,8 @@
         "UserCourse": {},
         "UserLecture": {},
         "courses": {},
-        "lectureresource": {}
+        "lectureresource": {},
+        "FAQs": {}
       }
     }
   }

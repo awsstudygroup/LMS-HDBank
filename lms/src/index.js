@@ -26,6 +26,7 @@ import Learn from "./views/Learn/Learn";
 import MyLearning from "./views/MyLearning/MyLearning";
 import Cert from "./views/Cert/Cert";
 import CertPublic from "./views/CertPublic/CertPublic";
+import Help from "./views/Help/Help"
 
 // Configure Amplify
 Amplify.configure(awsExports);
@@ -63,6 +64,10 @@ const router = createHashRouter([
   {
     path: "/certPublic/:id",
     element: <CertPublic />,
+  },
+  {
+    path: "/help",
+    element: <Help />,
   },
 ]);
 

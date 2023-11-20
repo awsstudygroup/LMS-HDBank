@@ -12,7 +12,8 @@
         "user": {
           "title": "",
           "learning": "Quá trình học",
-          "signOut": "Đăng xuất"
+          "signOut": "Đăng xuất",
+          "help": "Trợ giúp"
         }
     },
     "home": {
