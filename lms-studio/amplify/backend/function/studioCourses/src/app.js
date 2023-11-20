@@ -292,7 +292,7 @@ app.post(path, function(req, res) {
       TableName: tableName,
       Key: { ID: req.body['OldID'] }
     }
-    dynamodb.delete(params, function(err, data) {
+    dynamodb.delete(deleteParams, function(err, data) {
       if (err) console.log(err);
       else console.log(data);
     });
