@@ -43,7 +43,7 @@ import { CognitoIdentityProviderClient, ListUsersCommand } from "@aws-sdk/client
 
 export const handler = async(event) => {
   const client = new CognitoIdentityProviderClient({ });
-  const userPoolId = 'ap-southeast-1_zlXGtYfxy';
+  const userPoolId = 'ap-southeast-1_Q7OqQx1fX';
   const headers = {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
