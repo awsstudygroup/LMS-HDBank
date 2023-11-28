@@ -240,7 +240,7 @@
       "function": {
         "studioCourses": {
           "deploymentBucketName": "amplify-lmsstudio-test-144203-deployment",
-          "s3Key": "amplify-builds/studioCourses-526f4b78716d65507958-build.zip"
+          "s3Key": "amplify-builds/studioCourses-68513961543638636d6f-build.zip"
         },
         "studioLectures": {
           "deploymentBucketName": "amplify-lmsstudio-test-144203-deployment",
@@ -256,7 +256,7 @@
         },
         "userOverview": {
           "deploymentBucketName": "amplify-lmsstudio-test-144203-deployment",
-          "s3Key": "amplify-builds/userOverview-63464a714b3537445044-build.zip"
+          "s3Key": "amplify-builds/userOverview-446b386a44345a6a4547-build.zip"
         },
         "studioAccessCode": {
           "deploymentBucketName": "amplify-lmsstudio-test-144203-deployment",
@@ -501,7 +501,7 @@
         },
         "studioCourses": {
           "deploymentBucketName": "amplify-lmsstudio-mrbinh-83126-deployment",
-          "s3Key": "amplify-builds/studioCourses-526f4b78716d65507958-build.zip"
+          "s3Key": "amplify-builds/studioCourses-68513961543638636d6f-build.zip"
         },
         "studioLectures": {
           "deploymentBucketName": "amplify-lmsstudio-mrbinh-83126-deployment",
@@ -521,7 +521,7 @@
         },
         "userOverview": {
           "deploymentBucketName": "amplify-lmsstudio-mrbinh-83126-deployment",
-          "s3Key": "amplify-builds/userOverview-63464a714b3537445044-build.zip"
+          "s3Key": "amplify-builds/userOverview-446b386a44345a6a4547-build.zip"
         }
       },
       "hosting": {

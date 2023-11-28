@@ -1090,6 +1090,8 @@ export default class Learn extends React.Component {
                 questions: response.Questions,
                 workshopUrl: response.WorkshopUrl,
                 workshopDesc: response.WorkshopDescription,
+                referDocs: response.ReferDocs,
+                referUrl: response.ReferUrl,
               },
             },
             loading: false,
@@ -1460,6 +1462,19 @@ export default class Learn extends React.Component {
       });
   };
 
+  downloadReferDoc = async (event, name) => {
+    const signedURL = await Storage.get(
+      name,
+      { level: 'public'}
+    );
+    const link = document.createElement("a");
+    link.href = signedURL;
+    link.setAttribute("download", name);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
   render() {
     return this.state.loggedIn === false ? (
       <Navigate
@@ -1628,53 +1643,42 @@ export default class Learn extends React.Component {
           }
           tools={
             <HelpPanel
-              footer={
-                <div>
-                  <h3>
-                    Learn more <Icon name="external" />
-                  </h3>
-                  <ul>
-                    <li>
-                      <a href="">Link to documentation</a>
-                    </li>
-                    <li>
-                      <a href="">Link to documentation</a>
-                    </li>
-                  </ul>
-                </div>
-              }
+              // footer={
+              //   <div>
+              //     <h3>
+              //       Learn more <Icon name="external" />
+              //     </h3>
+              //     <ul>
+              //       <li>
+              //         <a href="">Link to documentation</a>
+              //       </li>
+              //       <li>
+              //         <a href="">Link to documentation</a>
+              //       </li>
+              //     </ul>
+              //   </div>
+              // }
               header={<h2>Reference</h2>}
             >
               <div>
-                <p>
+                {/* <p>
                   This is a paragraph with some <b>bold text</b> and also some{" "}
                   <i>italic text</i>.
-                </p>
+                </p> */}
 
-                <h3>h3 section header</h3>
+                <h3>Documents</h3>
                 <ul>
-                  <li>Unordered list item.</li>
-                  <li>Unordered list item.</li>
+                  {this.state.lecture.lecture ? this.state.lecture.lecture.referDocs.map((item) => {
+                    return <li onClick={(e) => this.downloadReferDoc(e, item)}>{item.split("-")[2]}</li>
+                  }) : <></>}
                 </ul>
 
-                <h4>h4 section header</h4>
-                <p>
-                  Code can be formatted as lines of code or blocks of code. Add
-                  inline code <code>like this</code> using a{" "}
-                  <code>{"<code>"}</code> tag.
-                  <pre>
-                    Or format blocks of code (like this) using a{" "}
-                    <code>{"<pre>"}</code> tag.
-                  </pre>
-                </p>
-
-                <h5>h5 section header</h5>
-                <dl>
-                  <dt>This is a term</dt>
-                  <dd>This is its description.</dd>
-                  <dt>This is a term</dt>
-                  <dd>This is its description</dd>
-                </dl>
+                <h4>URL</h4>
+                <ul>
+                  {this.state.lecture.lecture ? this.state.lecture.lecture.referUrl.map((item) => {
+                    return <li><a href={item}>{item}</a></li>
+                  }) : <></>}
+                </ul>
               </div>
             </HelpPanel>
           }

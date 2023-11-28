@@ -20,6 +20,7 @@ import RadioGroup from "@cloudscape-design/components/radio-group";
 import FileUpload from "@cloudscape-design/components/file-upload";
 import Flashbar from "@cloudscape-design/components/flashbar";
 import Toggle from "@cloudscape-design/components/toggle";
+import Icon from "@cloudscape-design/components/icon";
 import StatusIndicator from "@cloudscape-design/components/status-indicator";
 import { Storage } from "aws-amplify";
 import { API } from "aws-amplify";
@@ -36,6 +37,21 @@ class CreateLecture extends React.Component {
   submitRequest = async () => {
     // console.log(detail);
     this.setState({ isLoadingNextStep: true });
+
+    if (this.state.referDocuments.length > 0) {
+      let i;
+      for (i = 0; i < this.state.referDocuments.length; i++){
+        const s3key = `refer-docs/${this.state.randomId}-${this.state.referDocuments[i].name.replace(/ /g,"_")}`;
+        try {
+          await Storage.put(s3key, this.state.referDocuments[i], {
+            level: "public",
+          });
+          this.setState({ referDocumentS3Keys: [...this.state.referDocumentS3Keys, s3key] });
+        }catch(error) {
+          console.log(error);
+        }
+      }
+    }
 
     if (this.state.lectureType === "Video") {
       this.uploadLectureVideo(this.state.lectureVideo[0])
@@ -123,6 +139,8 @@ class CreateLecture extends React.Component {
       // ArchitectureDiagramS3Key: this.state.architectureDiagramS3Key,
       // QuizS3Key: this.state.quizS3Key,
       LastUpdated: new Date().toISOString(),
+      ReferDocs: this.state.referDocumentS3Keys,
+      ReferUrl: this.state.referUrl,
       State: "Enabled",
       Views: 0,
     };
@@ -174,6 +192,10 @@ class CreateLecture extends React.Component {
       workshopDescription: "",
       architectureDiagram: [],
       architectureDiagramS3Key: "",
+      referDocuments: [],
+      referDocumentS3Keys: [],
+      referUrl: [],
+      currentUrl: "",
       randomId: Math.floor(Math.random() * 1000000),
       quiz: [],
       quizS3Key: "",
@@ -284,27 +306,43 @@ class CreateLecture extends React.Component {
       }
     });
 
+  deleteUrl = (index) => {
+    let list = [...this.state.referUrl];
+    list.splice(index, 1);
+    this.setState({ referUrl: list });
+  };
+
+  renderReferUrl = () => {
+    return (
+      <>
+        {this.state.referUrl.map((item, index) => (
+          <div className="requirement-item">
+            <li className="requirement-item-haft" key={index}>
+              {item}
+            </li>
+            <div
+              className="requirement-item-haft"
+              style={{ textAlign: "right" }}
+              onClick={(e) => this.deleteUrl(index)}
+            >
+              <Icon name="close" size="inherit" />
+            </div>
+          </div>
+        ))}
+      </>
+    );
+  };
+
   // render 'Add Content' in step 2
   renderAddContent = () => {
-    if (this.state.lectureType === "Video") {
-      return (
-        <FormField
-          label="Lecture Videos"
-          description="Theory video for lecture"
-        >
+    const reference = (
+      <>
+        <FormField label="Lecture Reference" description="Related documents">
           <FileUpload
             onChange={async ({ detail }) => {
-              this.setState({ lectureVideo: detail.value });
-              const video = await this.setLectureLength(detail.value);
-              this.setState({ lectureVideoLength: video.duration });
-              //  console.log(detail.value[0])
-              //   if (detail.value.length === 0) {
-              //     this.resetLectureVideo();
-              //   } else {
-              //     this.uploadLectureVideo(detail.value[0]);
-              //   }
+              this.setState({ referDocuments: detail.value });
             }}
-            value={this.state.lectureVideo}
+            value={this.state.referDocuments}
             i18nStrings={{
               uploadButtonText: (e) => (e ? "Choose files" : "Choose file"),
               dropzoneText: (e) =>
@@ -318,10 +356,77 @@ class CreateLecture extends React.Component {
             showFileSize
             showFileThumbnail
             tokenLimit={3}
-            constraintText=".mov, .mp4"
-            accept=".mov,.mp4"
+            constraintText=".pdf, .doc, .docx"
+            accept=".pdf, .doc, .docx"
           />
         </FormField>
+        <FormField label="Document URL">
+          <Input
+            value={this.state.currentUrl}
+            onChange={(event) =>
+              this.setState({
+                currentUrl: event.detail.value,
+              })
+            }
+          />
+        </FormField>
+        <Button
+          variant="primary"
+          onClick={() => {
+            let newUrl = this.state.currentUrl;
+            this.setState({
+              referUrl: [...this.state.referUrl, newUrl],
+              currentUrl: "",
+            });
+          }}
+        >
+          Add URL
+        </Button>
+        <ColumnLayout columns={1} variant="text-grid">
+          {this.renderReferUrl()}
+        </ColumnLayout>
+      </>
+    );
+
+    if (this.state.lectureType === "Video") {
+      return (
+        <SpaceBetween direction="vertical" size="s">
+          <FormField
+            label="Lecture Videos"
+            description="Theory video for lecture"
+          >
+            <FileUpload
+              onChange={async ({ detail }) => {
+                this.setState({ lectureVideo: detail.value });
+                const video = await this.setLectureLength(detail.value);
+                this.setState({ lectureVideoLength: video.duration });
+                //  console.log(detail.value[0])
+                //   if (detail.value.length === 0) {
+                //     this.resetLectureVideo();
+                //   } else {
+                //     this.uploadLectureVideo(detail.value[0]);
+                //   }
+              }}
+              value={this.state.lectureVideo}
+              i18nStrings={{
+                uploadButtonText: (e) => (e ? "Choose files" : "Choose file"),
+                dropzoneText: (e) =>
+                  e ? "Drop files to upload" : "Drop file to upload",
+                removeFileAriaLabel: (e) => `Remove file ${e + 1}`,
+                limitShowFewer: "Show fewer files",
+                limitShowMore: "Show more files",
+                errorIconAriaLabel: "Error",
+              }}
+              showFileLastModified
+              showFileSize
+              showFileThumbnail
+              tokenLimit={3}
+              constraintText=".mov, .mp4"
+              accept=".mov,.mp4"
+            />
+          </FormField>
+          {reference}
+        </SpaceBetween>
       );
     } else if (this.state.lectureType === "Workshop") {
       return (
@@ -374,38 +479,42 @@ class CreateLecture extends React.Component {
               accept=".jpg,.jpeg,.png"
             />
           </FormField>
+          {reference}
         </SpaceBetween>
       );
     } else {
       return (
-        <FormField label="Quiz" description="Add quiz file">
-          <FileUpload
-            onChange={async ({ detail }) => {
-              this.setState({ quiz: detail.value });
-              //   if (detail.value.length === 0) {
-              //     this.resetQuiz();
-              //   } else {
-              //     this.uploadQuiz(detail.value[0]);
-              //   }
-            }}
-            value={this.state.quiz}
-            i18nStrings={{
-              uploadButtonText: (e) => (e ? "Choose files" : "Choose file"),
-              dropzoneText: (e) =>
-                e ? "Drop files to upload" : "Drop file to upload",
-              removeFileAriaLabel: (e) => `Remove file ${e + 1}`,
-              limitShowFewer: "Show fewer files",
-              limitShowMore: "Show more files",
-              errorIconAriaLabel: "Error",
-            }}
-            showFileLastModified
-            showFileSize
-            showFileThumbnail
-            tokenLimit={3}
-            constraintText=".csv"
-            accept=".csv"
-          />
-        </FormField>
+        <SpaceBetween direction="vertical" size="s">
+          <FormField label="Quiz" description="Add quiz file">
+            <FileUpload
+              onChange={async ({ detail }) => {
+                this.setState({ quiz: detail.value });
+                //   if (detail.value.length === 0) {
+                //     this.resetQuiz();
+                //   } else {
+                //     this.uploadQuiz(detail.value[0]);
+                //   }
+              }}
+              value={this.state.quiz}
+              i18nStrings={{
+                uploadButtonText: (e) => (e ? "Choose files" : "Choose file"),
+                dropzoneText: (e) =>
+                  e ? "Drop files to upload" : "Drop file to upload",
+                removeFileAriaLabel: (e) => `Remove file ${e + 1}`,
+                limitShowFewer: "Show fewer files",
+                limitShowMore: "Show more files",
+                errorIconAriaLabel: "Error",
+              }}
+              showFileLastModified
+              showFileSize
+              showFileThumbnail
+              tokenLimit={3}
+              constraintText=".csv"
+              accept=".csv"
+            />
+          </FormField>
+          {reference}
+        </SpaceBetween>
       );
     }
   };
