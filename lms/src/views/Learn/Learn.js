@@ -1643,29 +1643,9 @@ export default class Learn extends React.Component {
           }
           tools={
             <HelpPanel
-              // footer={
-              //   <div>
-              //     <h3>
-              //       Learn more <Icon name="external" />
-              //     </h3>
-              //     <ul>
-              //       <li>
-              //         <a href="">Link to documentation</a>
-              //       </li>
-              //       <li>
-              //         <a href="">Link to documentation</a>
-              //       </li>
-              //     </ul>
-              //   </div>
-              // }
               header={<h2>Reference</h2>}
             >
               <div>
-                {/* <p>
-                  This is a paragraph with some <b>bold text</b> and also some{" "}
-                  <i>italic text</i>.
-                </p> */}
-
                 <h3>Documents</h3>
                 <ul>
                   {this.state.lecture.lecture ? this.state.lecture.lecture.referDocs.map((item) => {

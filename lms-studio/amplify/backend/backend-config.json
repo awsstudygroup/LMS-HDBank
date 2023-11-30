@@ -57,6 +57,14 @@
           ],
           "category": "function",
           "resourceName": "studioUIConfig"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "studioUsers"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -123,7 +131,7 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "studiousers": {
+    "studioUsers": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
@@ -238,19 +246,19 @@
         }
       ]
     },
-    "AMPLIFY_function_studiousers_deploymentBucketName": {
+    "AMPLIFY_function_studioUsers_deploymentBucketName": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "studiousers"
+          "resourceName": "studioUsers"
         }
       ]
     },
-    "AMPLIFY_function_studiousers_s3Key": {
+    "AMPLIFY_function_studioUsers_s3Key": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "studiousers"
+          "resourceName": "studioUsers"
         }
       ]
     },
