@@ -7,6 +7,7 @@ import courseDefaultThumbnail from '../../assets/images/course-default-thumbnail
 import NavBar from '../../components/NavBar/NavBar';
 import Footer from '../../components/Footer/Footer';
 import loadingGif from '../../assets/images/loading.gif';
+import { calcTimeBrief } from "../../utils/tools";
 
 
 export default class Course extends React.Component {
@@ -97,23 +98,21 @@ export default class Course extends React.Component {
                             {course.name}
                         </div>
                         <div className='course-property'>
-                            <Icon variant='subtle' name='ticket' className='course-property-icon'/> Level: {course.level}
+                            <Icon variant='subtle' name='ticket' className='course-property-icon'/>Mức độ: {course.level}
                         </div>
                         <div className='course-property'>
                             <Icon variant='subtle' name='check' className='course-property-icon'/> 
-                            Category: 
+                            Nhóm: 
                             {course.categories.map((category, index) => <span key={index}>{index !== 0 ? ', ' : ' '}<a href='/#'>{category}</a></span>)}
                         </div>
-                        <div className='course-property'>
+                        {/* <div className='course-property'>
                             <Icon variant='subtle' name='check' className='course-property-icon'/> 
                             Tag:
                             {course.tags && course.tags.map((tag, index) => <span key={index}>{index !== 0 ? ', ' : ' '}<a href='/#'>{tag}</a></span>)}
-                        </div>
+                        </div> */}
                         <div className='course-property'>
                             <Icon variant='subtle' name='status-pending' className='course-property-icon'/> 
-                            {Math.floor(course.length / 3600) > 0 ? Math.floor(course.length / 3600) + " hours " : ""}
-                            {(course.length % 3600) / 60 > 0 ? Math.floor((course.length % 3600) / 60) + " minutes " : ""}
-                            {(course.length % 3600) % 60 > 0 ? (course.length % 3600) % 60 + " seconds" : ""}
+                            {calcTimeBrief(course.length)}
                         </div>
                         <div className='course-desc'>
                             {course.description}
@@ -131,7 +130,7 @@ export default class Course extends React.Component {
                             >
                             <div>
                                 <div className='course-what-to-learn-title'>
-                                    What you'll learn
+                                    Nội dung tóm tắt
                                 </div>
                                 {course.whatToLearn.map((item, index) => <div key={index} className='course-what-to-learn-item'>
                                     <Icon variant='subtle' name='check'/> 
@@ -141,25 +140,26 @@ export default class Course extends React.Component {
                             <div>
                                 <div className='board'>
                                     <div className='board-header'>
-                                        This couse includes
+                                        Khoá học bao gồm
                                     </div>
                                     <div className='board-content'>
                                         <div className='course-what-to-learn-item'>
                                             <Icon variant='subtle' name='multiscreen'/> 
-                                            <div>{videoCount} on-demand videos</div>
+                                            <div>{videoCount} video bài giảng</div>
                                         </div>
-                                        <div className='course-what-to-learn-item'>
+                                        { labCount > 0 ? <div className='course-what-to-learn-item'>
                                             <Icon variant='subtle' name='thumbs-up-filled'/>
-                                            <div>{labCount} hands-on labs</div>
-                                        </div>
+                                            <div>{labCount} bài tập</div>
+                                        </div> : <></>}
+                                        
                                         {/* <div className='course-what-to-learn-item'>
                                             <Icon variant='subtle' name='calendar'/>
                                             <div>{quiz} quizzes</div>
                                         </div> */}
                                     </div>
                                     <div className='board-footer'>
-                                        <Button variant='primary' className='btn-orange' onClick={() => this.openLearn()}>
-                                            Start Course
+                                        <Button variant='primary' className='btn-blue-light' onClick={() => this.openLearn()}>
+                                            Bắt đầu khoá học
                                         </Button>
                                     </div>
                                 </div>
@@ -170,7 +170,7 @@ export default class Course extends React.Component {
 
                         <div className='board'>
                             <div className='board-header'>
-                                Course content
+                                Nội dung khoá học
                             </div>
                             <div className='board-content'>
                                 {course.chapters.map((chapter, index) => <ExpandableSection key={index} className='course-lectures' headerText={chapter.name}>
@@ -188,7 +188,7 @@ export default class Course extends React.Component {
 
                         <div className='board'>
                             <div className='board-header'>
-                                Requirements
+                                Yêu cầu trước khi tham gia khoá học
                             </div>
                             <div className='board-content'>
                                 {course.requirements.map((requirement, index) => <ul key={index}>

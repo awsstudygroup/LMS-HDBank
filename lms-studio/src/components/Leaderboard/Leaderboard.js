@@ -1,50 +1,68 @@
-import React, { useState } from 'react';
-import { Outlet } from 'react-router-dom';
-import NavBar from '../../components/NavBar/NavBar';
-import Footer from '../../components/Footer/Footer';
+import React, { useState, useEffect } from "react";
+import { Outlet } from "react-router-dom";
+import NavBar from "../../components/NavBar/NavBar";
+import Footer from "../../components/Footer/Footer";
 // import { withAuthenticator } from '@aws-amplify/ui-react';
 
-import SideNavigation from '@cloudscape-design/components/side-navigation';
-import Applayout from '@cloudscape-design/components/app-layout';
-import Container from '@cloudscape-design/components/container';
-import Header from '@cloudscape-design/components/header';
-import Grid from '@cloudscape-design/components/grid';
-import ContentLayout from '@cloudscape-design/components/content-layout';
-import SpaceBetween from '@cloudscape-design/components/space-between';
-import Link from '@cloudscape-design/components/link';
-import Button from '@cloudscape-design/components/button';
-import Alert from '@cloudscape-design/components/alert';
-import Box from '@cloudscape-design/components/box';
-import Table from '@cloudscape-design/components/table';
-import TextFilter from '@cloudscape-design/components/text-filter';
-import Pagination from '@cloudscape-design/components/pagination';
-import CollectionPreferences from '@cloudscape-design/components/collection-preferences';
-import BreadcrumbGroup from '@cloudscape-design/components/breadcrumb-group';
-import { useNavigate } from 'react-router-dom';
-import './Leaderboard.css'
+import SideNavigation from "@cloudscape-design/components/side-navigation";
+import Applayout from "@cloudscape-design/components/app-layout";
+import Container from "@cloudscape-design/components/container";
+import Header from "@cloudscape-design/components/header";
+import Grid from "@cloudscape-design/components/grid";
+import ContentLayout from "@cloudscape-design/components/content-layout";
+import SpaceBetween from "@cloudscape-design/components/space-between";
+import Link from "@cloudscape-design/components/link";
+import Button from "@cloudscape-design/components/button";
+import Alert from "@cloudscape-design/components/alert";
+import Box from "@cloudscape-design/components/box";
+import Table from "@cloudscape-design/components/table";
+import TextFilter from "@cloudscape-design/components/text-filter";
+import Pagination from "@cloudscape-design/components/pagination";
+import CollectionPreferences from "@cloudscape-design/components/collection-preferences";
+import BreadcrumbGroup from "@cloudscape-design/components/breadcrumb-group";
+import Tabs from "@cloudscape-design/components/tabs";
+import StatusIndicator from "@cloudscape-design/components/status-indicator";
+import { useNavigate } from "react-router-dom";
+import { API, Auth } from "aws-amplify";
+import { apiName, coursePath, courseTopViewPath, userPath, byUserName } from "../../utils/api"
+import "./Leaderboard.css";
 
 const Leaderboard = (props) => {
-  const [activeHref, setActiveHref] = useState('leaderboard');
+  const [activeHref, setActiveHref] = useState("leaderboard");
+  const [loading, setLoading] = useState(false);
   const [selectedItems, setSelectedItems] = React.useState([
-    { name: 'Item 2' },
+    { name: "Item 2" },
   ]);
+  const [topCourse, setTopCourse] = useState([]);
   const navigate = useNavigate();
-  // var topCourses = [
-  //   {
-  //     courseID: 1,
-  //     courseName: 'course name 1',
-  //     courseDescription: 'this is course 1',
-  //     creatorName: 'gia lim',
-  //     oppValue: '230k ARR',
-  //   },
-  //   {
-  //     courseID: 2,
-  //     courseName: 'course name 2',
-  //     courseDescription: 'this is course 2',
-  //     creatorName: 'gia lim',
-  //     oppValue: '400k ARR',
-  //   },
-  // ];
+
+  useEffect(() => {
+    setLoading(true)
+    console.log(Auth);
+    API.get(apiName, coursePath + courseTopViewPath).then((data) => {
+      console.log(data);
+      let i = 0;
+      const userPoolId = Auth.userPool.userPoolId
+      while ( i < data.length ){
+        getCreator(data[i], userPoolId)
+        i++;
+      }
+      setTopCourse(data);
+      setLoading(false);
+    }).catch((error) => {
+      console.log(error);
+      setLoading(false)
+    })
+  }, [])
+
+  const getCreator = async (item, userPoolId) => {
+    try{
+      const response = await API.get(apiName, userPath + byUserName + `?username=${item}&userPoolId=${userPoolId}`);
+      console.log(response)
+    }catch(error){
+      
+    }
+  }
 
   return (
     <>
@@ -55,13 +73,13 @@ const Leaderboard = (props) => {
           navigation={
             <SideNavigation
               activeHref={activeHref}
-              header={{ href: '/', text: 'Management' }}
+              header={{ href: "/", text: "Management" }}
               onFollow={(event) => {
                 if (!event.detail.external) {
                   event.preventDefault();
                   const href =
-                    event.detail.href === '/'
-                      ? 'leaderboard'
+                    event.detail.href === "/"
+                      ? "leaderboard"
                       : event.detail.href;
                   setActiveHref(href);
                   navigate(`/management/${href}`);
@@ -69,34 +87,34 @@ const Leaderboard = (props) => {
               }}
               items={[
                 {
-                  type: 'section',
-                  text: 'Lectures',
+                  type: "section",
+                  text: "Lectures",
                   items: [
                     {
-                      type: 'link',
-                      text: 'My Lectures',
-                      href: 'myLectures',
+                      type: "link",
+                      text: "My Lectures",
+                      href: "myLectures",
                     },
                     {
-                      type: 'link',
-                      text: 'Public Lectures',
-                      href: 'publicLectures',
+                      type: "link",
+                      text: "Public Lectures",
+                      href: "publicLectures",
                     },
                   ],
                 },
                 {
-                  type: 'section',
-                  text: 'Courses',
+                  type: "section",
+                  text: "Courses",
                   items: [
                     {
-                      type: 'link',
-                      text: 'My Courses',
-                      href: 'myCourses',
+                      type: "link",
+                      text: "My Courses",
+                      href: "myCourses",
                     },
                     {
-                      type: 'link',
-                      text: 'Public Courses',
-                      href: 'publicCourses',
+                      type: "link",
+                      text: "Public Courses",
+                      href: "publicCourses",
                     },
                     {
                       type: "link",
@@ -105,11 +123,11 @@ const Leaderboard = (props) => {
                     },
                   ],
                 },
-                { type: 'link', text: 'User', href: 'user' },
+                { type: "link", text: "User", href: "user" },
                 {
-                  type: 'link',
-                  text: 'Leaderboard',
-                  href: 'leaderboard',
+                  type: "link",
+                  text: "Leaderboard",
+                  href: "leaderboard",
                 },
                 { type: "link", text: "Sale", href: "sale" },
               ]}
@@ -117,7 +135,7 @@ const Leaderboard = (props) => {
           }
           content={
             <div>
-              <ContentLayout
+              {/* <ContentLayout
                 header={
                   <SpaceBetween size="m">
                     <Header
@@ -517,7 +535,199 @@ const Leaderboard = (props) => {
                     />
                   }
                 />
-              </div>
+              </div> */}
+              <Tabs
+                tabs={[
+                  {
+                    label: "Top Courses",
+                    id: "courses",
+                    content: (
+                      <div>
+                        <Table
+                          onSelectionChange={({ detail }) =>
+                            setSelectedItems(detail.selectedItems)
+                          }
+                          selectedItems={selectedItems}
+                          ariaLabels={{
+                            selectionGroupLabel: "Items selection",
+                            allItemsSelectionLabel: ({ selectedItems }) =>
+                              `${selectedItems.length} ${
+                                selectedItems.length === 1 ? "item" : "items"
+                              } selected`,
+                            itemSelectionLabel: ({ selectedItems }, item) => {
+                              const isItemSelected = selectedItems.filter(
+                                (i) => i.name === item.name
+                              ).length;
+                              return `${item.name} is ${
+                                isItemSelected ? "" : "not"
+                              } selected`;
+                            },
+                          }}
+                          columnDefinitions={[
+                            {
+                              id: "course",
+                              header: "Name",
+                              cell: (e) => e.Name,
+                              sortingField: "name",
+                              isRowHeader: true,
+                            },
+                            {
+                              id: "state",
+                              header: "State",
+                              cell: (e) =>
+                              e.State === "Enabled" ? (
+                                <StatusIndicator>{e.State}</StatusIndicator>
+                              ) : (
+                                <StatusIndicator type="error">{e.State}</StatusIndicator>
+                              ),
+                              sortingField: "alt",
+                            },
+                            {
+                              id: "level",
+                              header: "Level",
+                              cell: (e) => e.Level,
+                            },
+                            {
+                              id: "views",
+                              header: "Views",
+                              cell: (e) => e.Views,
+                            },
+                            {
+                              id: "userRating",
+                              header: "userRating",
+                              cell: (e) => e.userRating,
+                              sortingField: "userRating",
+                            },
+                          ]}
+                          columnDisplay={[
+                            { id: "course", visible: true },
+                            { id: "state", visible: true },
+                            { id: "level", visible: true },
+                            { id: "views", visible: true },
+                          ]}
+                          items={topCourse}
+                          loadingText="Loading resources"
+                          loading={loading}
+                          selectionType="multi"
+                          trackBy="name"
+                          empty={
+                            <Box textAlign="center" color="inherit">
+                              <b>No resources</b>
+                              <Box
+                                padding={{ bottom: "s" }}
+                                variant="p"
+                                color="inherit"
+                              >
+                                No resources to display.
+                              </Box>
+                              <Button>Create resource</Button>
+                            </Box>
+                          }
+                          filter={
+                            <TextFilter
+                              filteringcourseThumbnail="Find Course Names"
+                              filteringText=""
+                            />
+                          }
+                          header={
+                            <Header
+                              counter={
+                                selectedItems.length
+                                  ? "(" + selectedItems.length + "/10)"
+                                  : "(10)"
+                              }
+                            >
+                              All Contributors
+                            </Header>
+                          }
+                          pagination={
+                            <Pagination currentPageIndex={1} pagesCount={2} />
+                          }
+                          preferences={
+                            <CollectionPreferences
+                              title="Preferences"
+                              confirmLabel="Confirm"
+                              cancelLabel="Cancel"
+                              preferences={{
+                                pageSize: 10,
+                                contentDisplay: [
+                                  { id: "Contributor Name", visible: true },
+                                  { id: "Course Name", visible: true },
+                                  { id: "Opp Value", visible: true },
+                                  { id: "description", visible: true },
+                                  { id: "userRating", visible: true },
+                                ],
+                              }}
+                              pageSizePreference={{
+                                title: "Page size",
+                                options: [
+                                  { value: 10, label: "10 resources" },
+                                  { value: 20, label: "20 resources" },
+                                ],
+                              }}
+                              wrapLinesPreference={{}}
+                              stripedRowsPreference={{}}
+                              contentDensityPreference={{}}
+                              contentDisplayPreference={{
+                                options: [
+                                  {
+                                    id: "Contributor Name",
+                                    label: "Contributor Name",
+                                    alwaysVisible: true,
+                                  },
+                                  {
+                                    id: "Course Name",
+                                    label: "Course Name",
+                                  },
+                                  { id: "Opp Value", label: "Opp Value" },
+                                  { id: "description", label: "Description" },
+                                  { id: "userRating", label: "userRating" },
+                                ],
+                              }}
+                              stickyColumnsPreference={{
+                                firstColumns: {
+                                  title: "Stick first column(s)",
+                                  description:
+                                    "Keep the first column(s) visible while horizontally scrolling the table content.",
+                                  options: [
+                                    { label: "None", value: 0 },
+                                    { label: "First column", value: 1 },
+                                    { label: "First two columns", value: 2 },
+                                  ],
+                                },
+                                lastColumns: {
+                                  title: "Stick last column",
+                                  description:
+                                    "Keep the last column visible while horizontally scrolling the table content.",
+                                  options: [
+                                    { label: "None", value: 0 },
+                                    { label: "Last column", value: 1 },
+                                  ],
+                                },
+                              }}
+                            />
+                          }
+                        />
+                      </div>
+                    ),
+                  },
+                  {
+                    label: "Top Lectures",
+                    id: "lectures",
+                    content: "Second tab content area",
+                  },
+                  {
+                    label: "Top Owner Lectures",
+                    id: "contribute",
+                    content: "Third tab content area",
+                  },
+                  {
+                    label: "Top Opp Value",
+                    id: "value",
+                    content: "Third tab content area",
+                  },
+                ]}
+              />
             </div>
           }
         />

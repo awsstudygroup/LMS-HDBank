@@ -12,7 +12,8 @@
       "user": {
         "title": "",
         "learning": "My learning",
-        "signOut": "Sign out"
+        "signOut": "Sign out",
+        "help": "Help"
       }
     },
     "home": {

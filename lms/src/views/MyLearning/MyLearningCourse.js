@@ -5,7 +5,7 @@ import { Button, Icon, ProgressBar } from '@cloudscape-design/components';
 
 import loadingGif from '../../assets/images/loading.gif';
 import courseDefaultThumbnail from '../../assets/images/course-default-thumbnail.png';
-import { calcTime } from "../../utils/tools"
+import { calcTime, calcTimeBrief } from "../../utils/tools"
 
 export default class MyLearningCourse extends React.Component {
     constructor(props) {
@@ -123,7 +123,7 @@ export default class MyLearningCourse extends React.Component {
                     </div>
                     <div className='mylearning-course-property'>
                         <Icon variant='subtle' name='status-pending' className='mylearning-course-property-icon'/> 
-                          {calcTime(course.length)}
+                          {calcTimeBrief(course.length)}
                     </div>
                     <div className='mylearning-course-desc'>
                         {!!course.description ? course.description : ""}
@@ -141,11 +141,14 @@ export default class MyLearningCourse extends React.Component {
                 </div>
                 <div className='mylearning-course-action'>
                     {this.state.completedLectures / this.state.totalLectures >= 0.8 ? <Button onClick={() => this.setState({redirectToCert: course.id})}>
-                        Certificate <Icon name='file' />
+                      Chứng nhận <Icon name='file' />
                     </Button> : ""}
-                    <Button variant="primary" className='btn-orange mylearning-continue-btn' onClick={() => this.setState({redirectToLearn: course.id})}>
-                        Continue <Icon name='arrow-left' className='rotate-180' />
-                    </Button>
+                    {this.state.completedLectures / this.state.totalLectures < 1 ? <Button variant="primary" className='btn-blue-light mylearning-continue-btn' onClick={() => this.setState({redirectToLearn: course.id})}>
+                        Tiếp tục khoá học <Icon name='arrow-left' className='rotate-180' />
+                    </Button> : 
+                    <Button variant="primary" className='btn-blue-light mylearning-continue-btn' onClick={() => this.setState({redirectToLearn: course.id})}>
+                        Xem lại khoá học <Icon name='arrow-left' className='rotate-180' />
+                    </Button>}
                 </div>
             </div>
     };

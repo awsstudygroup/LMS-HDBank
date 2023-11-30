@@ -31,8 +31,7 @@ const partitionKeyType = "S";
 const userIndex = "CreatorID-index";
 const publicityIndex = "Publicity-index";
 const creatorIDIndex = "CreatorID-index";
-const partitionCreatorKeyIndex = "CreatorID";
-const partitionCreatorKeyIndexType = "S";
+const viewsIndex = "Views-index";
 const sortKeyName = "";
 const sortKeyType = "";
 const hasSortKey = sortKeyName !== "";
@@ -220,6 +219,30 @@ app.get(path + "/myCourses", function(req, res) {
   });
 });
 
+// /*********************************************
+//  * HTTP Get method for get object by user id*
+//  *********************************************/
+
+app.get(path + "/topViews", function(req, res) {
+  let value = "";
+
+  let scanParams = {
+    TableName: tableName,
+    IndexName: viewsIndex,
+    Limit: "10",
+  }
+
+  dynamodb.scan(scanParams,(err, data) => {
+    if(err) {
+      console.log(err)
+      res.statusCode = 500;
+      res.json({error: 'Could not load items: ' + err.message});
+    } else {
+      res.json(data.Items);
+    }
+  });
+});
+
 // /*****************************************
 //  * HTTP Get method for get single object *
 //  *****************************************/
@@ -292,7 +315,7 @@ app.post(path, function(req, res) {
       TableName: tableName,
       Key: { ID: req.body['OldID'] }
     }
-    dynamodb.delete(params, function(err, data) {
+    dynamodb.delete(deleteParams, function(err, data) {
       if (err) console.log(err);
       else console.log(data);
     });

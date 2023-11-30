@@ -5,11 +5,14 @@ export const lecturePath = "/lectures";
 export const lecturePublicPath = "/lectures/public";
 export const myLecturePath = "/lectures/myLectures";
 export const coursePath = "/courses";
+export const courseTopViewPath = "/topViews";
 export const userOverview = "/userOverview";
 export const userCourse = "/usercourse";
 export const accessCodePath = "/accessCode";
 export const courseCodePath = "/courseCode/"
 export const uiConfigPath = "/configUI";
+export const userPath = "/users";
+export const byUserName = "/byUserName";
 
 const api = axios.create({
   baseURL: 'https://ax8w57g1dk.execute-api.ap-southeast-1.amazonaws.com/newenv'

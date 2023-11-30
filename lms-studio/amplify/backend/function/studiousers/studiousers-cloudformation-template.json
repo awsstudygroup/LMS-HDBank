@@ -47,12 +47,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "studiousers",
+            "studioUsers",
             {
               "Fn::Join": [
                 "",
                 [
-                  "studiousers",
+                  "studioUsers",
                   "-",
                   {
                     "Ref": "env"
@@ -89,12 +89,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "lmsstudioLambdaRoleb8cfae28",
+            "lmsstudioLambdaRole46693760",
             {
               "Fn::Join": [
                 "",
                 [
-                  "lmsstudioLambdaRoleb8cfae28",
+                  "lmsstudioLambdaRole46693760",
                   "-",
                   {
                     "Ref": "env"

@@ -3,6 +3,10 @@
     font-family: 'Amazon Ember' !important;
 }
 
+:root{
+--font-family-base-dnvic8: Tahoma, sans-serif !important;
+}
+
 body {
     margin: 0;
     font-family: Amazon Ember, sans-serif;
@@ -14,6 +18,11 @@ body {
 .btn-orange {
     background-color: #EB5F07 !important;
     border-color: #EB5F07 !important;
+}
+
+.btn-blue-light {
+    background-color: #18bfe9 !important;
+    border-color: #18bfe9 !important;
 }
 
 .rotate-180 {

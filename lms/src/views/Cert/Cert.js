@@ -4,7 +4,7 @@ import { API, Auth } from 'aws-amplify';
 import { Navigate } from "react-router-dom";
 import NavBar from '../../components/NavBar/NavBar';
 import Footer from '../../components/Footer/Footer';
-import { transformDateTime, calcTime } from "../../utils/tools"
+import { transformDateTime, calcTime, calcTimeBrief } from "../../utils/tools"
 
 import { Button, Icon, Modal, Box, SpaceBetween } from '@cloudscape-design/components';
 
@@ -22,6 +22,7 @@ export default class Cert extends React.Component {
             userEmail: "",
             userName: "",
             redirectToCourse: null,
+            disabled: true,
         };
     }
 
@@ -100,6 +101,7 @@ export default class Cert extends React.Component {
             .then((response) => {
                 this.setState({
                     cert: response,
+                    disabled: false,
                 });
             })
             .catch((error) => {
@@ -190,21 +192,21 @@ export default class Cert extends React.Component {
                                 {!!course.name ? course.name : ""}
                             </div>
                             <div className='cert-course-property'>
-                                <Icon variant='subtle' name='ticket' className='cert-course-property-icon'/> Level: {!!course.level ? course.level : ""}
+                                <Icon variant='subtle' name='ticket' className='cert-course-property-icon'/> Mức độ: {!!course.level ? course.level : ""}
                             </div>
                             <div className='cert-course-property'>
                                 <Icon variant='subtle' name='check' className='cert-course-property-icon'/> 
-                                Category: 
+                                Nhóm: 
                                 {!!course.categories ? course.categories.map((category, index) => <span key={index}>{index !== 0 ? ', ' : ' '}<a href='/#'>{category}</a></span>) : ""}
                             </div>
-                            <div className='cert-course-property'>
+                            {/* <div className='cert-course-property'>
                                 <Icon variant='subtle' name='check' className='cert-course-property-icon'/> 
                                 Tag:
                                 {!!course.tags ? course.tags.map((tag, index) => <span key={index}>{index !== 0 ? ', ' : ' '}<a href='/#'>{tag}</a></span>) : ""}
-                            </div>
+                            </div> */}
                             <div className='cert-course-property'>
                                 <Icon variant='subtle' name='status-pending' className='cert-course-property-icon'/> 
-                                {calcTime(course.length)}
+                                {calcTimeBrief(course.length)}
                             </div>
                             <div className='cert-course-desc'>
                                 {!!course.description ? course.description : ""}
@@ -222,10 +224,10 @@ export default class Cert extends React.Component {
                         </div> */}
                         <div className='cert-course-action'>
                             <Button variant="primary" className='cert-continue-btn' onClick={() => this.setState({redirectToCourse: course.id})}>
-                                Review course <Icon name='external' />
+                                Xem lại khoá học <Icon name='external' />
                             </Button>
-                            <Button variant="primary" className='btn-orange cert-continue-btn' onClick={() => this.setState({shareCertOpen: true})}>
-                                Share certificate <Icon name='share' />
+                            <Button variant="primary" className='btn-blue-light cert-continue-btn' disabled={this.state.disabled} onClick={() => this.setState({shareCertOpen: true})}>
+                                Chia sẻ chứng chỉ <Icon name='share' />
                             </Button>
                         </div>
                         <div className='cert-view'>

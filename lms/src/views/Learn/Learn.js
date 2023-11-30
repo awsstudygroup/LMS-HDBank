@@ -16,6 +16,8 @@ import {
   Modal,
   Box,
   SpaceBetween,
+  HelpPanel,
+  Icon,
 } from "@cloudscape-design/components";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import { csv } from "csvtojson";
@@ -47,14 +49,14 @@ import {
   IoFemaleSharp,
 } from "react-icons/io5";
 import { Navigate } from "react-router-dom";
-import { 
-  apiName, 
-  userCoursePath, 
-  userCourseUpdatePath, 
-  userLecturePath, 
-  coursePath, 
-  lecturePath 
-} from "../../utils/api"
+import {
+  apiName,
+  userCoursePath,
+  userCourseUpdatePath,
+  userLecturePath,
+  coursePath,
+  lecturePath,
+} from "../../utils/api";
 
 import loadingGif from "../../assets/images/loading.gif";
 
@@ -177,8 +179,8 @@ class VideoContent extends React.Component {
     if (state.currentTime / state.duration > 0.05) {
       this.props.countView();
     }
-    if (prevState.isFullscreen !== state.isFullscreen){
-      this.setState({ isFullscreenEnabled: state.isFullscreen })
+    if (prevState.isFullscreen !== state.isFullscreen) {
+      this.setState({ isFullscreenEnabled: state.isFullscreen });
     }
   }
 
@@ -193,7 +195,9 @@ class VideoContent extends React.Component {
         ref={(player) => {
           this.player = player;
         }}
-        className={!this.state.isFullscreenEnabled ? "learn-transparent-player" : ""}
+        className={
+          !this.state.isFullscreenEnabled ? "learn-transparent-player" : ""
+        }
         autoPlay
         playsInline
         fluid={false}
@@ -345,15 +349,17 @@ class QuizContent extends React.Component {
           <Checkbox
             onChange={({ detail }) => {
               let preChecked = this.state.checkedAnswer;
-              let preSelectedMultiAns = this.state.selectedMultiAnswer
+              let preSelectedMultiAns = this.state.selectedMultiAnswer;
               preChecked[i] = detail.checked;
               this.setState({ checkedAnswer: preChecked });
-              if ( detail.checked ){
+              if (detail.checked) {
                 preSelectedMultiAns = [...preSelectedMultiAns, i];
-              }else{
-                preSelectedMultiAns = preSelectedMultiAns.filter( item => item != i );
+              } else {
+                preSelectedMultiAns = preSelectedMultiAns.filter(
+                  (item) => item != i
+                );
               }
-              this.setState({ selectedMultiAnswer: preSelectedMultiAns })
+              this.setState({ selectedMultiAnswer: preSelectedMultiAns });
             }}
             checked={this.state.checkedAnswer[i]}
             disabled={this.state.currentQuestionAnswered}
@@ -369,15 +375,17 @@ class QuizContent extends React.Component {
   getCorrectAnswer = () => {
     let j = 0;
     let correctAnswer = [];
-    while (j < MAX_ANSWERS){
-      let answer = parseInt(this.state.questions[this.state.currentQuestion][`C${j}`])
-      if (this.state.questions[this.state.currentQuestion][`C${j}`] !== ""){
-        correctAnswer.push(answer)
+    while (j < MAX_ANSWERS) {
+      let answer = parseInt(
+        this.state.questions[this.state.currentQuestion][`C${j}`]
+      );
+      if (this.state.questions[this.state.currentQuestion][`C${j}`] !== "") {
+        correctAnswer.push(answer);
       }
       j++;
     }
     return correctAnswer;
-  }
+  };
 
   checkAnswer = () => {
     if (
@@ -387,16 +395,16 @@ class QuizContent extends React.Component {
     ) {
       let countAnswer = 0;
       const correctAnswer = this.getCorrectAnswer();
-      if (this.state.selectedMultiAnswer.length != correctAnswer.length){
+      if (this.state.selectedMultiAnswer.length != correctAnswer.length) {
         return false;
       } else {
-        for ( let i = 0; i < this.state.selectedMultiAnswer.length; i++){
-          if (correctAnswer.includes(this.state.selectedMultiAnswer[i])){
+        for (let i = 0; i < this.state.selectedMultiAnswer.length; i++) {
+          if (correctAnswer.includes(this.state.selectedMultiAnswer[i])) {
             countAnswer++;
           }
         }
 
-        if (countAnswer != correctAnswer.length){
+        if (countAnswer != correctAnswer.length) {
           return false;
         }
       }
@@ -420,7 +428,6 @@ class QuizContent extends React.Component {
   }
 
   render() {
-
     return (
       <div className="learn-lab-content-container learn-lab-content-container-quiz">
         {/* <div className="learn-lab-content-desc learn-lab-content-quiz">
@@ -706,7 +713,7 @@ class QuizContent extends React.Component {
             {!this.state.quizStarted ? (
               <Button
                 variant="primary"
-                className="btn-orange"
+                className="btn-blue-light"
                 onClick={() =>
                   this.setState({
                     quizStarted: true,
@@ -727,12 +734,12 @@ class QuizContent extends React.Component {
               this.state.quizPassed ? (
                 <Button
                   variant="primary"
-                  className="btn-orange"
+                  className="btn-blue-light"
                   onClick={() => {
                     this.props.markLectureCompleted();
                     this.props.nextLecture();
-                    if ( this.props.isLast ) {
-                      this.setState({ visible: true })
+                    if (this.props.isLast) {
+                      this.setState({ visible: true });
                     }
                   }}
                 >
@@ -741,7 +748,7 @@ class QuizContent extends React.Component {
               ) : (
                 <Button
                   variant="primary"
-                  className="btn-orange"
+                  className="btn-blue-light"
                   onClick={() =>
                     this.setState({ quizStarted: false, quizDone: false })
                   }
@@ -752,7 +759,7 @@ class QuizContent extends React.Component {
             ) : !this.state.currentQuestionAnswered ? (
               <Button
                 variant="primary"
-                className="btn-orange"
+                className="btn-blue-light"
                 onClick={() => {
                   if (
                     this.state.selectedAnswer !== null ||
@@ -766,7 +773,7 @@ class QuizContent extends React.Component {
             ) : (
               <Button
                 variant="primary"
-                className="btn-orange"
+                className="btn-blue-light"
                 onClick={() => {
                   let currentQuestion = this.state.currentQuestion;
                   let nextQuestion = this.state.currentQuestion + 1;
@@ -801,12 +808,27 @@ class QuizContent extends React.Component {
           </div>
         </div>
         <Modal
-          onDismiss={() => this.setState({visible: false, quizStarted: false, quizDone: false})}
+          onDismiss={() =>
+            this.setState({
+              visible: false,
+              quizStarted: false,
+              quizDone: false,
+            })
+          }
           visible={this.state.visible}
           footer={
             <Box float="right">
               <SpaceBetween direction="horizontal" size="xs">
-                <Button variant="link" onClick={() => this.setState({visible: false, quizStarted: false, quizDone: false})}>
+                <Button
+                  variant="link"
+                  onClick={() =>
+                    this.setState({
+                      visible: false,
+                      quizStarted: false,
+                      quizDone: false,
+                    })
+                  }
+                >
                   OK
                 </Button>
               </SpaceBetween>
@@ -849,7 +871,6 @@ function MainContent(props) {
         });
     }
   };
-
 
   useEffect(() => {
     setUpdateView(false);
@@ -939,7 +960,7 @@ function MainContent(props) {
               checked={autoNext}
               onChange={(e) => setAutoNext(!autoNext)}
             >
-              Auto Next
+              Tự động chuyển bài
               {autoNext ? (
                 <IoCheckmarkCircleOutline className="learn-auto-next-control-icon" />
               ) : (
@@ -984,7 +1005,7 @@ function MainContent(props) {
           <></>
         )}
       </div>
-    {/* </FullScreen> */}
+      {/* </FullScreen> */}
     </div>
   );
 }
@@ -1044,6 +1065,7 @@ export default class Learn extends React.Component {
   }
 
   loadLecture(chapterIndex, lectureIndex) {
+    console.log(lectureIndex);
     let lectureId =
       this.state.course.chapters[chapterIndex].lectures[lectureIndex].lectureId;
     const path = lecturePath + lectureId;
@@ -1068,6 +1090,8 @@ export default class Learn extends React.Component {
                 questions: response.Questions,
                 workshopUrl: response.WorkshopUrl,
                 workshopDesc: response.WorkshopDescription,
+                referDocs: response.ReferDocs,
+                referUrl: response.ReferUrl,
               },
             },
             loading: false,
@@ -1093,7 +1117,7 @@ export default class Learn extends React.Component {
       })
       .catch((error) => {
         console.log(error);
-        this.setState({ loading: false })
+        this.setState({ loading: false });
       });
   }
 
@@ -1210,7 +1234,6 @@ export default class Learn extends React.Component {
       .then((response) => {
         console.log(response);
         if (response.length === 0) {
-
           const myInit = {
             body: {
               LastAccessed: new Date().getTime(),
@@ -1220,19 +1243,17 @@ export default class Learn extends React.Component {
           };
 
           API.put(apiName, userCoursePath, myInit)
-            .then((response) => {
-            })
+            .then((response) => {})
             .catch((error) => {
               console.log(error.response);
             });
         } else {
           const updateBody = {
-            body: { LastAccessed: new Date().getTime() }
-          }
+            body: { LastAccessed: new Date().getTime() },
+          };
 
           API.put(apiName, userCourseUpdatePath + course, updateBody)
-            .then((response) => {
-            })
+            .then((response) => {})
             .catch((error) => {
               console.log(error.response);
             });
@@ -1375,7 +1396,7 @@ export default class Learn extends React.Component {
 
   async ionViewCanEnter() {
     try {
-      await Auth.currentAuthenticatedUser();
+      await Auth.currentAuthenticatedUser({ bypassCache: false });
       this.setState({
         loggedIn: true,
       });
@@ -1421,6 +1442,13 @@ export default class Learn extends React.Component {
     this.setState({ lecture: newLecture });
   };
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.state.lecture !== nextState.lecture) {
+      this.ionViewCanEnter();
+    }
+    return true;
+  }
+
   countViewForCourse = () => {
     let courseId = this.state.course.id;
     const path = coursePath + courseId;
@@ -1434,9 +1462,25 @@ export default class Learn extends React.Component {
       });
   };
 
+  downloadReferDoc = async (event, name) => {
+    const signedURL = await Storage.get(
+      name,
+      { level: 'public'}
+    );
+    const link = document.createElement("a");
+    link.href = signedURL;
+    link.setAttribute("download", name);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
   render() {
     return this.state.loggedIn === false ? (
-      <Navigate to="/auth" state={{path: "/learn/" + `${window.location.hash.split("/")[2]}`}}/>
+      <Navigate
+        to="/auth"
+        state={{ path: "/learn/" + `${window.location.hash.split("/")[2]}` }}
+      />
     ) : (
       <div>
         <NavBar
@@ -1445,7 +1489,7 @@ export default class Learn extends React.Component {
         />
         <AppLayout
           headerSelector="#h"
-          navigationWidth= "350"
+          navigationWidth="350"
           navigation={
             <SideNavigation
               activeHref={
@@ -1488,14 +1532,14 @@ export default class Learn extends React.Component {
                             this.state.course.totalLecture >=
                           0.8 ? (
                             <span className="learn-navigation-progress-completed">
-                              Completed {this.state.completedLectures.length}{" "}
-                              out of {this.state.course.totalLecture} lectures{" "}
+                              Đã hoàn tất {this.state.completedLectures.length}{" "}
+                              trên {this.state.course.totalLecture} bài học{" "}
                               <IoCheckmarkSharp />
                             </span>
                           ) : (
                             <span className="learn-navigation-progress">
-                              Completed {this.state.completedLectures.length}{" "}
-                              out of {this.state.course.totalLecture} lectures
+                              Đã hoàn tất {this.state.completedLectures.length}{" "}
+                              trên {this.state.course.totalLecture} bài học{" "}
                             </span>
                           ),
                       },
@@ -1506,10 +1550,17 @@ export default class Learn extends React.Component {
                           text: (
                             <div className="learn-navigation-chapter">
                               <div style={{ width: "70%" }}>
-                              {chapter.name}{" "}
+                                {chapter.name}{" "}
                               </div>
                               <div className="learn-chapter-time">
-                                {chapter.length > 0 ? (<><IoTimeOutline />{this.formatTime(chapter.length)}</>) : ""}
+                                {chapter.length > 0 ? (
+                                  <>
+                                    <IoTimeOutline />
+                                    {this.formatTime(chapter.length)}
+                                  </>
+                                ) : (
+                                  ""
+                                )}
                               </div>
                             </div>
                           ),
@@ -1580,7 +1631,7 @@ export default class Learn extends React.Component {
             <BreadcrumbGroup
               items={[
                 {
-                  text: "My Learning",
+                  text: "Bài học",
                   href: "#/mylearning",
                 },
                 {
@@ -1589,6 +1640,27 @@ export default class Learn extends React.Component {
               ]}
               ariaLabel="Breadcrumbs"
             />
+          }
+          tools={
+            <HelpPanel
+              header={<h2>Reference</h2>}
+            >
+              <div>
+                <h3>Documents</h3>
+                <ul>
+                  {this.state.lecture.lecture ? this.state.lecture.lecture.referDocs.map((item) => {
+                    return <li onClick={(e) => this.downloadReferDoc(e, item)}>{item.split("-")[2]}</li>
+                  }) : <></>}
+                </ul>
+
+                <h4>URL</h4>
+                <ul>
+                  {this.state.lecture.lecture ? this.state.lecture.lecture.referUrl.map((item) => {
+                    return <li><a href={item}>{item}</a></li>
+                  }) : <></>}
+                </ul>
+              </div>
+            </HelpPanel>
           }
           content={
             !this.state.course ? (
