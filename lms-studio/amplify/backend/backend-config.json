@@ -133,6 +133,15 @@
     },
     "studioUsers": {
       "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "lmsstudioc3fd255f"
+        }
+      ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
