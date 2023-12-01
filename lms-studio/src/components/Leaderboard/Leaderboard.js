@@ -24,7 +24,13 @@ import Tabs from "@cloudscape-design/components/tabs";
 import StatusIndicator from "@cloudscape-design/components/status-indicator";
 import { useNavigate } from "react-router-dom";
 import { API, Auth } from "aws-amplify";
-import { apiName, coursePath, courseTopViewPath, userPath, byUserName } from "../../utils/api"
+import {
+  apiName,
+  coursePath,
+  courseTopViewPath,
+  userPath,
+  byUserName,
+} from "../../utils/api";
 import "./Leaderboard.css";
 
 const Leaderboard = (props) => {
@@ -37,32 +43,48 @@ const Leaderboard = (props) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setLoading(true)
-    console.log(Auth);
-    API.get(apiName, coursePath + courseTopViewPath).then((data) => {
-      console.log(data);
+    getTopCourse();
+  }, []);
+
+  const getTopCourse = async () => {
+    setLoading(true);
+    try {
+      const data = await API.get(apiName, coursePath + courseTopViewPath);
       let i = 0;
-      const userPoolId = Auth.userPool.userPoolId
-      while ( i < data.length ){
-        getCreator(data[i], userPoolId)
+      const userPoolId = Auth.userPool.userPoolId;
+      let topCourseTemp = [...data];
+      while (i < data.length) {
+        const response = await API.get(
+          apiName,
+          userPath +
+            byUserName +
+            `?username=${data[i].CreatorID}&userPoolId=${userPoolId}`
+        );
+        console.log(response)
+        topCourseTemp[i]["Creator"] = response.UserAttributes[2].Value;
         i++;
       }
-      setTopCourse(data);
+      setTopCourse(topCourseTemp);
       setLoading(false);
-    }).catch((error) => {
-      // console.log(error);
-      setLoading(false)
-    })
-  }, [])
-
-  const getCreator = async (item, userPoolId) => {
-    try{
-      const response = await API.get(apiName, userPath + byUserName + `?username=${item}&userPoolId=${userPoolId}`);
-      console.log(response)
-    }catch(error){
-      
+    } catch (error) {
+      setLoading(false);
     }
+  };
+
+  const getTopLecture = async () => {
+    
   }
+  const getCreator = async (item, userPoolId) => {
+    try {
+      const response = await API.get(
+        apiName,
+        userPath + byUserName + `?username=${item}&userPoolId=${userPoolId}`
+      );
+      return response;
+    } catch (error) {
+      return ''
+    }
+  };
 
   return (
     <>
@@ -575,11 +597,13 @@ const Leaderboard = (props) => {
                               id: "state",
                               header: "State",
                               cell: (e) =>
-                              e.State === "Enabled" ? (
-                                <StatusIndicator>{e.State}</StatusIndicator>
-                              ) : (
-                                <StatusIndicator type="error">{e.State}</StatusIndicator>
-                              ),
+                                e.State === "Enabled" ? (
+                                  <StatusIndicator>{e.State}</StatusIndicator>
+                                ) : (
+                                  <StatusIndicator type="error">
+                                    {e.State}
+                                  </StatusIndicator>
+                                ),
                               sortingField: "alt",
                             },
                             {
@@ -593,10 +617,9 @@ const Leaderboard = (props) => {
                               cell: (e) => e.Views,
                             },
                             {
-                              id: "userRating",
-                              header: "userRating",
-                              cell: (e) => e.userRating,
-                              sortingField: "userRating",
+                              id: "creator",
+                              header: "Creator",
+                              cell: (e) => e.Creator,
                             },
                           ]}
                           columnDisplay={[
@@ -604,6 +627,7 @@ const Leaderboard = (props) => {
                             { id: "state", visible: true },
                             { id: "level", visible: true },
                             { id: "views", visible: true },
+                            { id: "creator", visible: true },
                           ]}
                           items={topCourse}
                           loadingText="Loading resources"

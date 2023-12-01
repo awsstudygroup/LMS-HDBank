@@ -521,7 +521,7 @@
         },
         "studioUsers": {
           "deploymentBucketName": "amplify-lmsstudio-mrbinh-83126-deployment",
-          "s3Key": "amplify-builds/studioUsers-336744537844434a5579-build.zip"
+          "s3Key": "amplify-builds/studioUsers-30564c64562b4a6c516d-build.zip"
         }
       },
       "hosting": {
