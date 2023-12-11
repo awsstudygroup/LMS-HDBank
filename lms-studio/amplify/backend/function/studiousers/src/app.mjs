@@ -8,7 +8,7 @@ See the License for the specific language governing permissions and limitations 
 
 import {
   CognitoIdentityProviderClient,
-  ListUsersCommand,
+  AdminGetUserCommand
 } from "@aws-sdk/client-cognito-identity-provider";
 
 import express from "express";
@@ -40,23 +40,24 @@ app.use(function (req, res, next) {
 app.get(path + byUserNamePath, function (req, res) {
   if (!req.query[userPoolId] || !req.query[username]) {
     res.statusCode = 500;
-    res.json({ error: " " + err });
+    // res.json({ error: " " + err });
   }
 
   const input = {
     UserPoolId: req.query[userPoolId], // required
     Username: req.query[username], // required
   };
-  const client = new AdminGetUserCommand(input);
-  client
-    .send(command)
+  const command = new AdminGetUserCommand(input);
+  client.send(command)
     .then((data) => {
       res.json(data);
-    })
-    .catch((error) => {
+    },
+    (error) => {
+      console.log(error);
       res.statusCode = 500;
-      res.json({ error: " " + err });
-    });
+      res.json({ error: " " + error });
+    }
+    )
 });
 
 app.put(path, function (req, res) {});

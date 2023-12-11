@@ -68,6 +68,13 @@
       "permissions": {
         "setting": "open"
       }
+    },
+    "/contributor": {
+      "name": "/contributor",
+      "lambdaFunction": "studioContributor",
+      "permissions": {
+        "setting": "open"
+      }
     }
   }
 }

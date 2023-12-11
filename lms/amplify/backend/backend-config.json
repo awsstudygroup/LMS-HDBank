@@ -420,6 +420,10 @@
       "providerPlugin": "awscloudformation",
       "service": "DynamoDB"
     },
+    "Contributor": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
+    },
     "CourseCode": {
       "providerPlugin": "awscloudformation",
       "service": "DynamoDB"

@@ -10,6 +10,16 @@ import "@aws-amplify/ui-react/styles.css";
 import { Navigate } from "react-router-dom";
 import "./AuthForm.css";
 
+const formFields = {
+  signUp: {
+    name: {
+      label: "Username",
+      placeholder: "Enter your name",
+      order: 5
+    }
+  },
+};
+
 export default function AuthForm() {
   const { tokens } = useTheme();
   // console.log(tokens);
@@ -57,6 +67,7 @@ export default function AuthForm() {
     <ThemeProvider theme={theme}>
       <Authenticator
         // Customize `Authenticator.SignUp.FormFields`
+        formFields={formFields}
         components={{
           SignUp: {
             FormFields() {

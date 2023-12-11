@@ -6,12 +6,7 @@ import Footer from "../../components/Footer/Footer";
 
 import SideNavigation from "@cloudscape-design/components/side-navigation";
 import Applayout from "@cloudscape-design/components/app-layout";
-import Container from "@cloudscape-design/components/container";
 import Header from "@cloudscape-design/components/header";
-import Grid from "@cloudscape-design/components/grid";
-import ContentLayout from "@cloudscape-design/components/content-layout";
-import SpaceBetween from "@cloudscape-design/components/space-between";
-import Link from "@cloudscape-design/components/link";
 import Button from "@cloudscape-design/components/button";
 import Alert from "@cloudscape-design/components/alert";
 import Box from "@cloudscape-design/components/box";
@@ -19,49 +14,103 @@ import Table from "@cloudscape-design/components/table";
 import TextFilter from "@cloudscape-design/components/text-filter";
 import Pagination from "@cloudscape-design/components/pagination";
 import CollectionPreferences from "@cloudscape-design/components/collection-preferences";
-import BreadcrumbGroup from "@cloudscape-design/components/breadcrumb-group";
 import Tabs from "@cloudscape-design/components/tabs";
 import StatusIndicator from "@cloudscape-design/components/status-indicator";
 import { useNavigate } from "react-router-dom";
 import { API, Auth } from "aws-amplify";
-import { apiName, coursePath, courseTopViewPath, userPath, byUserName } from "../../utils/api"
+import {
+  apiName,
+  coursePath,
+  courseTopViewPath,
+  userPath,
+  byUserName,
+  lecturePath,
+  lectureTopViewPath,
+  courseTopContributor,
+  contributorPath,
+  topContributor,
+} from "../../utils/api";
 import "./Leaderboard.css";
 
 const Leaderboard = (props) => {
   const [activeHref, setActiveHref] = useState("leaderboard");
   const [loading, setLoading] = useState(false);
-  const [selectedItems, setSelectedItems] = React.useState([
-    { name: "Item 2" },
-  ]);
+  const [selectedItems, setSelectedItems] = React.useState([]);
   const [topCourse, setTopCourse] = useState([]);
+  const [topLectures, setTopLectures] = useState([]);
+  const [activeTabId, setActiveTabId] = useState("contributor");
   const navigate = useNavigate();
 
   useEffect(() => {
-    setLoading(true)
-    console.log(Auth);
-    API.get(apiName, coursePath + courseTopViewPath).then((data) => {
-      console.log(data);
+    if (activeTabId === "courses") {
+      getTopCourse();
+    } else if (activeTabId === "lectures") {
+      getTopLecture();
+    } else if (activeTabId === "contributor"){
+      getContributor();
+    }
+  }, [activeTabId]);
+
+  const getTopCourse = async () => {
+    setLoading(true);
+    try {
+      const data = await API.get(apiName, coursePath + courseTopViewPath);
       let i = 0;
-      const userPoolId = Auth.userPool.userPoolId
-      while ( i < data.length ){
-        getCreator(data[i], userPoolId)
+      const userPoolId = Auth.userPool.userPoolId;
+      let topCourseTemp = [...data];
+      while (i < data.length) {
+        const response = await API.get(
+          apiName,
+          userPath +
+            byUserName +
+            `?username=${data[i].CreatorID}&userPoolId=${userPoolId}`
+        );
+        console.log(response);
+        topCourseTemp[i]["Creator"] = response.UserAttributes[2].Value;
         i++;
       }
-      setTopCourse(data);
+      setTopCourse(topCourseTemp);
       setLoading(false);
-    }).catch((error) => {
+    } catch (error) {
       console.log(error);
-      setLoading(false)
-    })
-  }, [])
-
-  const getCreator = async (item, userPoolId) => {
-    try{
-      const response = await API.get(apiName, userPath + byUserName + `?username=${item}&userPoolId=${userPoolId}`);
-      console.log(response)
-    }catch(error){
-      
+      setLoading(false);
     }
+  };
+
+  const getTopLecture = async () => {
+    setLoading(true);
+    try {
+      const data = await API.get(apiName, lecturePath + lectureTopViewPath);
+      let i = 0;
+      const userPoolId = Auth.userPool.userPoolId;
+      let topLectureTemp = [...data];
+      while (i < data.length) {
+        const response = await API.get(
+          apiName,
+          userPath +
+            byUserName +
+            `?username=${data[i].CreatorID}&userPoolId=${userPoolId}`
+        );
+        console.log(response);
+        topLectureTemp[i]["Creator"] = response.UserAttributes[2].Value;
+        i++;
+      }
+      setTopLectures(topLectureTemp);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
+  };
+
+  const getContributor = async () => {
+    try {
+      const data = await API.get(apiName, contributorPath + topContributor);
+      console.log(data);
+    }catch(error){
+      console.log(error);
+    }
+    
+    
   }
 
   return (
@@ -135,408 +184,11 @@ const Leaderboard = (props) => {
           }
           content={
             <div>
-              {/* <ContentLayout
-                header={
-                  <SpaceBetween size="m">
-                    <Header
-                      variant="h1"
-                      info={<Link>Info</Link>}
-                      description="View the top courses for this week!"
-                      // actions={
-                      //   <Button variant="primary">Button</Button>
-                      // }
-                    >
-                      Top Contributors
-                    </Header>
-                  </SpaceBetween>
-                }
-              >
-                <Grid
-                  className="top-attribute"
-                  gridDefinition={[
-                    { colspan: { default: 4, xxs: 4 } },
-                    { colspan: { default: 4, xxs: 4 } },
-                    { colspan: { default: 4, xxs: 4 } },
-                  ]}
-                >
-                  <div style={{ paddingTop: 60 , maxWidth: "100%"}}>
-                    <Container
-                      media={{
-                        content: (
-                          <img
-                            src="/courseImg-2.jpg"
-                            alt="courseThumbnail"
-                          />
-                        ),
-                        height: 200,
-                        position: 'top',
-                      }}
-                      footer={
-                        <div className="container-media-footer">
-                          <Link href="#">
-                            Created by Tuan Vo (@mintuan){' '}
-                          </Link>
-                          <Button iconName="share" variant="icon" />
-                          <Box variant="small">
-                            Opportunity Influenced: 200k ARR
-                          </Box>
-                          <Box variant="small">
-                            Last Update: 5 hours ago
-                          </Box>
-                        </div>
-                      }
-                    >
-                      <SpaceBetween direction="vertical" size="s">
-                        <SpaceBetween direction="vertical" size="xxs">
-                          <Box variant="small">
-                            #sagemaker #s3 #personalise
-                          </Box>
-                          <Box variant="h2">
-                            Building a System Recommender on AWS
-                          </Box>
-                        </SpaceBetween>
-                        Participants will learn about the fundamental
-                        concepts of recommendation systems, data
-                        preprocessing and feature engineering
-                        techniques, and how to train and evaluate
-                        machine learning models for generating
-                        accurate recommendations. They will also gain
-                        hands-on experience in utilizing AWS services
-                        such as Amazon S3 for data storage, Amazon
-                        SageMaker for model training and deployment,
-                        and Amazon Personalize for building scalable
-                        recommendation systems.
-                        <Button href="/management/publicCourses">
-                          Go to Course
-                        </Button>
-                      </SpaceBetween>
-                    </Container>
-                  </div>
-
-                  <div style={{ paddingTop: 60 }}>
-                    <Container
-                      media={{
-                        content: (
-                          <img
-                            src="/courseImg-1.jpg"
-                            alt="courseThumbnail"
-                          />
-                        ),
-                        height: 200,
-                        position: 'top',
-                      }}
-                      footer={
-                        <div className="container-media-footer">
-                          <Link href="#">
-                            Created by Trinh Vo (@trinhvo)
-                          </Link>
-                          <Button iconName="share" variant="icon" />
-                          <Box variant="small">
-                            Opportunity Influenced: 320k ARR
-                          </Box>
-                          <Box variant="small">
-                            Last Update: 5 hours ago
-                          </Box>
-                        </div>
-                      }
-                    >
-                      <SpaceBetween direction="vertical" size="s">
-                        <SpaceBetween direction="vertical" size="xxs">
-                          <Box variant="small">
-                            #data #analytics #jupyter
-                          </Box>
-                          <Box variant="h2">Juptyer x AWS</Box>
-                        </SpaceBetween>
-                        Participants will gain hands-on experience in
-                        setting up Jupyter Notebooks on AWS and learn
-                        how to seamlessly integrate various AWS
-                        services into their data analysis and machine
-                        learning workflows. The course covers topics
-                        such as accessing and managing AWS resources
-                        from Jupyter Notebooks, utilizing AWS SDKs and
-                        APIs for data retrieval and storage, deploying
-                        and scaling Jupyter environments on AWS, and
-                        leveraging AWS machine learning services for
-                        advanced analytics.
-                        <Button href="/management/publicCourses">
-                          Go to Course
-                        </Button>
-                      </SpaceBetween>
-                    </Container>
-                  </div>
-
-                  <div style={{ paddingTop: 60 }}>
-                    <Container
-                      media={{
-                        content: (
-                          <img
-                            src="/courseImg-3.png"
-                            alt="courseThumbnail"
-                          />
-                        ),
-                        height: 200,
-                        position: 'top',
-                      }}
-                      footer={
-                        <div className="container-media-footer">
-                          <Link href="#">
-                            Created by Gia Lim (@lmlim){' '}
-                          </Link>
-                          <Button iconName="share" variant="icon" />
-                          <Box variant="small">
-                            Opportunity Influenced: 180k ARR
-                          </Box>
-                          <Box variant="small">
-                            Last Update: 5 hours ago
-                          </Box>
-                        </div>
-                      }
-                    >
-                      <SpaceBetween direction="vertical" size="s">
-                        <SpaceBetween direction="vertical" size="xxs">
-                          <Box variant="small">
-                            #costexplorer #usagereport #costop
-                          </Box>
-                          <Box variant="h2">
-                            Starting Your Cloud Financial Management
-                            Journey: Cost Visibility
-                          </Box>
-                        </SpaceBetween>
-                        Participants will explore various tools and
-                        techniques for tracking and analyzing cost
-                        data, including cost allocation tags, AWS Cost
-                        Explorer, and AWS Cost and Usage Reports. They
-                        will also learn how to set up budgets and
-                        alerts to proactively monitor their spending
-                        and avoid any unexpected cost overruns. By the
-                        end of the course, participants will have a
-                        clear understanding of their cloud cost
-                        landscape and the knowledge to implement
-                        strategies that drive cost optimization and
-                        maximize the value of their cloud investments.
-                        <Button href="/management/publicCourses">
-                          Go to Course
-                        </Button>
-                      </SpaceBetween>
-                    </Container>
-                  </div>
-                </Grid>
-              </ContentLayout>
-              <Outlet />
-              <div style={{ paddingTop: 32 }}>
-                <Table
-                  onSelectionChange={({ detail }) =>
-                    setSelectedItems(detail.selectedItems)
-                  }
-                  selectedItems={selectedItems}
-                  ariaLabels={{
-                    selectionGroupLabel: 'Items selection',
-                    allItemsSelectionLabel: ({ selectedItems }) =>
-                      `${selectedItems.length} ${
-                        selectedItems.length === 1 ? 'item' : 'items'
-                      } selected`,
-                    itemSelectionLabel: ({ selectedItems }, item) => {
-                      const isItemSelected = selectedItems.filter(
-                        (i) => i.name === item.name
-                      ).length;
-                      return `${item.name} is ${
-                        isItemSelected ? '' : 'not'
-                      } selected`;
-                    },
-                  }}
-                  columnDefinitions={[
-                    {
-                      id: 'Contributor Name',
-                      header: 'Contributor Name',
-                      cell: (e) => e.name,
-                      sortingField: 'name',
-                      isRowHeader: true,
-                    },
-                    {
-                      id: 'Course Name',
-                      header: 'Course Name',
-                      cell: (e) => e.alt,
-                      sortingField: 'alt',
-                    },
-                    {
-                      id: 'Opp Value',
-                      header: 'Opp Value',
-                      cell: (e) => e.type,
-                    },
-                    {
-                      id: 'description',
-                      header: 'Description',
-                      cell: (e) => e.description,
-                    },
-                    {
-                      id: 'userRating',
-                      header: 'userRating',
-                      cell: (e) => e.userRating,
-                      sortingField: 'userRating',
-                    },
-                  ]}
-                  columnDisplay={[
-                    { id: 'Contributor Name', visible: true },
-                    { id: 'Course Name', visible: true },
-                    { id: 'Opp Value', visible: true },
-                    { id: 'description', visible: true },
-                    { id: 'userRating', visible: true },
-                  ]}
-                  items={[
-                    {
-                      name: 'Hung Ngyuen Gia ',
-                      alt: 'Intro to AWS',
-                      description: 'This course is an intro to AWS',
-                      type: '150k ARR',
-                      size: 'Small',
-                      userRating: '5 out of 5',
-                    },
-                    {
-                      name: 'Arief Hidayat',
-                      alt: 'How to be an SA',
-                      description: 'Be the best SA',
-                      type: '100k ARR',
-                      size: 'Large',
-                      userRating: '4.8 out of 5',
-                    },
-                    {
-                      name: 'Quang Chu',
-                      alt: 'How to eat Spicy Food',
-                      description:
-                        'I am an pro now, let me teach you!',
-                      type: '80 ARR',
-                      size: 'Large',
-                      userRating: '4.9 out of 5',
-                    },
-                    {
-                      name: 'Wanich',
-                      alt: 'Be a backend pro!',
-                      description:
-                        'Learn how to build backend in 2 days!',
-                      type: '90 ARR',
-                      size: 'Small',
-                      userRating: '5 out of 5',
-                    },
-                    {
-                      name: 'Hang Duong',
-                      alt: 'Hello World App',
-                      description: 'Set up an Amplify App on AWS',
-                      type: '120 ARR',
-                      size: 'Large',
-                      userRating: '4.6 out of 5',
-                    },
-                    {
-                      name: 'Tanisorn',
-                      alt: 'Have a Kit Kat',
-                      description: 'Take a break man!',
-                      type: '500 ARR',
-                      size: 'Small',
-                      userRating: '5 out of 5',
-                    },
-                  ]}
-                  loadingText="Loading resources"
-                  selectionType="multi"
-                  trackBy="name"
-                  empty={
-                    <Box textAlign="center" color="inherit">
-                      <b>No resources</b>
-                      <Box
-                        padding={{ bottom: 's' }}
-                        variant="p"
-                        color="inherit"
-                      >
-                        No resources to display.
-                      </Box>
-                      <Button>Create resource</Button>
-                    </Box>
-                  }
-                  filter={
-                    <TextFilter
-                      filteringcourseThumbnail="Find Course Names"
-                      filteringText=""
-                    />
-                  }
-                  header={
-                    <Header
-                      counter={
-                        selectedItems.length
-                          ? '(' + selectedItems.length + '/10)'
-                          : '(10)'
-                      }
-                    >
-                      All Contributors
-                    </Header>
-                  }
-                  pagination={
-                    <Pagination currentPageIndex={1} pagesCount={2} />
-                  }
-                  preferences={
-                    <CollectionPreferences
-                      title="Preferences"
-                      confirmLabel="Confirm"
-                      cancelLabel="Cancel"
-                      preferences={{
-                        pageSize: 10,
-                        contentDisplay: [
-                          { id: 'Contributor Name', visible: true },
-                          { id: 'Course Name', visible: true },
-                          { id: 'Opp Value', visible: true },
-                          { id: 'description', visible: true },
-                          { id: 'userRating', visible: true },
-                        ],
-                      }}
-                      pageSizePreference={{
-                        title: 'Page size',
-                        options: [
-                          { value: 10, label: '10 resources' },
-                          { value: 20, label: '20 resources' },
-                        ],
-                      }}
-                      wrapLinesPreference={{}}
-                      stripedRowsPreference={{}}
-                      contentDensityPreference={{}}
-                      contentDisplayPreference={{
-                        options: [
-                          {
-                            id: 'Contributor Name',
-                            label: 'Contributor Name',
-                            alwaysVisible: true,
-                          },
-                          {
-                            id: 'Course Name',
-                            label: 'Course Name',
-                          },
-                          { id: 'Opp Value', label: 'Opp Value' },
-                          { id: 'description', label: 'Description' },
-                          { id: 'userRating', label: 'userRating' },
-                        ],
-                      }}
-                      stickyColumnsPreference={{
-                        firstColumns: {
-                          title: 'Stick first column(s)',
-                          description:
-                            'Keep the first column(s) visible while horizontally scrolling the table content.',
-                          options: [
-                            { label: 'None', value: 0 },
-                            { label: 'First column', value: 1 },
-                            { label: 'First two columns', value: 2 },
-                          ],
-                        },
-                        lastColumns: {
-                          title: 'Stick last column',
-                          description:
-                            'Keep the last column visible while horizontally scrolling the table content.',
-                          options: [
-                            { label: 'None', value: 0 },
-                            { label: 'Last column', value: 1 },
-                          ],
-                        },
-                      }}
-                    />
-                  }
-                />
-              </div> */}
               <Tabs
+                onChange={(detail) =>
+                  setActiveTabId(detail.detail.activeTabId)
+                }
+                // activeTabId={activeTabId}
                 tabs={[
                   {
                     label: "Top Courses",
@@ -575,11 +227,13 @@ const Leaderboard = (props) => {
                               id: "state",
                               header: "State",
                               cell: (e) =>
-                              e.State === "Enabled" ? (
-                                <StatusIndicator>{e.State}</StatusIndicator>
-                              ) : (
-                                <StatusIndicator type="error">{e.State}</StatusIndicator>
-                              ),
+                                e.State === "Enabled" ? (
+                                  <StatusIndicator>{e.State}</StatusIndicator>
+                                ) : (
+                                  <StatusIndicator type="error">
+                                    {e.State}
+                                  </StatusIndicator>
+                                ),
                               sortingField: "alt",
                             },
                             {
@@ -593,10 +247,9 @@ const Leaderboard = (props) => {
                               cell: (e) => e.Views,
                             },
                             {
-                              id: "userRating",
-                              header: "userRating",
-                              cell: (e) => e.userRating,
-                              sortingField: "userRating",
+                              id: "creator",
+                              header: "Creator",
+                              cell: (e) => e.Creator,
                             },
                           ]}
                           columnDisplay={[
@@ -604,6 +257,7 @@ const Leaderboard = (props) => {
                             { id: "state", visible: true },
                             { id: "level", visible: true },
                             { id: "views", visible: true },
+                            { id: "creator", visible: true }
                           ]}
                           items={topCourse}
                           loadingText="Loading resources"
@@ -651,11 +305,10 @@ const Leaderboard = (props) => {
                               preferences={{
                                 pageSize: 10,
                                 contentDisplay: [
-                                  { id: "Contributor Name", visible: true },
-                                  { id: "Course Name", visible: true },
-                                  { id: "Opp Value", visible: true },
-                                  { id: "description", visible: true },
-                                  { id: "userRating", visible: true },
+                                  { id: "course", visible: true },
+                                  { id: "state", visible: true },
+                                  { id: "level", visible: true },
+                                  { id: "views", visible: true },
                                 ],
                               }}
                               pageSizePreference={{
@@ -671,17 +324,13 @@ const Leaderboard = (props) => {
                               contentDisplayPreference={{
                                 options: [
                                   {
-                                    id: "Contributor Name",
-                                    label: "Contributor Name",
+                                    id: "course",
+                                    label: "Name",
                                     alwaysVisible: true,
                                   },
-                                  {
-                                    id: "Course Name",
-                                    label: "Course Name",
-                                  },
-                                  { id: "Opp Value", label: "Opp Value" },
-                                  { id: "description", label: "Description" },
-                                  { id: "userRating", label: "userRating" },
+                                  { id: "state", label: "State" },
+                                  { id: "level", label: "Level" },
+                                  { id: "views", label: "Views" },
                                 ],
                               }}
                               stickyColumnsPreference={{
@@ -714,11 +363,176 @@ const Leaderboard = (props) => {
                   {
                     label: "Top Lectures",
                     id: "lectures",
-                    content: "Second tab content area",
+                    content: (
+                      <div>
+                        <Table
+                          onSelectionChange={({ detail }) =>
+                            setSelectedItems(detail.selectedItems)
+                          }
+                          selectedItems={selectedItems}
+                          ariaLabels={{
+                            selectionGroupLabel: "Items selection",
+                            allItemsSelectionLabel: ({ selectedItems }) =>
+                              `${selectedItems.length} ${
+                                selectedItems.length === 1 ? "item" : "items"
+                              } selected`,
+                            itemSelectionLabel: ({ selectedItems }, item) => {
+                              const isItemSelected = selectedItems.filter(
+                                (i) => i.name === item.name
+                              ).length;
+                              return `${item.name} is ${
+                                isItemSelected ? "" : "not"
+                              } selected`;
+                            },
+                          }}
+                          columnDefinitions={[
+                            {
+                              id: "course",
+                              header: "Name",
+                              cell: (e) => e.Name,
+                              sortingField: "name",
+                              isRowHeader: true,
+                            },
+                            {
+                              id: "state",
+                              header: "State",
+                              cell: (e) =>
+                                e.State === "Enabled" ? (
+                                  <StatusIndicator>{e.State}</StatusIndicator>
+                                ) : (
+                                  <StatusIndicator type="error">
+                                    {e.State}
+                                  </StatusIndicator>
+                                ),
+                              sortingField: "alt",
+                            },
+                            {
+                              id: "level",
+                              header: "Level",
+                              cell: (e) => e.Level,
+                            },
+                            {
+                              id: "views",
+                              header: "Views",
+                              cell: (e) => e.Views,
+                            },
+                            {
+                              id: "creator",
+                              header: "Creator",
+                              cell: (e) => e.Creator,
+                            },
+                          ]}
+                          columnDisplay={[
+                            { id: "course", visible: true },
+                            { id: "state", visible: true },
+                            { id: "level", visible: true },
+                            { id: "views", visible: true },
+                            { id: "creator", visible: true }
+                          ]}
+                          items={topLectures}
+                          loadingText="Loading resources"
+                          loading={loading}
+                          selectionType="multi"
+                          trackBy="name"
+                          empty={
+                            <Box textAlign="center" color="inherit">
+                              <b>No resources</b>
+                              <Box
+                                padding={{ bottom: "s" }}
+                                variant="p"
+                                color="inherit"
+                              >
+                                No resources to display.
+                              </Box>
+                              <Button>Create resource</Button>
+                            </Box>
+                          }
+                          filter={
+                            <TextFilter
+                              filteringcourseThumbnail="Find Course Names"
+                              filteringText=""
+                            />
+                          }
+                          header={
+                            <Header
+                              counter={
+                                selectedItems.length
+                                  ? "(" + selectedItems.length + "/10)"
+                                  : "(10)"
+                              }
+                            >
+                              All Contributors
+                            </Header>
+                          }
+                          pagination={
+                            <Pagination currentPageIndex={1} pagesCount={2} />
+                          }
+                          preferences={
+                            <CollectionPreferences
+                              title="Preferences"
+                              confirmLabel="Confirm"
+                              cancelLabel="Cancel"
+                              preferences={{
+                                pageSize: 10,
+                                contentDisplay: [
+                                  { id: "course", visible: true },
+                                  { id: "state", visible: true },
+                                  { id: "level", visible: true },
+                                  { id: "views", visible: true },
+                                ],
+                              }}
+                              pageSizePreference={{
+                                title: "Page size",
+                                options: [
+                                  { value: 10, label: "10 resources" },
+                                  { value: 20, label: "20 resources" },
+                                ],
+                              }}
+                              wrapLinesPreference={{}}
+                              stripedRowsPreference={{}}
+                              contentDensityPreference={{}}
+                              contentDisplayPreference={{
+                                options: [
+                                  {
+                                    id: "course",
+                                    label: "Name",
+                                    alwaysVisible: true,
+                                  },
+                                  { id: "state", label: "State" },
+                                  { id: "level", label: "Level" },
+                                  { id: "views", label: "Views" },
+                                ],
+                              }}
+                              stickyColumnsPreference={{
+                                firstColumns: {
+                                  title: "Stick first column(s)",
+                                  description:
+                                    "Keep the first column(s) visible while horizontally scrolling the table content.",
+                                  options: [
+                                    { label: "None", value: 0 },
+                                    { label: "First column", value: 1 },
+                                    { label: "First two columns", value: 2 },
+                                  ],
+                                },
+                                lastColumns: {
+                                  title: "Stick last column",
+                                  description:
+                                    "Keep the last column visible while horizontally scrolling the table content.",
+                                  options: [
+                                    { label: "None", value: 0 },
+                                    { label: "Last column", value: 1 },
+                                  ],
+                                },
+                              }}
+                            />
+                          }
+                        />
+                      </div>
+                    ),
                   },
                   {
                     label: "Top Owner Lectures",
-                    id: "contribute",
+                    id: "contributor",
                     content: "Third tab content area",
                   },
                   {
