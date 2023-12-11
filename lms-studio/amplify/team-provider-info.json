@@ -1,4 +1,478 @@
 {
+  "newenv": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-lmsstudio-newenv-114107-authRole",
+      "UnauthRoleArn": "arn:aws:iam::319679907444:role/amplify-lmsstudio-newenv-114107-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::319679907444:role/amplify-lmsstudio-newenv-114107-authRole",
+      "Region": "ap-southeast-1",
+      "DeploymentBucketName": "amplify-lmsstudio-newenv-114107-deployment",
+      "UnauthRoleName": "amplify-lmsstudio-newenv-114107-unauthRole",
+      "StackName": "amplify-lmsstudio-newenv-114107",
+      "StackId": "arn:aws:cloudformation:ap-southeast-1:319679907444:stack/amplify-lmsstudio-newenv-114107/d7676f50-0fed-11ee-994f-064a081b6fb6",
+      "AmplifyAppId": "d3m5mm9dftjy7a",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-lmsstudio-newenv-114107-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
+    },
+    "categories": {
+      "auth": {
+        "lmsstudioc3fd255f": {}
+      },
+      "function": {
+        "studioCourses": {
+          "deploymentBucketName": "amplify-lmsstudio-newenv-114107-deployment",
+          "s3Key": "amplify-builds/studioCourses-76564a4a6e69544b335a-build.zip",
+          "tableName": "courses-newenv"
+        },
+        "studioLectures": {
+          "deploymentBucketName": "amplify-lmsstudio-newenv-114107-deployment",
+          "s3Key": "amplify-builds/studioLectures-414e553572676c545042-build.zip"
+        },
+        "studioUserCourse": {
+          "deploymentBucketName": "amplify-lmsstudio-newenv-114107-deployment",
+          "s3Key": "amplify-builds/studioUserCourse-3975784e585a5a756f45-build.zip"
+        },
+        "studiousers": {
+          "deploymentBucketName": "amplify-lmsstudio-newenv-114107-deployment",
+          "s3Key": "amplify-builds/studiousers-5131422f4a3856625963-build.zip"
+        },
+        "userOverview": {
+          "deploymentBucketName": "amplify-lmsstudio-newenv-114107-deployment",
+          "s3Key": "amplify-builds/userOverview-3134644b67795a58674c-build.zip"
+        }
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d3m5mm9dftjy7a",
+          "type": "manual"
+        }
+      },
+      "api": {
+        "lmsStudio": {}
+      },
+      "storage": {
+        "studioLectureVideos": {}
+      }
+    }
+  },
+  "devtest": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-lmsstudio-devtest-213350-authRole",
+      "UnauthRoleArn": "arn:aws:iam::542128326873:role/amplify-lmsstudio-devtest-213350-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::542128326873:role/amplify-lmsstudio-devtest-213350-authRole",
+      "Region": "ap-southeast-1",
+      "DeploymentBucketName": "amplify-lmsstudio-devtest-213350-deployment",
+      "UnauthRoleName": "amplify-lmsstudio-devtest-213350-unauthRole",
+      "StackName": "amplify-lmsstudio-devtest-213350",
+      "StackId": "arn:aws:cloudformation:ap-southeast-1:542128326873:stack/amplify-lmsstudio-devtest-213350/7c3e3300-0f77-11ee-89d7-0a6dbb70df8e",
+      "AmplifyAppId": "d3bx92spacazya"
+    },
+    "categories": {
+      "auth": {
+        "lmsstudioc3fd255f": {}
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d3bx92spacazya",
+          "type": "manual"
+        }
+      }
+    }
+  },
+  "devlead": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-lmsstudio-devlead-103635-authRole",
+      "UnauthRoleArn": "arn:aws:iam::697944894855:role/amplify-lmsstudio-devlead-103635-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::697944894855:role/amplify-lmsstudio-devlead-103635-authRole",
+      "Region": "ap-southeast-1",
+      "DeploymentBucketName": "amplify-lmsstudio-devlead-103635-deployment",
+      "UnauthRoleName": "amplify-lmsstudio-devlead-103635-unauthRole",
+      "StackName": "amplify-lmsstudio-devlead-103635",
+      "StackId": "arn:aws:cloudformation:ap-southeast-1:697944894855:stack/amplify-lmsstudio-devlead-103635/d5b1e630-0fe4-11ee-8e83-024e6d02a714",
+      "AmplifyAppId": "dlagr4s52f7k0",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-lmsstudio-devlead-103635-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
+    },
+    "categories": {
+      "auth": {
+        "lmsstudioc3fd255f": {}
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "dlagr4s52f7k0",
+          "type": "manual"
+        }
+      },
+      "function": {
+        "usermng": {
+          "deploymentBucketName": "amplify-lmsstudio-devlead-103635-deployment",
+          "s3Key": "amplify-builds/usermng-5741552f4e416d486f59-build.zip"
+        },
+        "userOverView": {
+          "deploymentBucketName": "amplify-lmsstudio-devlead-103635-deployment",
+          "s3Key": "amplify-builds/userOverView-6e3056446a335170444d-build.zip"
+        }
+      },
+      "api": {
+        "usermng": {}
+      }
+    }
+  },
+  "devthree": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-lmsstudio-devthree-145227-authRole",
+      "UnauthRoleArn": "arn:aws:iam::320740598534:role/amplify-lmsstudio-devthree-145227-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::320740598534:role/amplify-lmsstudio-devthree-145227-authRole",
+      "Region": "ap-southeast-1",
+      "DeploymentBucketName": "amplify-lmsstudio-devthree-145227-deployment",
+      "UnauthRoleName": "amplify-lmsstudio-devthree-145227-unauthRole",
+      "StackName": "amplify-lmsstudio-devthree-145227",
+      "StackId": "arn:aws:cloudformation:ap-southeast-1:320740598534:stack/amplify-lmsstudio-devthree-145227/be431260-10d1-11ee-8e83-024e6d02a714",
+      "AmplifyAppId": "d1nq8fdu3ddi3x",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-lmsstudio-devthree-145227-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
+    },
+    "categories": {
+      "auth": {
+        "lmsstudioc3fd255f": {}
+      },
+      "function": {
+        "studioCourses": {
+          "deploymentBucketName": "amplify-lmsstudio-devthree-145227-deployment",
+          "s3Key": "amplify-builds/studioCourses-4632574330593334796d-build.zip"
+        }
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d1nq8fdu3ddi3x",
+          "type": "manual"
+        }
+      }
+    }
+  },
+  "lmsstudio": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-lmsstudio-lmsstudio-115238-authRole",
+      "UnauthRoleArn": "arn:aws:iam::644078164615:role/amplify-lmsstudio-lmsstudio-115238-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::644078164615:role/amplify-lmsstudio-lmsstudio-115238-authRole",
+      "Region": "ap-southeast-1",
+      "DeploymentBucketName": "amplify-lmsstudio-lmsstudio-115238-deployment",
+      "UnauthRoleName": "amplify-lmsstudio-lmsstudio-115238-unauthRole",
+      "StackName": "amplify-lmsstudio-lmsstudio-115238",
+      "StackId": "arn:aws:cloudformation:ap-southeast-1:644078164615:stack/amplify-lmsstudio-lmsstudio-115238/133b27d0-0fe7-11ee-a890-0694c0c931c8",
+      "AmplifyAppId": "ddh83c80gzx2"
+    },
+    "categories": {
+      "auth": {
+        "lmsstudioc3fd255f": {}
+      },
+      "function": {
+        "studioCourses": {}
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "ddh83c80gzx2",
+          "type": "manual"
+        }
+      },
+      "storage": {
+        "coursesdev": {
+          "tableName": "courses-lmsmain",
+          "region": "ap-southeast-1",
+          "arn": "arn:aws:dynamodb:ap-southeast-1:644078164615:table/courses-lmsmain",
+          "streamArn": "arn:aws:dynamodb:ap-southeast-1:644078164615:table/courses-lmsmain/stream/2023-06-20T10:02:52.392",
+          "partitionKeyName": "ID",
+          "partitionKeyType": "S"
+        }
+      }
+    }
+  },
+  "devquang": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-lmsstudio-devquang-161642-authRole",
+      "UnauthRoleArn": "arn:aws:iam::399200137180:role/amplify-lmsstudio-devquang-161642-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::399200137180:role/amplify-lmsstudio-devquang-161642-authRole",
+      "Region": "ap-southeast-1",
+      "DeploymentBucketName": "amplify-lmsstudio-devquang-161642-deployment",
+      "UnauthRoleName": "amplify-lmsstudio-devquang-161642-unauthRole",
+      "StackName": "amplify-lmsstudio-devquang-161642",
+      "StackId": "arn:aws:cloudformation:ap-southeast-1:399200137180:stack/amplify-lmsstudio-devquang-161642/837da350-10dd-11ee-b9be-0a07753823d4",
+      "AmplifyAppId": "d2290epzekcnma",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-lmsstudio-devquang-161642-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
+    },
+    "categories": {
+      "auth": {
+        "lmsstudioc3fd255f": {}
+      },
+      "function": {
+        "studioCourses": {
+          "deploymentBucketName": "amplify-lmsstudio-devquang-161642-deployment",
+          "s3Key": "amplify-builds/studioCourses-4632574330593334796d-build.zip"
+        }
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d2290epzekcnma",
+          "type": "manual"
+        }
+      },
+      "api": {
+        "lmsStudio": {}
+      },
+      "storage": {
+        "studioLectureVideos": {}
+      }
+    }
+  },
+  "test": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-lmsstudio-test-144203-authRole",
+      "UnauthRoleArn": "arn:aws:iam::885078239936:role/amplify-lmsstudio-test-144203-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::885078239936:role/amplify-lmsstudio-test-144203-authRole",
+      "Region": "ap-southeast-1",
+      "DeploymentBucketName": "amplify-lmsstudio-test-144203-deployment",
+      "UnauthRoleName": "amplify-lmsstudio-test-144203-unauthRole",
+      "StackName": "amplify-lmsstudio-test-144203",
+      "StackId": "arn:aws:cloudformation:ap-southeast-1:885078239936:stack/amplify-lmsstudio-test-144203/3f99aea0-2d1a-11ee-ac84-02c7f8edd616",
+      "AmplifyAppId": "di4ny7w9wbefi",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-lmsstudio-test-144203-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
+    },
+    "categories": {
+      "auth": {
+        "lmsstudioc3fd255f": {}
+      },
+      "function": {
+        "studioCourses": {
+          "deploymentBucketName": "amplify-lmsstudio-test-144203-deployment",
+          "s3Key": "amplify-builds/studioCourses-68513961543638636d6f-build.zip"
+        },
+        "studioLectures": {
+          "deploymentBucketName": "amplify-lmsstudio-test-144203-deployment",
+          "s3Key": "amplify-builds/studioLectures-334d5831545163555159-build.zip"
+        },
+        "studioUserCourse": {
+          "deploymentBucketName": "amplify-lmsstudio-test-144203-deployment",
+          "s3Key": "amplify-builds/studioUserCourse-627534684d2f4472474c-build.zip"
+        },
+        "studiousers": {
+          "deploymentBucketName": "amplify-lmsstudio-test-144203-deployment",
+          "s3Key": "amplify-builds/studiousers-5131422f4a3856625963-build.zip"
+        },
+        "userOverview": {
+          "deploymentBucketName": "amplify-lmsstudio-test-144203-deployment",
+          "s3Key": "amplify-builds/userOverview-446b386a44345a6a4547-build.zip"
+        },
+        "studioAccessCode": {
+          "deploymentBucketName": "amplify-lmsstudio-test-144203-deployment",
+          "s3Key": "amplify-builds/studioAccessCode-6b385076336c58766658-build.zip"
+        },
+        "studioCourseCode": {
+          "deploymentBucketName": "amplify-lmsstudio-test-144203-deployment",
+          "s3Key": "amplify-builds/studioCourseCode-364c32667339374e5757-build.zip"
+        },
+        "studioUIConfig": {
+          "deploymentBucketName": "amplify-lmsstudio-test-144203-deployment",
+          "s3Key": "amplify-builds/studioUIConfig-53792b412b7550415473-build.zip"
+        }
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "di4ny7w9wbefi",
+          "type": "manual"
+        }
+      },
+      "api": {
+        "lmsStudio": {}
+      },
+      "storage": {
+        "lmsstudiodcbd5e2f": {
+          "bucketName": "lecture-resource142735-test",
+          "region": "ap-southeast-1"
+        },
+        "lmsstudiof4e07fec": {}
+      }
+    }
+  },
+  "prod": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-lmsstudio-prod-00159-authRole",
+      "UnauthRoleArn": "arn:aws:iam::148922931563:role/amplify-lmsstudio-prod-00159-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::148922931563:role/amplify-lmsstudio-prod-00159-authRole",
+      "Region": "ap-southeast-1",
+      "DeploymentBucketName": "amplify-lmsstudio-prod-00159-deployment",
+      "UnauthRoleName": "amplify-lmsstudio-prod-00159-unauthRole",
+      "StackName": "amplify-lmsstudio-prod-00159",
+      "StackId": "arn:aws:cloudformation:ap-southeast-1:148922931563:stack/amplify-lmsstudio-prod-00159/740bec32-3b8d-11ee-8dcf-063062a97464",
+      "AmplifyAppId": "d3pussyvi8sdx8"
+    },
+    "categories": {
+      "auth": {
+        "lmsstudioc3fd255f": {}
+      },
+      "function": {
+        "studioCourses": {
+          "tableName": "",
+          "deploymentBucketName": "amplify-lmsstudio-prod-00159-deployment",
+          "s3Key": "amplify-builds/studioCourses-35425959323247543342-build.zip"
+        },
+        "studioLectures": {
+          "deploymentBucketName": "amplify-lmsstudio-prod-00159-deployment",
+          "s3Key": "amplify-builds/studioLectures-65615571357875773443-build.zip"
+        },
+        "studioUserCourse": {
+          "deploymentBucketName": "amplify-lmsstudio-prod-00159-deployment",
+          "s3Key": "amplify-builds/studioUserCourse-5067423642776432754e-build.zip"
+        },
+        "studiousers": {
+          "deploymentBucketName": "amplify-lmsstudio-prod-00159-deployment",
+          "s3Key": "amplify-builds/studiousers-554d6b51596c54726479-build.zip"
+        },
+        "userOverview": {
+          "deploymentBucketName": "amplify-lmsstudio-prod-00159-deployment",
+          "s3Key": "amplify-builds/userOverview-6e6a6b486d367356696b-build.zip"
+        }
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d3pussyvi8sdx8",
+          "type": "manual"
+        }
+      },
+      "api": {
+        "lmsStudio": {}
+      },
+      "storage": {
+        "lmsstudiodcbd5e2f": {
+          "bucketName": "lecture-resource224559-prod",
+          "region": "ap-southeast-1"
+        }
+      }
+    }
+  },
+  "dev": {
+    "awscloudformation": {},
+    "categories": {
+      "auth": {
+        "lmsstudioc3fd255f": {}
+      },
+      "function": {
+        "studioCourses": {},
+        "studioLectures": {},
+        "studioUserCourse": {},
+        "studiousers": {},
+        "userOverview": {}
+      }
+    }
+  },
+  "lmsdev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-lmsstudio-lmsdev-110922-authRole",
+      "UnauthRoleArn": "arn:aws:iam::148922931563:role/amplify-lmsstudio-lmsdev-110922-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::148922931563:role/amplify-lmsstudio-lmsdev-110922-authRole",
+      "Region": "ap-southeast-1",
+      "DeploymentBucketName": "amplify-lmsstudio-lmsdev-110922-deployment",
+      "UnauthRoleName": "amplify-lmsstudio-lmsdev-110922-unauthRole",
+      "StackName": "amplify-lmsstudio-lmsdev-110922",
+      "StackId": "arn:aws:cloudformation:ap-southeast-1:148922931563:stack/amplify-lmsstudio-lmsdev-110922/a7756491-537d-11ee-9ef6-026b9d98a442",
+      "AmplifyAppId": "d1q01t5z1hu3ey",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-lmsstudio-lmsdev-110922-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
+    },
+    "categories": {
+      "auth": {
+        "lmsstudioc3fd255f": {}
+      },
+      "function": {
+        "studioCourses": {
+          "tableName": "",
+          "deploymentBucketName": "amplify-lmsstudio-lmsdev-110922-deployment",
+          "s3Key": "amplify-builds/studioCourses-6f3956583969746c5330-build.zip"
+        },
+        "studioLectures": {
+          "deploymentBucketName": "amplify-lmsstudio-lmsdev-110922-deployment",
+          "s3Key": "amplify-builds/studioLectures-794f554b414969396835-build.zip"
+        },
+        "studioUserCourse": {
+          "deploymentBucketName": "amplify-lmsstudio-lmsdev-110922-deployment",
+          "s3Key": "amplify-builds/studioUserCourse-792b6e794531676d534f-build.zip"
+        },
+        "studiousers": {
+          "deploymentBucketName": "amplify-lmsstudio-lmsdev-110922-deployment",
+          "s3Key": "amplify-builds/studiousers-554d6b51596c54726479-build.zip"
+        },
+        "userOverview": {
+          "deploymentBucketName": "amplify-lmsstudio-lmsdev-110922-deployment",
+          "s3Key": "amplify-builds/userOverview-42694e34445532687352-build.zip"
+        }
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d1q01t5z1hu3ey",
+          "type": "manual"
+        }
+      },
+      "storage": {
+        "lmsstudiodcbd5e2f": {
+          "bucketName": "lecture-resource110654-lmsdev",
+          "region": "ap-southeast-1"
+        }
+      },
+      "api": {
+        "lmsStudio": {}
+      }
+    }
+  },
+  "stage": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-lmsstudio-stage-204252-authRole",
+      "UnauthRoleArn": "arn:aws:iam::148922931563:role/amplify-lmsstudio-stage-204252-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::148922931563:role/amplify-lmsstudio-stage-204252-authRole",
+      "Region": "ap-southeast-1",
+      "DeploymentBucketName": "amplify-lmsstudio-stage-204252-deployment",
+      "UnauthRoleName": "amplify-lmsstudio-stage-204252-unauthRole",
+      "StackName": "amplify-lmsstudio-stage-204252",
+      "StackId": "arn:aws:cloudformation:ap-southeast-1:148922931563:stack/amplify-lmsstudio-stage-204252/1a68a0f0-5560-11ee-9475-0631f447731e",
+      "AmplifyAppId": "d3hsa4tugv8i4k",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-lmsstudio-stage-204252-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
+    },
+    "categories": {
+      "auth": {
+        "lmsstudioc3fd255f": {}
+      },
+      "function": {
+        "studioCourses": {
+          "deploymentBucketName": "amplify-lmsstudio-stage-204252-deployment",
+          "s3Key": "amplify-builds/studioCourses-2b30503953736953694e-build.zip"
+        },
+        "studioLectures": {
+          "deploymentBucketName": "amplify-lmsstudio-stage-204252-deployment",
+          "s3Key": "amplify-builds/studioLectures-6a586f6462496e616c79-build.zip"
+        },
+        "studioUserCourse": {
+          "deploymentBucketName": "amplify-lmsstudio-stage-204252-deployment",
+          "s3Key": "amplify-builds/studioUserCourse-4b764f4b48612b665a7a-build.zip"
+        },
+        "studiousers": {
+          "deploymentBucketName": "amplify-lmsstudio-stage-204252-deployment",
+          "s3Key": "amplify-builds/studiousers-5131422f4a3856625963-build.zip"
+        },
+        "userOverview": {
+          "deploymentBucketName": "amplify-lmsstudio-stage-204252-deployment",
+          "s3Key": "amplify-builds/userOverview-787a33724d7877426965-build.zip"
+        }
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d3hsa4tugv8i4k",
+          "type": "manual"
+        }
+      },
+      "storage": {
+        "lmsstudiodcbd5e2f": {
+          "bucketName": "lecture-resource203546-stage",
+          "region": "ap-southeast-1"
+        }
+      },
+      "api": {
+        "lmsStudio": {}
+      }
+    }
+  },
   "mrbinh": {
     "awscloudformation": {
       "AuthRoleName": "amplify-lmsstudio-mrbinh-134006-authRole",

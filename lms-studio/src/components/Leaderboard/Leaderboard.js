@@ -65,7 +65,6 @@ const Leaderboard = (props) => {
             byUserName +
             `?username=${data[i].CreatorID}&userPoolId=${userPoolId}`
         );
-        console.log(response);
         topCourseTemp[i]["Creator"] = response.UserAttributes[2].Value;
         i++;
       }
@@ -257,7 +256,7 @@ const Leaderboard = (props) => {
                             { id: "state", visible: true },
                             { id: "level", visible: true },
                             { id: "views", visible: true },
-                            { id: "creator", visible: true }
+                            { id: "creator", visible: true },
                           ]}
                           items={topCourse}
                           loadingText="Loading resources"

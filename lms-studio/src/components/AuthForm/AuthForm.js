@@ -19,7 +19,6 @@ const formFields = {
     }
   },
 };
-
 export default function AuthForm() {
   const { tokens } = useTheme();
   // console.log(tokens);
