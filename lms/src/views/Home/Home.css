@@ -3,7 +3,7 @@
 }
 
 .dashboard-banner {
-  background-image: url("../../assets/images/dashboard-banner.png");
+  background-image: url("../../assets/images/dashboard-banner-edu.png");
   background-size: cover;
   height: 380px;
   padding: 40px 100px;
@@ -38,7 +38,7 @@
 }
 
 .dashboard-highlight-icon {
-  height: 64px;
+  height: 48px;
 }
 
 .dashboard-highlight-text-container {
@@ -70,7 +70,7 @@
 }
 
 .dashboard-courses-header-decor {
-  border-top: solid 3px #ec7211;
+  border-top: solid 3px #18bfe9;
   width: 200px;
   margin-bottom: 30px;
 }
@@ -170,7 +170,7 @@
     max-width: 100% !important;
   }
   .dashboard-highlight-icon {
-    height: 40px;
+    height: 25px;
   }
   .dashboard-highlight-title {
     font-size: 16px;
@@ -257,7 +257,7 @@
     max-width: 100% !important;
   }
   .dashboard-highlight-icon {
-    height: 40px;
+    height: 35px;
   }
   .dashboard-highlight-title {
     font-size: 16px;

@@ -1,0 +1,14 @@
+{
+  "resourceName": "Contributor",
+  "tableName": "Contributor",
+  "partitionKey": {
+    "fieldName": "contributorID",
+    "fieldType": "string"
+  },
+  "sortKey": {
+    "fieldName": "views",
+    "fieldType": "number"
+  },
+  "gsi": [],
+  "triggerFunctions": []
+}

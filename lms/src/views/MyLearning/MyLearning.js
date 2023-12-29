@@ -75,25 +75,25 @@ export default class MyLearning extends React.Component {
                     </div> 
                     : <div className='mylearning-main-container'>
                         {!this.state.mostRecentCourse ? "" : <div>
-                            <p className='mylearning-courses-header'>Recent activity</p>
+                            <p className='mylearning-courses-header'>Hoạt động học tập</p>
                             <div className='mylearning-courses-header-decor' />
                             <MyLearningCourse courseId={this.state.mostRecentCourse} />
                         </div>}
                         <div>
-                            <p className='mylearning-courses-header'>Assigned courses</p>
+                            <p className='mylearning-courses-header'>Khoá học trả phí đã đăng ký</p>
                             <div className='mylearning-courses-header-decor' />
                             {this.state.assignedCourses.length === 0
-                                ? <div>You don't have any course assigned to you.</div>
+                                ? <div>Bạn chưa đăng ký khoá học trả phí nào</div>
                                 : this.state.assignedCourses.map((course, index) => <MyLearningCourse key={index} courseId={course} />)
                             }
                         </div>
                         <div>
-                            <p className='mylearning-courses-header'>Self-enrolled courses</p>
+                            <p className='mylearning-courses-header'>Khoá học đã đăng ký</p>
                             <div className='mylearning-courses-header-decor' />
                             {console.log(this.state.selfEnrolledCourses)}
                             {this.state.selfEnrolledCourses.length === 0
                                 ? <div>
-                                    You didn't enrolled any course.
+                                    Bạn chưa đăng ký khoá học miễn phí nào
                                     <div className='space-40'/>
                                 </div>
                                 : this.state.selfEnrolledCourses.map((course, index) => <MyLearningCourse key={index} courseId={course} />)

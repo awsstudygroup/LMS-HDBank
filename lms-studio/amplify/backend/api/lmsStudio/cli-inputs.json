@@ -61,6 +61,20 @@
       "permissions": {
         "setting": "open"
       }
+    },
+    "/users": {
+      "name": "/users",
+      "lambdaFunction": "studioUsers",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/contributor": {
+      "name": "/contributor",
+      "lambdaFunction": "studioContributor",
+      "permissions": {
+        "setting": "open"
+      }
     }
   }
 }

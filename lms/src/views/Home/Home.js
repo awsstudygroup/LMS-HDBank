@@ -24,7 +24,7 @@ import {
   configUI,
 } from "../../utils/api";
 import { uiConfigId } from "../../utils/uiConfig";
-import { calcTime } from "../../utils/tools";
+import { calcTime, calcTimeBrief } from "../../utils/tools";
 
 export class Home extends React.Component {
   constructor(props) {
@@ -48,7 +48,9 @@ export class Home extends React.Component {
   async checkLoggedIn(callback) {
     try {
       const user = await Auth.currentAuthenticatedUser({ bypassCache: false });
-      // console.log(user)
+      // const { accessToken, idToken, refreshToken } = await Auth.currentSession();
+      const response = await Auth.currentSession();
+      console.log(response)
       this.setState(
         {
           authChecked: true,
@@ -136,7 +138,7 @@ export class Home extends React.Component {
   loadUISet = () => {
     API.get(apiName, configUI + uiConfigId)
       .then((data) => {
-        console.log(data)
+        // console.log(data)
         if ( data ) {
           this.setState({ uiSet: data });
           this.loadImage(data)
@@ -283,7 +285,7 @@ export class Home extends React.Component {
               name="status-pending"
               className="dashboard-courses-list-item-property-icon"
             />
-            {calcTime(course.length)}
+            {calcTimeBrief(course.length)}
           </div>
           <div className="dashboard-courses-list-item-desc">
             {course.description}
@@ -296,10 +298,10 @@ export class Home extends React.Component {
         <div className="dashboard-courses-list-item-action">
           <Button
             variant="primary"
-            className="btn-orange"
+            className="btn-blue-light"
             onClick={() => this.redirectToCourse(course.id)}
           >
-            Get Started <Icon name="arrow-left" className="rotate-180" />
+            Bắt đầu <Icon name="arrow-left" className="rotate-180" />
           </Button>
         </div>
       </div>
@@ -308,7 +310,6 @@ export class Home extends React.Component {
 
   render() {
     const { t } = this.props;
-    // console.log("props ", this.props);
     const hightLight = t("home.highlight", { returnObjects: true });
     // const hightLight = this.state.uiSet ? this.state.uiSet.Highlight : t("home.highlight", { returnObjects: true });
     // console.log(this.state.uiSet.Highlight[0]['desc']);
@@ -332,11 +333,11 @@ export class Home extends React.Component {
                 <p className="dashboard-banner-desc">{t("home.des")}</p>
               </div>
               <div className="dashboard-banner-icon-container">
-                <img
+                {/* <img
                   className="dashboard-banner-icon"
                   src={bannerIcon}
                   alt="Banner Icon"
-                />
+                /> */}
               </div>
             </Grid>
           </div>
@@ -348,11 +349,11 @@ export class Home extends React.Component {
             </Grid>
           </div>
           <div className="dashboard-courses">
-            <p className="dashboard-courses-header">
+            <div className="dashboard-courses-header">
               {this.state.authChecked
                 ? t("home.list_title")
                 : t("home.list_title_unauthen")}
-            </p>
+            </div>
             <div className="dashboard-courses-header-decor" />
             <div className="dashboard-courses-list">
               {this.state.loading ? (
