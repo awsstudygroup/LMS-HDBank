@@ -18,7 +18,7 @@
       },
       "function": {
         "FAQs": {
-          "deploymentBucketName": "amplify-lms-mrbinh-130645-deployment",
+          "deploymentBucketName": "amplify-lms-prod-130645-deployment",
           "s3Key": "amplify-builds/FAQs-42535278566a724a3766-build.zip"
         },
         "UserCourse": {
@@ -46,7 +46,7 @@
           "s3Key": "amplify-builds/uiConfig-3459476656484b583276-build.zip"
         },
         "users": {
-          "deploymentBucketName": "amplify-lms-mrbinh-130645-deployment",
+          "deploymentBucketName": "amplify-lms-prod-130645-deployment",
           "s3Key": "amplify-builds/users-4e747642647735434439-build.zip"
         },
         "usersLectures": {

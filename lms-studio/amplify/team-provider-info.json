@@ -50,11 +50,11 @@
           "s3Key": "amplify-builds/userOverview-446b386a44345a6a4547-build.zip"
         },
         "studioContributor": {
-          "deploymentBucketName": "amplify-lmsstudio-mrbinh-134006-deployment",
+          "deploymentBucketName": "amplify-lmsstudio-prod-134006-deployment",
           "s3Key": "amplify-builds/studioContributor-51465955575556593041-build.zip"
         },
         "addCourseContributor": {
-          "deploymentBucketName": "amplify-lmsstudio-mrbinh-134006-deployment",
+          "deploymentBucketName": "amplify-lmsstudio-prod-134006-deployment",
           "s3Key": "amplify-builds/addCourseContributor-61723335496835496558-build.zip"
         }
       },
