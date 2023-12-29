@@ -1,5 +1,3 @@
-import { I18n } from 'aws-amplify';
-import { useState } from 'react';
 import {
   Authenticator,
   View,
@@ -12,64 +10,30 @@ import {
   Theme,
   ThemeProvider
 } from "@aws-amplify/ui-react";
-import { Auth, API } from 'aws-amplify';
 import "@aws-amplify/ui-react/styles.css";
 import { Navigate, useLocation } from "react-router-dom";
 import './AuthForm.css';
-import { translations } from '@aws-amplify/ui-react';
-import { 
-  apiName, 
-  usersPath
-} from "../../utils/api"
-I18n.putVocabularies(translations);
-I18n.setLanguage('vn');
 
-I18n.putVocabularies({
-  vn: {
-    'Sign In': 'Đăng Nhập',
-    'Sign in': 'Đăng nhập',
-    'Create Account': "Tạo tài khoản",
-    'Forgot your password?': 'Quên mật khẩu?',
-    'Signing in': "Đăng nhập ...",
-    'Creating Account': "Tạo tài khoản ..."
-  },
-});
 
 const formFields = {
-  signIn: {
-    username: {
-      label: "Email:",
-      placeholder: "Nhập email của bạn",
-      order: 1
-    },
-    password: {
-      label: "Mật khẩu:",
-      placeholder: "Nhập mật khẩu của bạn",
-      isRequired: false,
-      order: 2,
-    },
-  },
   signUp: {
     email: {
-      label: "Email:",
-      placeholder: "Nhập email của bạn",
       order: 1
     },
     password: {
-      label: "Mật khẩu:",
-      placeholder: "Nhập mật khẩu của bạn",
+      label: "Password:",
+      placeholder: "Enter your Password:",
       isRequired: false,
       order: 2,
     },
     confirm_password: {
-      label: "Xác nhận mật khẩu:",
-      placeholder: "Mời bạn nhập lại mật khẩu lần nữa",
+      label: "Confirm Password:",
       order: 3,
     },
     'custom:name_on_certificate': {
-      placeholder: 'Nhập tên bạn muốn để trên chứng chỉ',
+      placeholder: 'Enter your Name on Certificate',
       isRequired: true,
-      label: "Nhập tên trên chứng chỉ",
+      label: "Name on Certificate",
       order: 4
     }
   },
@@ -79,56 +43,8 @@ const formFields = {
 
 export default function AuthForm(props) {
   const { tokens } = useTheme();
-  // console.log(tokens)
   const location = useLocation();
-
-  const startSignOut = async() => {
-    try {
-      await Auth.signOut({global: true});
-      console.log("log out");
-    } catch (error) {
-      console.log("error signing out: ", error);
-    }
-  }
-
-  const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-  
-  const services = {
-    async handleSignIn(formData) {
-      let { username, password, attributes } = formData;
-      let user = null;
-      // try {
-      //   const res = await Auth.signOut({ global: true });
-      //   // await API.get(apiName, usersPath + user.signInUserSession.refreshToken.token)
-      //   // console.log("Revoke done")
-      // } catch (error) {
-      //   console.log('error signing out: ', error);
-      // }
-      await Auth.signIn({
-        username,
-        password,
-        attributes,
-        autoSignIn: {
-          enabled: true,
-        },
-      });
-
-      startSignOut();
-      console.log("after log out");
-      await sleep(2000)
-      console.log("after sleep");
-      // return user;
-      return Auth.signIn({
-        username,
-        password,
-        attributes,
-        autoSignIn: {
-          enabled: true,
-        },
-      });
-    },
-  };
-
+  console.log(location.state);
   const theme: Theme = {
     name: 'Auth Example Theme',
     tokens: {
@@ -147,30 +63,30 @@ export default function AuthForm(props) {
           item: {
             _focus: {
               color: {
-                value: '#0073bb',
+                value: '#EC7211',
               }
             },
             _hover: {
               color: {
-                value: '#0073bb',
+                value: '#ffa963',
               },
             },
             _active: {
               color: {
-                value: '#0073bb',
+                value: '#EC7211',
               },
               borderColor: {
-                value: '#0073bb'
+                value: '#EC7211'
               }
             },
           },
-        }
+        },
       },
     },
   };
   return (
     <ThemeProvider theme={theme}>
-    <Authenticator initialState={location.state.action ? location.state.action : "signIn"} formFields={formFields} services={services}>
+    <Authenticator initialState={location.state.action ? location.state.action : "signIn"} formFields={formFields} >
       <Navigate to={location.state.path ? location.state.path : "/"} replace={true} />
     </Authenticator>
     </ThemeProvider>
