@@ -192,11 +192,11 @@ export default class Cert extends React.Component {
                                 {!!course.name ? course.name : ""}
                             </div>
                             <div className='cert-course-property'>
-                                <Icon variant='subtle' name='ticket' className='cert-course-property-icon'/> Mức độ: {!!course.level ? course.level : ""}
+                                <Icon variant='subtle' name='ticket' className='cert-course-property-icon'/> Level: {!!course.level ? course.level : ""}
                             </div>
                             <div className='cert-course-property'>
                                 <Icon variant='subtle' name='check' className='cert-course-property-icon'/> 
-                                Nhóm: 
+                                Category: 
                                 {!!course.categories ? course.categories.map((category, index) => <span key={index}>{index !== 0 ? ', ' : ' '}<a href='/#'>{category}</a></span>) : ""}
                             </div>
                             {/* <div className='cert-course-property'>
@@ -224,10 +224,10 @@ export default class Cert extends React.Component {
                         </div> */}
                         <div className='cert-course-action'>
                             <Button variant="primary" className='cert-continue-btn' onClick={() => this.setState({redirectToCourse: course.id})}>
-                                Xem lại khoá học <Icon name='external' />
+                                Review course <Icon name='external' />
                             </Button>
-                            <Button variant="primary" className='btn-blue-light cert-continue-btn' disabled={this.state.disabled} onClick={() => this.setState({shareCertOpen: true})}>
-                                Chia sẻ chứng chỉ <Icon name='share' />
+                            <Button variant="primary" className='btn-orange cert-continue-btn' onClick={() => this.setState({shareCertOpen: true})}>
+                                Share certificate <Icon name='share' />
                             </Button>
                         </div>
                         <div className='cert-view'>

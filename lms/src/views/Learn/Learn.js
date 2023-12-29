@@ -713,7 +713,7 @@ class QuizContent extends React.Component {
             {!this.state.quizStarted ? (
               <Button
                 variant="primary"
-                className="btn-blue-light"
+                className="btn-orange"
                 onClick={() =>
                   this.setState({
                     quizStarted: true,
@@ -734,7 +734,7 @@ class QuizContent extends React.Component {
               this.state.quizPassed ? (
                 <Button
                   variant="primary"
-                  className="btn-blue-light"
+                  className="btn-orange"
                   onClick={() => {
                     this.props.markLectureCompleted();
                     this.props.nextLecture();
@@ -748,7 +748,7 @@ class QuizContent extends React.Component {
               ) : (
                 <Button
                   variant="primary"
-                  className="btn-blue-light"
+                  className="btn-orange"
                   onClick={() =>
                     this.setState({ quizStarted: false, quizDone: false })
                   }
@@ -759,7 +759,7 @@ class QuizContent extends React.Component {
             ) : !this.state.currentQuestionAnswered ? (
               <Button
                 variant="primary"
-                className="btn-blue-light"
+                className="btn-orange"
                 onClick={() => {
                   if (
                     this.state.selectedAnswer !== null ||
@@ -773,7 +773,7 @@ class QuizContent extends React.Component {
             ) : (
               <Button
                 variant="primary"
-                className="btn-blue-light"
+                className="btn-orange"
                 onClick={() => {
                   let currentQuestion = this.state.currentQuestion;
                   let nextQuestion = this.state.currentQuestion + 1;
@@ -960,7 +960,7 @@ function MainContent(props) {
               checked={autoNext}
               onChange={(e) => setAutoNext(!autoNext)}
             >
-              Tự động chuyển bài
+              Auto Next
               {autoNext ? (
                 <IoCheckmarkCircleOutline className="learn-auto-next-control-icon" />
               ) : (
@@ -1065,7 +1065,6 @@ export default class Learn extends React.Component {
   }
 
   loadLecture(chapterIndex, lectureIndex) {
-    console.log(lectureIndex);
     let lectureId =
       this.state.course.chapters[chapterIndex].lectures[lectureIndex].lectureId;
     const path = lecturePath + lectureId;
@@ -1442,13 +1441,6 @@ export default class Learn extends React.Component {
     this.setState({ lecture: newLecture });
   };
 
-  shouldComponentUpdate(nextProps, nextState) {
-    if (this.state.lecture !== nextState.lecture) {
-      this.ionViewCanEnter();
-    }
-    return true;
-  }
-
   countViewForCourse = () => {
     let courseId = this.state.course.id;
     const path = coursePath + courseId;
@@ -1532,14 +1524,14 @@ export default class Learn extends React.Component {
                             this.state.course.totalLecture >=
                           0.8 ? (
                             <span className="learn-navigation-progress-completed">
-                              Đã hoàn tất {this.state.completedLectures.length}{" "}
-                              trên {this.state.course.totalLecture} bài học{" "}
+                              Completed {this.state.completedLectures.length}{" "}
+                              out of {this.state.course.totalLecture} lectures{" "}
                               <IoCheckmarkSharp />
                             </span>
                           ) : (
                             <span className="learn-navigation-progress">
-                              Đã hoàn tất {this.state.completedLectures.length}{" "}
-                              trên {this.state.course.totalLecture} bài học{" "}
+                              Completed {this.state.completedLectures.length}{" "}
+                              out of {this.state.course.totalLecture} lectures
                             </span>
                           ),
                       },
@@ -1631,7 +1623,7 @@ export default class Learn extends React.Component {
             <BreadcrumbGroup
               items={[
                 {
-                  text: "Bài học",
+                  text: "My Learning",
                   href: "#/mylearning",
                 },
                 {

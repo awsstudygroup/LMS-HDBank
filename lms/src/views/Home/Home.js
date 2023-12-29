@@ -48,7 +48,7 @@ export class Home extends React.Component {
   async checkLoggedIn(callback) {
     try {
       const user = await Auth.currentAuthenticatedUser({ bypassCache: false });
-      // const { accessToken, idToken, refreshToken } = await Auth.currentSession();
+      // console.log(user)
       const response = await Auth.currentSession();
       console.log(response)
       this.setState(
@@ -298,10 +298,10 @@ export class Home extends React.Component {
         <div className="dashboard-courses-list-item-action">
           <Button
             variant="primary"
-            className="btn-blue-light"
+            className="btn-orange"
             onClick={() => this.redirectToCourse(course.id)}
           >
-            Bắt đầu <Icon name="arrow-left" className="rotate-180" />
+            Get Started <Icon name="arrow-left" className="rotate-180" />
           </Button>
         </div>
       </div>
@@ -310,6 +310,7 @@ export class Home extends React.Component {
 
   render() {
     const { t } = this.props;
+    // console.log("props ", this.props);
     const hightLight = t("home.highlight", { returnObjects: true });
     // const hightLight = this.state.uiSet ? this.state.uiSet.Highlight : t("home.highlight", { returnObjects: true });
     // console.log(this.state.uiSet.Highlight[0]['desc']);
@@ -333,11 +334,11 @@ export class Home extends React.Component {
                 <p className="dashboard-banner-desc">{t("home.des")}</p>
               </div>
               <div className="dashboard-banner-icon-container">
-                {/* <img
+                <img
                   className="dashboard-banner-icon"
                   src={bannerIcon}
                   alt="Banner Icon"
-                /> */}
+                />
               </div>
             </Grid>
           </div>
@@ -349,11 +350,11 @@ export class Home extends React.Component {
             </Grid>
           </div>
           <div className="dashboard-courses">
-            <div className="dashboard-courses-header">
+            <p className="dashboard-courses-header">
               {this.state.authChecked
                 ? t("home.list_title")
                 : t("home.list_title_unauthen")}
-            </div>
+            </p>
             <div className="dashboard-courses-header-decor" />
             <div className="dashboard-courses-list">
               {this.state.loading ? (

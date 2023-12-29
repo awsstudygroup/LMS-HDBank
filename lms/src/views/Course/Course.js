@@ -9,7 +9,6 @@ import Footer from '../../components/Footer/Footer';
 import loadingGif from '../../assets/images/loading.gif';
 import { calcTimeBrief } from "../../utils/tools";
 
-
 export default class Course extends React.Component {
     constructor(props) {
         super(props);
@@ -98,11 +97,11 @@ export default class Course extends React.Component {
                             {course.name}
                         </div>
                         <div className='course-property'>
-                            <Icon variant='subtle' name='ticket' className='course-property-icon'/>Mức độ: {course.level}
+                            <Icon variant='subtle' name='ticket' className='course-property-icon'/> Level: {course.level}
                         </div>
                         <div className='course-property'>
                             <Icon variant='subtle' name='check' className='course-property-icon'/> 
-                            Nhóm: 
+                            Category: 
                             {course.categories.map((category, index) => <span key={index}>{index !== 0 ? ', ' : ' '}<a href='/#'>{category}</a></span>)}
                         </div>
                         {/* <div className='course-property'>
@@ -130,7 +129,7 @@ export default class Course extends React.Component {
                             >
                             <div>
                                 <div className='course-what-to-learn-title'>
-                                    Nội dung tóm tắt
+                                    What you'll learn
                                 </div>
                                 {course.whatToLearn.map((item, index) => <div key={index} className='course-what-to-learn-item'>
                                     <Icon variant='subtle' name='check'/> 
@@ -140,26 +139,25 @@ export default class Course extends React.Component {
                             <div>
                                 <div className='board'>
                                     <div className='board-header'>
-                                        Khoá học bao gồm
+                                        This couse includes
                                     </div>
                                     <div className='board-content'>
                                         <div className='course-what-to-learn-item'>
                                             <Icon variant='subtle' name='multiscreen'/> 
-                                            <div>{videoCount} video bài giảng</div>
+                                            <div>{videoCount} on-demand videos</div>
                                         </div>
-                                        { labCount > 0 ? <div className='course-what-to-learn-item'>
+                                        <div className='course-what-to-learn-item'>
                                             <Icon variant='subtle' name='thumbs-up-filled'/>
-                                            <div>{labCount} bài tập</div>
-                                        </div> : <></>}
-                                        
+                                            <div>{labCount} hands-on labs</div>
+                                        </div>
                                         {/* <div className='course-what-to-learn-item'>
                                             <Icon variant='subtle' name='calendar'/>
                                             <div>{quiz} quizzes</div>
                                         </div> */}
                                     </div>
                                     <div className='board-footer'>
-                                        <Button variant='primary' className='btn-blue-light' onClick={() => this.openLearn()}>
-                                            Bắt đầu khoá học
+                                        <Button variant='primary' className='btn-orange' onClick={() => this.openLearn()}>
+                                            Start Course
                                         </Button>
                                     </div>
                                 </div>
@@ -170,7 +168,7 @@ export default class Course extends React.Component {
 
                         <div className='board'>
                             <div className='board-header'>
-                                Nội dung khoá học
+                                Course content
                             </div>
                             <div className='board-content'>
                                 {course.chapters.map((chapter, index) => <ExpandableSection key={index} className='course-lectures' headerText={chapter.name}>
@@ -188,7 +186,7 @@ export default class Course extends React.Component {
 
                         <div className='board'>
                             <div className='board-header'>
-                                Yêu cầu trước khi tham gia khoá học
+                                Requirements
                             </div>
                             <div className='board-content'>
                                 {course.requirements.map((requirement, index) => <ul key={index}>

@@ -7,18 +7,7 @@ import { API } from 'aws-amplify';
 
 export default function Help(props) {
   const [loading, setLoading] = useState();
-  const [question, setQuestion] = useState([
-    // {
-    //   ques: "What is Amazon EC2 Auto Scaling?",
-    //   answer:
-    //     "Amazon EC2 Auto Scaling is a fully managed service designed to launch or terminate Amazon EC2 instances automatically to help ensure you have the correct number of Amazon EC2 instances available to handle the load for your application. Amazon EC2 Auto Scaling helps you maintain application availability through fleet management for EC2 instances, which detects and replaces unhealthy instances, and by scaling your Amazon EC2 capacity up or down automatically according to conditions you define. You can use Amazon EC2 Auto Scaling to automatically increase the number of Amazon EC2 instances during demand spikes to maintain performance and decrease capacity during lulls to reduce costs.",
-    // },
-    // {
-    //     ques: "What is Amazon EC2 Auto Scaling?",
-    //     answer:
-    //       "Amazon EC2 Auto Scaling is a fully managed service designed to launch or terminate Amazon EC2 instances automatically to help ensure you have the correct number of Amazon EC2 instances available to handle the load for your application. Amazon EC2 Auto Scaling helps you maintain application availability through fleet management for EC2 instances, which detects and replaces unhealthy instances, and by scaling your Amazon EC2 capacity up or down automatically according to conditions you define. You can use Amazon EC2 Auto Scaling to automatically increase the number of Amazon EC2 instances during demand spikes to maintain performance and decrease capacity during lulls to reduce costs.",
-    //   },
-  ]);
+  const [question, setQuestion] = useState([]);
 
   useEffect(() => {
     setLoading(true)
@@ -49,7 +38,7 @@ export default function Help(props) {
               ""
             ) : (
               <div>
-                <p className="mylearning-courses-header">Câu hỏi thường gặp</p>
+                <p className="mylearning-courses-header">Frequently asked questions</p>
                 <div className="mylearning-courses-header-decor" />
                 <div>
                   {question.map((item, index) => {
