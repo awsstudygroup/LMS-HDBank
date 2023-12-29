@@ -1,0 +1,14 @@
+{
+  "resourceName": "CourseOpportunity",
+  "tableName": "CourseOpportunity",
+  "partitionKey": {
+    "fieldName": "CourseID",
+    "fieldType": "string"
+  },
+  "sortKey": {
+    "fieldName": "OppValue",
+    "fieldType": "number"
+  },
+  "gsi": [],
+  "triggerFunctions": []
+}

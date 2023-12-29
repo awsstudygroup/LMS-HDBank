@@ -428,6 +428,10 @@
       "providerPlugin": "awscloudformation",
       "service": "DynamoDB"
     },
+    "CourseOpportunity": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
+    },
     "FAQs": {
       "providerPlugin": "awscloudformation",
       "service": "DynamoDB"

@@ -79,7 +79,8 @@
         "UserLecture": {},
         "courses": {},
         "lectureresource": {},
-        "Contributor": {}
+        "Contributor": {},
+        "CourseOpportunity": {}
       }
     }
   }

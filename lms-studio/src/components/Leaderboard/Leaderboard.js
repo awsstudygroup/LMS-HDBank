@@ -26,9 +26,10 @@ import {
   byUserName,
   lecturePath,
   lectureTopViewPath,
-  courseTopContributor,
   contributorPath,
-  topContributor,
+  topContributorPath,
+  courseOppPath,
+  topOppValuePath,
 } from "../../utils/api";
 import "./Leaderboard.css";
 
@@ -38,7 +39,9 @@ const Leaderboard = (props) => {
   const [selectedItems, setSelectedItems] = React.useState([]);
   const [topCourse, setTopCourse] = useState([]);
   const [topLectures, setTopLectures] = useState([]);
-  const [activeTabId, setActiveTabId] = useState("contributor");
+  const [topContributor, setTopContributor] = useState([]);
+  const [topCourseOppValue, setTopCourseOppValue] = useState([]);
+  const [activeTabId, setActiveTabId] = useState("courses");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -48,6 +51,8 @@ const Leaderboard = (props) => {
       getTopLecture();
     } else if (activeTabId === "contributor"){
       getContributor();
+    } else {
+      getTopOppValue();
     }
   }, [activeTabId]);
 
@@ -102,14 +107,42 @@ const Leaderboard = (props) => {
   };
 
   const getContributor = async () => {
+    setLoading(true);
     try {
-      const data = await API.get(apiName, contributorPath + topContributor);
-      console.log(data);
+      const data = await API.get(apiName, contributorPath + topContributorPath);
+      const userPoolId = Auth.userPool.userPoolId;
+      let topContributorTemp = [...data];
+      let i = 0;
+      while (i < data.length) {
+        const response = await API.get(
+          apiName,
+          userPath +
+            byUserName +
+            `?username=${data[i].contributorID}&userPoolId=${userPoolId}`
+        );
+        console.log(response);
+        topContributorTemp[i]["Creator"] = response.UserAttributes[2].Value;
+        i++;
+      }
+      setTopContributor(topContributorTemp);
+      setLoading(false);
     }catch(error){
+      setLoading(false);
       console.log(error);
     }
-    
-    
+  }
+
+  const getTopOppValue = async () => {
+    setLoading(true);
+    try {
+      const data = await API.get(apiName, courseOppPath + topOppValuePath);
+      console.log(data)
+      setTopCourseOppValue(data);
+      setLoading(false);
+    }catch(error){
+      setLoading(false);
+      console.log(error);
+    }
   }
 
   return (
@@ -530,14 +563,298 @@ const Leaderboard = (props) => {
                     ),
                   },
                   {
-                    label: "Top Owner Lectures",
+                    label: "Top Owner Courses",
                     id: "contributor",
-                    content: "Third tab content area",
+                    content: (
+                      <div>
+                        <Table
+                          onSelectionChange={({ detail }) =>
+                            setSelectedItems(detail.selectedItems)
+                          }
+                          selectedItems={selectedItems}
+                          ariaLabels={{
+                            selectionGroupLabel: "Items selection",
+                            allItemsSelectionLabel: ({ selectedItems }) =>
+                              `${selectedItems.length} ${
+                                selectedItems.length === 1 ? "item" : "items"
+                              } selected`,
+                            itemSelectionLabel: ({ selectedItems }, item) => {
+                              const isItemSelected = selectedItems.filter(
+                                (i) => i.name === item.name
+                              ).length;
+                              return `${item.name} is ${
+                                isItemSelected ? "" : "not"
+                              } selected`;
+                            },
+                          }}
+                          columnDefinitions={[
+                            {
+                              id: "creator",
+                              header: "Creator",
+                              cell: (e) => e.Creator,
+                            },
+                            {
+                              id: "courseNumber",
+                              header: "Number of courses",
+                              cell: (e) => e.coursesNum,
+                              sortingField: "name",
+                              isRowHeader: true,
+                            },
+                            {
+                              id: "views",
+                              header: "Views",
+                              cell: (e) => e.views,
+                            },
+                          ]}
+                          columnDisplay={[
+                            { id: "creator", visible: true },
+                            { id: "courseNumber", visible: true },
+                            { id: "views", visible: true }
+                          ]}
+                          items={topContributor}
+                          loadingText="Loading resources"
+                          loading={loading}
+                          selectionType="multi"
+                          trackBy="name"
+                          empty={
+                            <Box textAlign="center" color="inherit">
+                              <b>No resources</b>
+                              <Box
+                                padding={{ bottom: "s" }}
+                                variant="p"
+                                color="inherit"
+                              >
+                                No resources to display.
+                              </Box>
+                              <Button>Create resource</Button>
+                            </Box>
+                          }
+                          filter={
+                            <TextFilter
+                              filteringcourseThumbnail="Find Course Names"
+                              filteringText=""
+                            />
+                          }
+                          header={
+                            <Header
+                              counter={
+                                selectedItems.length
+                                  ? "(" + selectedItems.length + "/10)"
+                                  : "(10)"
+                              }
+                            >
+                              All Contributors
+                            </Header>
+                          }
+                          pagination={
+                            <Pagination currentPageIndex={1} pagesCount={2} />
+                          }
+                          preferences={
+                            <CollectionPreferences
+                              title="Preferences"
+                              confirmLabel="Confirm"
+                              cancelLabel="Cancel"
+                              preferences={{
+                                pageSize: 10,
+                                contentDisplay: [
+                                  { id: "course", visible: true },
+                                  { id: "state", visible: true },
+                                  { id: "level", visible: true },
+                                  { id: "views", visible: true },
+                                ],
+                              }}
+                              pageSizePreference={{
+                                title: "Page size",
+                                options: [
+                                  { value: 10, label: "10 resources" },
+                                  { value: 20, label: "20 resources" },
+                                ],
+                              }}
+                              wrapLinesPreference={{}}
+                              stripedRowsPreference={{}}
+                              contentDensityPreference={{}}
+                              contentDisplayPreference={{
+                                options: [
+                                  {
+                                    id: "course",
+                                    label: "Name",
+                                    alwaysVisible: true,
+                                  },
+                                  { id: "state", label: "State" },
+                                  { id: "level", label: "Level" },
+                                  { id: "views", label: "Views" },
+                                ],
+                              }}
+                              stickyColumnsPreference={{
+                                firstColumns: {
+                                  title: "Stick first column(s)",
+                                  description:
+                                    "Keep the first column(s) visible while horizontally scrolling the table content.",
+                                  options: [
+                                    { label: "None", value: 0 },
+                                    { label: "First column", value: 1 },
+                                    { label: "First two columns", value: 2 },
+                                  ],
+                                },
+                                lastColumns: {
+                                  title: "Stick last column",
+                                  description:
+                                    "Keep the last column visible while horizontally scrolling the table content.",
+                                  options: [
+                                    { label: "None", value: 0 },
+                                    { label: "Last column", value: 1 },
+                                  ],
+                                },
+                              }}
+                            />
+                          }
+                        />
+                      </div>
+                    ),
                   },
                   {
                     label: "Top Opp Value",
-                    id: "value",
-                    content: "Third tab content area",
+                    id: "oppValue",
+                    content: (
+                      <div>
+                        <Table
+                          onSelectionChange={({ detail }) =>
+                            setSelectedItems(detail.selectedItems)
+                          }
+                          selectedItems={selectedItems}
+                          ariaLabels={{
+                            selectionGroupLabel: "Items selection",
+                            allItemsSelectionLabel: ({ selectedItems }) =>
+                              `${selectedItems.length} ${
+                                selectedItems.length === 1 ? "item" : "items"
+                              } selected`,
+                            itemSelectionLabel: ({ selectedItems }, item) => {
+                              const isItemSelected = selectedItems.filter(
+                                (i) => i.name === item.name
+                              ).length;
+                              return `${item.name} is ${
+                                isItemSelected ? "" : "not"
+                              } selected`;
+                            },
+                          }}
+                          columnDefinitions={[
+                            {
+                              id: "name",
+                              header: "Course Name",
+                              cell: (e) => e.CourseName,
+                            },
+                            {
+                              id: "value",
+                              header: "Opportunity Value",
+                              cell: (e) => e.OppValue,
+                              sortingField: "name",
+                              isRowHeader: true,
+                            },
+                          ]}
+                          columnDisplay={[
+                            { id: "name", visible: true },
+                            { id: "value", visible: true },
+                          ]}
+                          items={topCourseOppValue}
+                          loadingText="Loading resources"
+                          loading={loading}
+                          selectionType="multi"
+                          trackBy="name"
+                          empty={
+                            <Box textAlign="center" color="inherit">
+                              <b>No resources</b>
+                              <Box
+                                padding={{ bottom: "s" }}
+                                variant="p"
+                                color="inherit"
+                              >
+                                No resources to display.
+                              </Box>
+                              <Button>Create resource</Button>
+                            </Box>
+                          }
+                          filter={
+                            <TextFilter
+                              filteringcourseThumbnail="Find Course Names"
+                              filteringText=""
+                            />
+                          }
+                          header={
+                            <Header
+                              counter={
+                                selectedItems.length
+                                  ? "(" + selectedItems.length + "/10)"
+                                  : "(10)"
+                              }
+                            >
+                              All Contributors
+                            </Header>
+                          }
+                          pagination={
+                            <Pagination currentPageIndex={1} pagesCount={2} />
+                          }
+                          preferences={
+                            <CollectionPreferences
+                              title="Preferences"
+                              confirmLabel="Confirm"
+                              cancelLabel="Cancel"
+                              preferences={{
+                                pageSize: 10,
+                                contentDisplay: [
+                                  { id: "course", visible: true },
+                                  { id: "state", visible: true },
+                                  { id: "level", visible: true },
+                                  { id: "views", visible: true },
+                                ],
+                              }}
+                              pageSizePreference={{
+                                title: "Page size",
+                                options: [
+                                  { value: 10, label: "10 resources" },
+                                  { value: 20, label: "20 resources" },
+                                ],
+                              }}
+                              wrapLinesPreference={{}}
+                              stripedRowsPreference={{}}
+                              contentDensityPreference={{}}
+                              contentDisplayPreference={{
+                                options: [
+                                  {
+                                    id: "course",
+                                    label: "Name",
+                                    alwaysVisible: true,
+                                  },
+                                  { id: "state", label: "State" },
+                                  { id: "level", label: "Level" },
+                                  { id: "views", label: "Views" },
+                                ],
+                              }}
+                              stickyColumnsPreference={{
+                                firstColumns: {
+                                  title: "Stick first column(s)",
+                                  description:
+                                    "Keep the first column(s) visible while horizontally scrolling the table content.",
+                                  options: [
+                                    { label: "None", value: 0 },
+                                    { label: "First column", value: 1 },
+                                    { label: "First two columns", value: 2 },
+                                  ],
+                                },
+                                lastColumns: {
+                                  title: "Stick last column",
+                                  description:
+                                    "Keep the last column visible while horizontally scrolling the table content.",
+                                  options: [
+                                    { label: "None", value: 0 },
+                                    { label: "Last column", value: 1 },
+                                  ],
+                                },
+                              }}
+                            />
+                          }
+                        />
+                      </div>
+                    ),
                   },
                 ]}
               />

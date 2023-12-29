@@ -348,6 +348,7 @@ function UpdateCourse(props) {
         State: "Enabled",
         Views: state.Views,
         LastUpdated: new Date().toISOString(),
+        AccessCode: new Set(),
     }
     console.log(jsonData)
     const apiName = "lmsStudio";

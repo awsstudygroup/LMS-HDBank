@@ -501,7 +501,7 @@
         },
         "studioCourses": {
           "deploymentBucketName": "amplify-lmsstudio-mrbinh-134006-deployment",
-          "s3Key": "amplify-builds/studioCourses-716b71474c61354f6f43-build.zip"
+          "s3Key": "amplify-builds/studioCourses-314a334f764b2f745157-build.zip"
         },
         "studioLectures": {
           "deploymentBucketName": "amplify-lmsstudio-mrbinh-134006-deployment",
@@ -521,15 +521,23 @@
         },
         "userOverview": {
           "deploymentBucketName": "amplify-lmsstudio-mrbinh-134006-deployment",
-          "s3Key": "amplify-builds/userOverview-474f4e51345872343162-build.zip"
+          "s3Key": "amplify-builds/userOverview-74496a49523555386335-build.zip"
         },
         "studioContributor": {
           "deploymentBucketName": "amplify-lmsstudio-mrbinh-134006-deployment",
-          "s3Key": "amplify-builds/studioContributor-51465955575556593041-build.zip"
+          "s3Key": "amplify-builds/studioContributor-7675652f476867587a66-build.zip"
         },
         "addCourseContributor": {
           "deploymentBucketName": "amplify-lmsstudio-mrbinh-134006-deployment",
           "s3Key": "amplify-builds/addCourseContributor-61723335496835496558-build.zip"
+        },
+        "addCourseOpportunity": {
+          "deploymentBucketName": "amplify-lmsstudio-mrbinh-134006-deployment",
+          "s3Key": "amplify-builds/addCourseOpportunity-32316d50787957555451-build.zip"
+        },
+        "studioCourseOpp": {
+          "deploymentBucketName": "amplify-lmsstudio-mrbinh-134006-deployment",
+          "s3Key": "amplify-builds/studioCourseOpp-4444482f445564514f64-build.zip"
         }
       },
       "hosting": {

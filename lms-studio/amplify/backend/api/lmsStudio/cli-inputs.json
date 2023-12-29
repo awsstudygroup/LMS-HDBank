@@ -75,6 +75,13 @@
       "permissions": {
         "setting": "open"
       }
+    },
+    "/courseOpp": {
+      "name": "/courseOpp",
+      "lambdaFunction": "studioCourseOpp",
+      "permissions": {
+        "setting": "open"
+      }
     }
   }
 }

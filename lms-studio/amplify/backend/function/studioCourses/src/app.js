@@ -37,6 +37,7 @@ const path = "/courses";
 const UNAUTH = "UNAUTH";
 const hashKeyPath = "/:" + partitionKeyName;
 const sortKeyPath = hasSortKey ? "/:" + sortKeyName : "";
+const aCPath = "/:ac";
 
 // declare a new express app
 const app = express();
@@ -340,6 +341,41 @@ app.post(path, function (req, res) {
       res.json({ error: err, url: req.url, body: req.body });
     } else {
       res.json({ success: "post call succeed!", url: req.url, data: data });
+    }
+  });
+});
+
+app.put(path + "/addAC" + aCPath, function (req, res) {
+  const params = {};
+  params[partitionKeyName] = req.params[partitionKeyName];
+  try {
+    params[partitionKeyName] = convertUrlType(
+      req.params[partitionKeyName],
+      partitionKeyType
+    );
+  } catch (err) {
+    res.statusCode = 500;
+    res.json({ error: "Wrong column type " + err });
+  }
+
+  let upadteItemParams = {
+    TableName: tableName,
+    Key: params,
+    UpdateExpression: "ADD #acC :vals",
+    ExpressionAttributeNames: { "#acC": "AccessCode" },
+    ExpressionAttributeValues: {
+      ":vals": dynamodb.createSet([req.query["ac"]]),
+    },
+    ReturnValues: "UPDATED_NEW",
+  };
+  
+  dynamodb.update(upadteItemParams, (err, data) => {
+    if (err) {
+      console.log(err);
+      res.statusCode = 500;
+      res.json({ error: "Could not update item: " + err.message });
+    } else {
+      res.json(data);
     }
   });
 });

@@ -47,12 +47,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "studioContributor",
+            "studioCourseOpp",
             {
               "Fn::Join": [
                 "",
                 [
-                  "studioContributor",
+                  "studioCourseOpp",
                   "-",
                   {
                     "Ref": "env"
@@ -89,12 +89,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "lmsstudioLambdaRole7a03c0cd",
+            "lmsstudioLambdaRole53146bb7",
             {
               "Fn::Join": [
                 "",
                 [
-                  "lmsstudioLambdaRole7a03c0cd",
+                  "lmsstudioLambdaRole53146bb7",
                   "-",
                   {
                     "Ref": "env"
@@ -180,7 +180,8 @@
                 "dynamodb:Scan",
                 "dynamodb:PutItem",
                 "dynamodb:UpdateItem",
-                "dynamodb:DeleteItem"
+                "dynamodb:DeleteItem",
+                "dynamodb:BatchWriteItem"
               ],
               "Resource": [
                 "*"

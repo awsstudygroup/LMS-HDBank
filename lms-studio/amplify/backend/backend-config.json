@@ -73,6 +73,14 @@
           ],
           "category": "function",
           "resourceName": "studioContributor"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "studioCourseOpp"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -113,6 +121,20 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "addCourseOpportunity": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "BucketName"
+          ],
+          "category": "storage",
+          "resourceName": "lmsstudiodcbd5e2f"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "studioAccessCode": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -124,6 +146,11 @@
       "service": "Lambda"
     },
     "studioCourseCode": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "studioCourseOpp": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
@@ -193,6 +220,22 @@
         }
       ]
     },
+    "AMPLIFY_function_addCourseOpportunity_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "addCourseOpportunity"
+        }
+      ]
+    },
+    "AMPLIFY_function_addCourseOpportunity_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "addCourseOpportunity"
+        }
+      ]
+    },
     "AMPLIFY_function_studioAccessCode_deploymentBucketName": {
       "usedBy": [
         {
@@ -238,6 +281,22 @@
         {
           "category": "function",
           "resourceName": "studioCourseCode"
+        }
+      ]
+    },
+    "AMPLIFY_function_studioCourseOpp_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "studioCourseOpp"
+        }
+      ]
+    },
+    "AMPLIFY_function_studioCourseOpp_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "studioCourseOpp"
         }
       ]
     },

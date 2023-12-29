@@ -23,6 +23,8 @@ import { API } from "aws-amplify";
 import NavBar from "../../../components/NavBar/NavBar";
 import {
   apiName,
+  coursePath,
+  addAccessCode,
   userOverview,
   userCourse,
   courseCodePath,
@@ -111,7 +113,7 @@ const AssignCourse = (props) => {
           AccessCode: oppValue,
         };
         
-        await API.put(apiName, courseCodePath, { body: courseCode });
+        await API.put(apiName, courseCodePath + addAccessCode + `?ac=${oppValue}`, {});
       }
 
       setItems([

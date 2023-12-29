@@ -1,0 +1,13 @@
+{
+  "lambdaLayers": [],
+  "permissions": {
+    "storage": {
+      "lmsstudiodcbd5e2f": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  }
+}
