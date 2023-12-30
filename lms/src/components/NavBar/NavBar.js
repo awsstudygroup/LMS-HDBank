@@ -112,11 +112,11 @@ export class NavBar extends React.Component {
         <TopNavigation
           identity={{
             href: "/",
-            title: this.state.uiSet.WebName ? this.state.uiSet.WebName : "Nguyễn Tấn Bình Edu",
-            // logo: {
-            //   src: this.state.logo ? this.state.logo : AWSLogo,
-            //   alt: "Nguyễn Tấn Bình Edu",
-            // },
+            title: this.state.uiSet.WebName ? this.state.uiSet.WebName : "Cloud Solutions Journey",
+            logo: {
+              src: this.state.logo ? this.state.logo : AWSLogo,
+              alt: "AWS Logo",
+            },
           }}
           search={
             <Input
