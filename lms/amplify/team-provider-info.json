@@ -17,6 +17,10 @@
         "lmsbc7a393d": {}
       },
       "function": {
+        "FAQs": {
+          "deploymentBucketName": "amplify-lms-prod-130645-deployment",
+          "s3Key": "amplify-builds/FAQs-42535278566a724a3766-build.zip"
+        },
         "UserCourse": {
           "deploymentBucketName": "amplify-lms-prod-163201-deployment",
           "s3Key": "amplify-builds/UserCourse-3376704f315056325859-build.zip"
@@ -40,6 +44,10 @@
         "uiConfig": {
           "deploymentBucketName": "amplify-lms-prod-163201-deployment",
           "s3Key": "amplify-builds/uiConfig-3459476656484b583276-build.zip"
+        },
+        "users": {
+          "deploymentBucketName": "amplify-lms-prod-130645-deployment",
+          "s3Key": "amplify-builds/users-4e747642647735434439-build.zip"
         },
         "usersLectures": {
           "deploymentBucketName": "amplify-lms-prod-163201-deployment",
@@ -69,7 +77,8 @@
         "UserCourse": {},
         "UserLecture": {},
         "courses": {},
-        "lectureresource": {}
+        "lectureresource": {},
+        "Contributor": {}
       }
     }
   },

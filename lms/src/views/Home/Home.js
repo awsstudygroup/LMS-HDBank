@@ -24,7 +24,7 @@ import {
   configUI,
 } from "../../utils/api";
 import { uiConfigId } from "../../utils/uiConfig";
-import { calcTime } from "../../utils/tools";
+import { calcTime, calcTimeBrief } from "../../utils/tools";
 
 export class Home extends React.Component {
   constructor(props) {
@@ -49,6 +49,8 @@ export class Home extends React.Component {
     try {
       const user = await Auth.currentAuthenticatedUser({ bypassCache: false });
       // console.log(user)
+      const response = await Auth.currentSession();
+      console.log(response)
       this.setState(
         {
           authChecked: true,
@@ -136,7 +138,7 @@ export class Home extends React.Component {
   loadUISet = () => {
     API.get(apiName, configUI + uiConfigId)
       .then((data) => {
-        console.log(data)
+        // console.log(data)
         if ( data ) {
           this.setState({ uiSet: data });
           this.loadImage(data)
@@ -283,7 +285,7 @@ export class Home extends React.Component {
               name="status-pending"
               className="dashboard-courses-list-item-property-icon"
             />
-            {calcTime(course.length)}
+            {calcTimeBrief(course.length)}
           </div>
           <div className="dashboard-courses-list-item-desc">
             {course.description}

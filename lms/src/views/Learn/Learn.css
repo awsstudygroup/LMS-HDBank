@@ -161,7 +161,7 @@ a.learn-fill-div:hover {
 }
   
 .learn-lecture-selected {
-    color: orange !important;
+    color: #0972d3 !important;
     padding-left: 10px;
     padding-right: 10px;
 }
@@ -410,7 +410,7 @@ a.learn-fill-div:hover {
 }
 
 .learn-navigation-progress {
-    color: #EC7211;
+    color: #0972d3;
     font-weight: bold;
 }
 
