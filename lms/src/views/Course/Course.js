@@ -144,12 +144,12 @@ export default class Course extends React.Component {
                                     <div className='board-content'>
                                         <div className='course-what-to-learn-item'>
                                             <Icon variant='subtle' name='multiscreen'/> 
-                                            <div>{videoCount > 0 ? videoCount + "on-demand videos" : ""}</div>
+                                            <div>{videoCount} video bài giảng</div>
                                         </div>
-                                        <div className='course-what-to-learn-item'>
+                                        { labCount > 0 ? <div className='course-what-to-learn-item'>
                                             <Icon variant='subtle' name='thumbs-up-filled'/>
-                                            <div>{labCount > 0 ? labCount + "hands-on labs" : ""} </div>
-                                        </div>
+                                            <div>{labCount} bài tập</div>
+                                        </div> : <></> }
                                         {/* <div className='course-what-to-learn-item'>
                                             <Icon variant='subtle' name='calendar'/>
                                             <div>{quiz} quizzes</div>
