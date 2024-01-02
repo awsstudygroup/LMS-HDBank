@@ -57,6 +57,22 @@
           ],
           "category": "function",
           "resourceName": "studioUIConfig"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "studioUsers"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "studioContributor"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -92,7 +108,17 @@
     }
   },
   "function": {
+    "addCourseContributor": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "studioAccessCode": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "studioContributor": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
@@ -123,8 +149,17 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "studiousers": {
+    "studioUsers": {
       "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "lmsstudioc3fd255f"
+        }
+      ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
@@ -142,6 +177,22 @@
     }
   },
   "parameters": {
+    "AMPLIFY_function_addCourseContributor_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "addCourseContributor"
+        }
+      ]
+    },
+    "AMPLIFY_function_addCourseContributor_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "addCourseContributor"
+        }
+      ]
+    },
     "AMPLIFY_function_studioAccessCode_deploymentBucketName": {
       "usedBy": [
         {
@@ -155,6 +206,22 @@
         {
           "category": "function",
           "resourceName": "studioAccessCode"
+        }
+      ]
+    },
+    "AMPLIFY_function_studioContributor_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "studioContributor"
+        }
+      ]
+    },
+    "AMPLIFY_function_studioContributor_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "studioContributor"
         }
       ]
     },
@@ -238,19 +305,19 @@
         }
       ]
     },
-    "AMPLIFY_function_studiousers_deploymentBucketName": {
+    "AMPLIFY_function_studioUsers_deploymentBucketName": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "studiousers"
+          "resourceName": "studioUsers"
         }
       ]
     },
-    "AMPLIFY_function_studiousers_s3Key": {
+    "AMPLIFY_function_studioUsers_s3Key": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "studiousers"
+          "resourceName": "studioUsers"
         }
       ]
     },

@@ -19,6 +19,13 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "function": {
+    "FAQs": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "UserCourse": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
@@ -61,6 +68,13 @@ export type AmplifyDependentResourcesAttributes = {
       "Name": "string",
       "Region": "string"
     },
+    "users": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "usersLectures": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
@@ -94,6 +108,16 @@ export type AmplifyDependentResourcesAttributes = {
       "Region": "string",
       "StreamArn": "string"
     },
+    "Contributor": {
+      "Arn": "string",
+      "Name": "string",
+      "PartitionKeyName": "string",
+      "PartitionKeyType": "string",
+      "Region": "string",
+      "SortKeyName": "string",
+      "SortKeyType": "string",
+      "StreamArn": "string"
+    },
     "CourseCode": {
       "Arn": "string",
       "Name": "string",
@@ -102,6 +126,14 @@ export type AmplifyDependentResourcesAttributes = {
       "Region": "string",
       "SortKeyName": "string",
       "SortKeyType": "string",
+      "StreamArn": "string"
+    },
+    "FAQs": {
+      "Arn": "string",
+      "Name": "string",
+      "PartitionKeyName": "string",
+      "PartitionKeyType": "string",
+      "Region": "string",
       "StreamArn": "string"
     },
     "Lectures": {

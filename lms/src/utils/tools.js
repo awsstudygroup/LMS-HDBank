@@ -23,3 +23,14 @@ export function calcTime(time) {
   }
   return timeString;
 }
+
+export function calcTimeBrief(time) {
+  let timeString = "";
+  if (Math.floor(time / 3600) > 0) {
+    timeString = timeString + (Math.floor(time / 3600) + " hours ")
+  }
+  if( (time % 3600) / 60 > 0 ){
+    timeString = timeString + (Math.floor((time % 3600) / 60) + " minutes ")
+  }
+  return timeString;
+}

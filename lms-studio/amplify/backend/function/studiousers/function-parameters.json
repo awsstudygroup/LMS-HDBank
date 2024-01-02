@@ -1,3 +1,11 @@
 {
-  "lambdaLayers": []
+  "lambdaLayers": [],
+  "permissions": {
+    "auth": {
+      "lmsstudioc3fd255f": [
+        "create",
+        "read"
+      ]
+    }
+  }
 }
