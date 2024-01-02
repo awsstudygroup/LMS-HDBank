@@ -1640,14 +1640,14 @@ export default class Learn extends React.Component {
               <div>
                 <h3>Documents</h3>
                 <ul>
-                  {this.state.lecture.lecture.referDocs ? this.state.lecture.lecture.referDocs.map((item) => {
+                  {this.state.lecture.lecture ? this.state.lecture.lecture.referDocs.map((item) => {
                     return <li onClick={(e) => this.downloadReferDoc(e, item)}>{item.split("-")[2]}</li>
                   }) : <></>}
                 </ul>
 
                 <h4>URL</h4>
                 <ul>
-                  {this.state.lecture.lecture.referUrl ? this.state.lecture.lecture.referUrl.map((item) => {
+                  {this.state.lecture.lecture ? this.state.lecture.lecture.referUrl.map((item) => {
                     return <li><a href={item}>{item}</a></li>
                   }) : <></>}
                 </ul>
