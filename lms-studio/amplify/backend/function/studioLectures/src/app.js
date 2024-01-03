@@ -302,16 +302,11 @@ app.post(path, function(req, res) {
 
 app.delete(path + '/object' + hashKeyPath + sortKeyPath, function(req, res) {
   const params = {};
-  if (userIdPresent && req.apiGateway) {
-    params[partitionKeyName] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
-  } else {
-    params[partitionKeyName] = req.params[partitionKeyName];
-     try {
-      params[partitionKeyName] = convertUrlType(req.params[partitionKeyName], partitionKeyType);
-    } catch(err) {
-      res.statusCode = 500;
-      res.json({error: 'Wrong column type ' + err});
-    }
+  try {
+    params[partitionKeyName] = convertUrlType(req.params[partitionKeyName], partitionKeyType);
+  } catch(err) {
+    res.statusCode = 500;
+    res.json({error: 'Wrong column type ' + err});
   }
   if (hasSortKey) {
     try {
