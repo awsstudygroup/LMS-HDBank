@@ -19,6 +19,17 @@
         "fieldName": "CreatorID",
         "fieldType": "string"
       }
+    },
+    {
+      "name": "Views-index",
+      "partitionKey": {
+        "fieldName": "ID",
+        "fieldType": "string"
+      },
+      "sortKey": {
+        "fieldName": "Views",
+        "fieldType": "number"
+      }
     }
   ],
   "triggerFunctions": []

@@ -41,9 +41,9 @@
           "deploymentBucketName": "amplify-lmsstudio-thailand-101518-deployment",
           "s3Key": "amplify-builds/studioUserCourse-627534684d2f4472474c-build.zip"
         },
-        "studiousers": {
+        "studioUsers": {
           "deploymentBucketName": "amplify-lmsstudio-thailand-101518-deployment",
-          "s3Key": "amplify-builds/studiousers-5131422f4a3856625963-build.zip"
+          "s3Key": "amplify-builds/studioUsers-5131422f4a3856625963-build.zip"
         },
         "userOverview": {
           "deploymentBucketName": "amplify-lmsstudio-thailand-101518-deployment",

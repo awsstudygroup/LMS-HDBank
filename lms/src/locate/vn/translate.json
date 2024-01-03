@@ -12,7 +12,8 @@
         "user": {
           "title": "",
           "learning": "Quá trình học",
-          "signOut": "Đăng xuất"
+          "signOut": "Đăng xuất",
+          "help": "Trợ giúp"
         }
     },
     "home": {
@@ -32,7 +33,7 @@
           "desc": "Nhận chứng chỉ sau khi hoàn thành khoá học."
         }
       ],
-      "list_title": "Các khoá học có sẵn",
+      "list_title": "Các khoá học",
       "list_title_unauthen": "Các khoá học phổ biến"
     }
   }

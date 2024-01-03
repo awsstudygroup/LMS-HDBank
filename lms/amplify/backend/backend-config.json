@@ -57,6 +57,22 @@
           ],
           "category": "function",
           "resourceName": "uiConfig"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "users"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "FAQs"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -92,6 +108,11 @@
     }
   },
   "function": {
+    "FAQs": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "UserCourse": {
       "build": true,
       "dependsOn": [
@@ -192,6 +213,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "users": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "usersLectures": {
       "build": true,
       "dependsOn": [
@@ -220,6 +246,22 @@
     }
   },
   "parameters": {
+    "AMPLIFY_function_FAQs_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "FAQs"
+        }
+      ]
+    },
+    "AMPLIFY_function_FAQs_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "FAQs"
+        }
+      ]
+    },
     "AMPLIFY_function_UserCourse_deploymentBucketName": {
       "usedBy": [
         {
@@ -332,6 +374,22 @@
         }
       ]
     },
+    "AMPLIFY_function_users_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "users"
+        }
+      ]
+    },
+    "AMPLIFY_function_users_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "users"
+        }
+      ]
+    },
     "AMPLIFY_hosting_amplifyhosting_appId": {
       "usedBy": [
         {
@@ -362,7 +420,15 @@
       "providerPlugin": "awscloudformation",
       "service": "DynamoDB"
     },
+    "Contributor": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
+    },
     "CourseCode": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
+    },
+    "FAQs": {
       "providerPlugin": "awscloudformation",
       "service": "DynamoDB"
     },

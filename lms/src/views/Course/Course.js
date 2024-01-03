@@ -7,7 +7,7 @@ import courseDefaultThumbnail from '../../assets/images/course-default-thumbnail
 import NavBar from '../../components/NavBar/NavBar';
 import Footer from '../../components/Footer/Footer';
 import loadingGif from '../../assets/images/loading.gif';
-
+import { calcTimeBrief } from "../../utils/tools";
 
 export default class Course extends React.Component {
     constructor(props) {
@@ -104,16 +104,14 @@ export default class Course extends React.Component {
                             Category: 
                             {course.categories.map((category, index) => <span key={index}>{index !== 0 ? ', ' : ' '}<a href='/#'>{category}</a></span>)}
                         </div>
-                        <div className='course-property'>
+                        {/* <div className='course-property'>
                             <Icon variant='subtle' name='check' className='course-property-icon'/> 
                             Tag:
                             {course.tags && course.tags.map((tag, index) => <span key={index}>{index !== 0 ? ', ' : ' '}<a href='/#'>{tag}</a></span>)}
-                        </div>
+                        </div> */}
                         <div className='course-property'>
                             <Icon variant='subtle' name='status-pending' className='course-property-icon'/> 
-                            {Math.floor(course.length / 3600) > 0 ? Math.floor(course.length / 3600) + " hours " : ""}
-                            {(course.length % 3600) / 60 > 0 ? Math.floor((course.length % 3600) / 60) + " minutes " : ""}
-                            {(course.length % 3600) % 60 > 0 ? (course.length % 3600) % 60 + " seconds" : ""}
+                            {calcTimeBrief(course.length)}
                         </div>
                         <div className='course-desc'>
                             {course.description}
@@ -146,12 +144,12 @@ export default class Course extends React.Component {
                                     <div className='board-content'>
                                         <div className='course-what-to-learn-item'>
                                             <Icon variant='subtle' name='multiscreen'/> 
-                                            <div>{videoCount} on-demand videos</div>
+                                            <div>{videoCount} video bài giảng</div>
                                         </div>
-                                        <div className='course-what-to-learn-item'>
+                                        { labCount > 0 ? <div className='course-what-to-learn-item'>
                                             <Icon variant='subtle' name='thumbs-up-filled'/>
-                                            <div>{labCount} hands-on labs</div>
-                                        </div>
+                                            <div>{labCount} bài tập</div>
+                                        </div> : <></> }
                                         {/* <div className='course-what-to-learn-item'>
                                             <Icon variant='subtle' name='calendar'/>
                                             <div>{quiz} quizzes</div>

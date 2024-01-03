@@ -4,7 +4,7 @@ import { API, Auth } from 'aws-amplify';
 import { Navigate } from "react-router-dom";
 import NavBar from '../../components/NavBar/NavBar';
 import Footer from '../../components/Footer/Footer';
-import { transformDateTime, calcTime } from "../../utils/tools"
+import { transformDateTime, calcTime, calcTimeBrief } from "../../utils/tools"
 
 import { Button, Icon, Modal, Box, SpaceBetween } from '@cloudscape-design/components';
 
@@ -22,6 +22,7 @@ export default class Cert extends React.Component {
             userEmail: "",
             userName: "",
             redirectToCourse: null,
+            disabled: true,
         };
     }
 
@@ -100,6 +101,7 @@ export default class Cert extends React.Component {
             .then((response) => {
                 this.setState({
                     cert: response,
+                    disabled: false,
                 });
             })
             .catch((error) => {
@@ -197,14 +199,14 @@ export default class Cert extends React.Component {
                                 Category: 
                                 {!!course.categories ? course.categories.map((category, index) => <span key={index}>{index !== 0 ? ', ' : ' '}<a href='/#'>{category}</a></span>) : ""}
                             </div>
-                            <div className='cert-course-property'>
+                            {/* <div className='cert-course-property'>
                                 <Icon variant='subtle' name='check' className='cert-course-property-icon'/> 
                                 Tag:
                                 {!!course.tags ? course.tags.map((tag, index) => <span key={index}>{index !== 0 ? ', ' : ' '}<a href='/#'>{tag}</a></span>) : ""}
-                            </div>
+                            </div> */}
                             <div className='cert-course-property'>
                                 <Icon variant='subtle' name='status-pending' className='cert-course-property-icon'/> 
-                                {calcTime(course.length)}
+                                {calcTimeBrief(course.length)}
                             </div>
                             <div className='cert-course-desc'>
                                 {!!course.description ? course.description : ""}

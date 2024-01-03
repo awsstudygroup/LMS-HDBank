@@ -5,7 +5,7 @@ import { Button, Icon, ProgressBar } from '@cloudscape-design/components';
 
 import loadingGif from '../../assets/images/loading.gif';
 import courseDefaultThumbnail from '../../assets/images/course-default-thumbnail.png';
-import { calcTime } from "../../utils/tools"
+import { calcTime, calcTimeBrief } from "../../utils/tools"
 
 export default class MyLearningCourse extends React.Component {
     constructor(props) {
@@ -123,7 +123,7 @@ export default class MyLearningCourse extends React.Component {
                     </div>
                     <div className='mylearning-course-property'>
                         <Icon variant='subtle' name='status-pending' className='mylearning-course-property-icon'/> 
-                          {calcTime(course.length)}
+                          {calcTimeBrief(course.length)}
                     </div>
                     <div className='mylearning-course-desc'>
                         {!!course.description ? course.description : ""}

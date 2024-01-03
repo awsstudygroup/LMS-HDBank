@@ -1,0 +1,6 @@
+[
+  {
+    "Action": ["cognito-idp:AdminGetUser"],
+    "Resource": ["*"]
+  }
+]
