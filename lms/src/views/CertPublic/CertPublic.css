@@ -1,9 +1,20 @@
-.cert-view-issued-date {
-  top: 473px;
+.cert-view-issued-date-public {
+  font-size: 13px;
+  position: relative;
+  font-weight: 300;
+  color: white;
+  top: 440px;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1080px){
+  .cert-view-issued-date-public {
+    font-size: 7px;
+    top: 360px;
+  }
 }
 
 @media only screen and (max-width: 768px) {
-  .cert-view-issued-date {
+  .cert-view-issued-date-public {
     font-size: 4px;
     top: 178px;
   }

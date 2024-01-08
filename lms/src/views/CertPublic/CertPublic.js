@@ -55,7 +55,7 @@ export default class CertPublic extends React.Component {
                                         return courseName.replace(/-/g, " ").toUpperCase();
                                     })()}
                                 </div>
-                                <div className="cert-view-issued-date">
+                                <div className="cert-view-issued-date-public">
                                     ISSUED DATE - {transformDateTime(cert.CompletedTime).toUpperCase()}
                                 </div>
                             </div>}
