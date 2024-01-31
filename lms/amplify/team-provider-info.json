@@ -56,7 +56,11 @@
         "Categories": {},
         "Cert": {},
         "Lectures": {},
-        "UserLecture": {}
+        "UserLecture": {},
+        "transcribeVideoToText": {
+          "deploymentBucketName": "amplify-lms-mrbinh-130645-deployment",
+          "s3Key": "amplify-builds/transcribeVideoToText-75484e6f44552b4c3477-build.zip"
+        }
       },
       "hosting": {
         "amplifyhosting": {

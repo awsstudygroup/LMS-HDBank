@@ -17,7 +17,7 @@ import {
   Box,
   SpaceBetween,
   HelpPanel,
-  Icon,
+  Tabs,
 } from "@cloudscape-design/components";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import { csv } from "csvtojson";
@@ -88,64 +88,149 @@ function ContentLoading() {
   );
 }
 
-function LectureContent(props) {
-  switch (props.lecture.lecture.type) {
-    case "Video":
-      return (
-        <VideoContent
-          videoSrc={props.lecture.lecture.content}
-          setTimeLeft={props.setTimeLeft}
-          handleFullScreen={props.handleFullScreen}
-          handleVideoEnded={props.handleVideoEnded}
-          lectureId={props.lecture.lecture.id}
-          countView={props.countView}
-        />
-      );
-    case "Workshop":
-      return (
-        <LabContent
-          desc={props.lecture.lecture.workshopDesc}
-          url={props.lecture.lecture.workshopUrl}
-          architect={props.lecture.lecture.content}
-          openLink={props.openLink}
-          countView={props.countView}
-          markLectureCompleted={props.markLectureCompleted}
-        />
-      );
-    case "Document":
-      return (
-        <DocumentContent
-          desc={props.lecture.lecture.desc}
-          url={props.lecture.lecture.content}
-          openLink={props.openLink}
-        />
-      );
-    case "Survey":
-      return (
-        <SurveyContent
-          desc={props.lecture.lecture.desc}
-          url={props.lecture.lecture.content}
-          openLink={props.openLink}
-          name={props.lecture.lecture.name}
-        />
-      );
-    case "Quiz":
-      return (
-        <QuizContent
-          desc={props.lecture.lecture.desc}
-          url={props.lecture.lecture.content}
-          // openLink={props.openLink}
-          name={props.lecture.lecture.name}
-          // questions={props.lecture.lecture.questions}
-          nextLecture={props.nextLecture}
-          markLectureCompleted={props.markLectureCompleted}
-          setQuestionLength={props.setQuestionLength}
-          countView={props.countView}
-          isLast={props.isLast}
-        />
-      );
-    default:
-      return <></>;
+// function LectureContent(props) {
+//   const playerChild = useRef();
+
+//   const changeVideoTime = (startTime) => {
+//     playerChild.current.changeVideoTime(startTime);
+//   };
+
+//   switch (props.lecture.lecture.type) {
+//     case "Video":
+//       return (
+//         <VideoContent
+//           ref={playerChild}
+//           videoSrc={props.lecture.lecture.content}
+//           setTimeLeft={props.setTimeLeft}
+//           handleFullScreen={props.handleFullScreen}
+//           handleVideoEnded={props.handleVideoEnded}
+//           lectureId={props.lecture.lecture.id}
+//           countView={props.countView}
+//         />
+//       );
+//     case "Workshop":
+//       return (
+//         <LabContent
+//           desc={props.lecture.lecture.workshopDesc}
+//           url={props.lecture.lecture.workshopUrl}
+//           architect={props.lecture.lecture.content}
+//           openLink={props.openLink}
+//           countView={props.countView}
+//           markLectureCompleted={props.markLectureCompleted}
+//         />
+//       );
+//     case "Document":
+//       return (
+//         <DocumentContent
+//           desc={props.lecture.lecture.desc}
+//           url={props.lecture.lecture.content}
+//           openLink={props.openLink}
+//         />
+//       );
+//     case "Survey":
+//       return (
+//         <SurveyContent
+//           desc={props.lecture.lecture.desc}
+//           url={props.lecture.lecture.content}
+//           openLink={props.openLink}
+//           name={props.lecture.lecture.name}
+//         />
+//       );
+//     case "Quiz":
+//       return (
+//         <QuizContent
+//           desc={props.lecture.lecture.desc}
+//           url={props.lecture.lecture.content}
+//           // openLink={props.openLink}
+//           name={props.lecture.lecture.name}
+//           // questions={props.lecture.lecture.questions}
+//           nextLecture={props.nextLecture}
+//           markLectureCompleted={props.markLectureCompleted}
+//           setQuestionLength={props.setQuestionLength}
+//           countView={props.countView}
+//           isLast={props.isLast}
+//         />
+//       );
+//     default:
+//       return <></>;
+//   }
+// }
+
+class LectureContent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.playerChild = React.createRef();
+  }
+
+  changeVideoTime = (startTime) => {
+    this.playerChild.current.changeVideoTime(startTime);
+  };
+
+  renderComponent = () => {
+    switch (this.props.lecture.lecture.type) {
+      case "Video":
+        return (
+          <VideoContent
+            ref={this.playerChild}
+            videoSrc={this.props.lecture.lecture.content}
+            setTimeLeft={this.props.setTimeLeft}
+            handleFullScreen={this.props.handleFullScreen}
+            handleVideoEnded={this.props.handleVideoEnded}
+            lectureId={this.props.lecture.lecture.id}
+            countView={this.props.countView}
+            setCurrentVideoTime={this.props.setCurrentVideoTime}
+          />
+        );
+      case "Workshop":
+        return (
+          <LabContent
+            desc={this.props.lecture.lecture.workshopDesc}
+            url={this.props.lecture.lecture.workshopUrl}
+            architect={this.props.lecture.lecture.content}
+            openLink={this.props.openLink}
+            countView={this.props.countView}
+            markLectureCompleted={this.props.markLectureCompleted}
+          />
+        );
+      case "Document":
+        return (
+          <DocumentContent
+            desc={this.props.lecture.lecture.desc}
+            url={this.props.lecture.lecture.content}
+            openLink={this.props.openLink}
+          />
+        );
+      case "Survey":
+        return (
+          <SurveyContent
+            desc={this.props.lecture.lecture.desc}
+            url={this.props.lecture.lecture.content}
+            openLink={this.props.openLink}
+            name={this.props.lecture.lecture.name}
+          />
+        );
+      case "Quiz":
+        return (
+          <QuizContent
+            desc={this.props.lecture.lecture.desc}
+            url={this.props.lecture.lecture.content}
+            // openLink={this.props.openLink}
+            name={this.props.lecture.lecture.name}
+            // questions={this.props.lecture.lecture.questions}
+            nextLecture={this.props.nextLecture}
+            markLectureCompleted={this.props.markLectureCompleted}
+            setQuestionLength={this.props.setQuestionLength}
+            countView={this.props.countView}
+            isLast={this.props.isLast}
+          />
+        );
+      default:
+        return <></>;
+    }
+  };
+
+  render() {
+    return <>{this.renderComponent()}</>;
   }
 }
 
@@ -182,11 +267,16 @@ class VideoContent extends React.Component {
     if (prevState.isFullscreen !== state.isFullscreen) {
       this.setState({ isFullscreenEnabled: state.isFullscreen });
     }
+    this.props.setCurrentVideoTime(state.currentTime);
   }
 
   getVideoURL = async (key) => {
     const signedURL = await Storage.get(key, { level: "public" });
     this.setState({ videoSrc: signedURL });
+  };
+
+  changeVideoTime = (startTime) => {
+    this.player.seek(startTime);
   };
 
   render() {
@@ -843,171 +933,355 @@ class QuizContent extends React.Component {
   }
 }
 
-function MainContent(props) {
-  // const handle = useFullScreenHandle();
-  const [fullscreen, setFullscreen] = useState(false);
-  const [autoNext, setAutoNext] = useState(true);
-  const [timeLeft, setTimeLeft] = useState(100);
-  const [updateView, setUpdateView] = useState(false);
-  const uploadingRef = useRef(false);
+// function MainContent(props) {
+//   // const handle = useFullScreenHandle();
+//   const [fullscreen, setFullscreen] = useState(false);
+//   const [autoNext, setAutoNext] = useState(true);
+//   const [timeLeft, setTimeLeft] = useState(100);
+//   const [updateView, setUpdateView] = useState(false);
+//   const uploadingRef = useRef(false);
+//   const playerChild = useRef(false);
 
-  // console.log("updateView", updateView)
-  const countView = async () => {
-    if (!updateView && !uploadingRef.current) {
-      uploadingRef.current = true;
-      let lectureId = props.lecture.lecture.id;
+//   // console.log("updateView", updateView)
+//   const countView = async () => {
+//     if (!updateView && !uploadingRef.current) {
+//       uploadingRef.current = true;
+//       let lectureId = props.lecture.lecture.id;
+//       const path = lecturePath + lectureId;
+
+//       API.put(apiName, path, { body: {} })
+//         .then((response) => {
+//           console.log("count view done");
+//           setUpdateView(true);
+//           uploadingRef.current = false;
+//           props.countViewForCourse();
+//         })
+//         .catch((error) => {
+//           uploadingRef.current = false;
+//           console.log(error);
+//         });
+//     }
+//   };
+
+//   useEffect(() => {
+//     setUpdateView(false);
+//   }, [props.lecture]);
+
+//   const changeVideoTime = (startTime) => {
+//     playerChild.current.changeVideoTime(startTime);
+//   }
+
+//   return (
+//     // <FullScreen handle={handle}>
+//     <div className="fullscreen">
+//       <div
+//         className={
+//           fullscreen
+//             ? "learn-content-parent full-screen"
+//             : "learn-content-parent"
+//         }
+//       >
+//         <div className="learn-content-main">
+//           {props.loading ? (
+//             <ContentLoading />
+//           ) : (
+//             <LectureContent
+//               ref={playerChild}
+//               lecture={props.lecture}
+//               openLink={(url) => {
+//                 setFullscreen(false);
+//                 window.open(url, "_blank").focus();
+//               }}
+//               setTimeLeft={(timeLeft) => {
+//                 setTimeLeft(timeLeft);
+//               }}
+//               handleFullScreen={() => {
+//                 // if (fullscreen) handle.exit();
+//                 // else handle.enter();
+//                 // setFullscreen(!fullscreen);
+//               }}
+//               handleVideoEnded={() => {
+//                 props.markLectureCompleted();
+//                 if (autoNext && !props.isLast) {
+//                   setTimeLeft(100);
+//                   props.nextLecture();
+//                 }
+//               }}
+//               nextLecture={props.nextLecture}
+//               markLectureCompleted={props.markLectureCompleted}
+//               setQuestionLength={props.setQuestionLength}
+//               countView={countView}
+//               isLast={props.isLast}
+//             />
+//           )}
+//         </div>
+//         <div className="learn-content-control">
+//           <div className="learn-content-control-left">
+//             {props.isFirst ? (
+//               <button
+//                 className="learn-content-control-btn content-control-btn-disabled"
+//                 disabled
+//               >
+//                 <IoChevronBack />
+//               </button>
+//             ) : (
+//               <button
+//                 className="learn-content-control-btn"
+//                 onClick={props.prevLecture}
+//               >
+//                 <IoChevronBack />
+//               </button>
+//             )}
+//             {props.isLast ? (
+//               <button
+//                 className="learn-content-control-btn content-control-btn-disabled"
+//                 disabled
+//               >
+//                 <IoChevronForward />
+//               </button>
+//             ) : (
+//               <button
+//                 className="learn-content-control-btn"
+//                 onClick={props.nextLecture}
+//               >
+//                 <IoChevronForward />
+//               </button>
+//             )}
+//             <Toggle
+//               Todo
+//               className="learn-auto-next-control"
+//               id="toggle-check"
+//               type="checkbox"
+//               variant="outline-secondary"
+//               checked={autoNext}
+//               onChange={(e) => setAutoNext(!autoNext)}
+//             >
+//               Tự động chuyển bài
+//               {autoNext ? (
+//                 <IoCheckmarkCircleOutline className="learn-auto-next-control-icon" />
+//               ) : (
+//                 <IoCloseCircleOutline className="learn-auto-next-control-icon" />
+//               )}
+//             </Toggle>
+//           </div>
+//           <div className="learn-content-control-right">
+//             {/* <button
+//               className="learn-content-control-btn"
+//               onClick={() => {
+//                 if (fullscreen) handle.exit();
+//                 else handle.enter();
+//                 setFullscreen(!fullscreen);
+//               }}
+//             >
+//               {isFullscreenEnabled ? <IoContract /> : <IoExpand />}
+//             </button> */}
+//           </div>
+//         </div>
+//         {autoNext && !props.isLast && timeLeft !== null && timeLeft <= 5 ? (
+//           <div className="learn-next-lecture">
+//             <div className="learn-next-lecture-count">{timeLeft}</div>
+//             <div className="learn-next-lecture-right">
+//               <div>
+//                 <div className="learn-next-lecture-header">Next</div>
+//                 <button
+//                   className="learn-next-lecture-cancel"
+//                   onClick={() => {
+//                     setAutoNext(false);
+//                   }}
+//                 >
+//                   <IoClose />
+//                 </button>
+//               </div>
+//               <div className="learn-next-lecture-name">
+//                 {props.nextLectureName}
+//               </div>
+//             </div>
+//           </div>
+//         ) : (
+//           <></>
+//         )}
+//       </div>
+//       {/* </FullScreen> */}
+//     </div>
+//   );
+// }
+
+class MainContent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      fullscreen: false,
+      autoNext: true,
+      timeLeft: 100,
+      updateView: false,
+    };
+    this.uploadingRef = React.createRef(false);
+    this.playerChild = React.createRef();
+  }
+
+  countView = async () => {
+    if (!this.state.updateView && !this.uploadingRef.current) {
+      this.uploadingRef.current = true;
+      let lectureId = this.props.lecture.lecture.id;
       const path = lecturePath + lectureId;
 
       API.put(apiName, path, { body: {} })
         .then((response) => {
           console.log("count view done");
-          setUpdateView(true);
-          uploadingRef.current = false;
-          props.countViewForCourse();
+          this.setState({ updateView: true });
+          this.uploadingRef.current = false;
+          this.props.countViewForCourse();
         })
         .catch((error) => {
-          uploadingRef.current = false;
+          this.uploadingRef.current = false;
           console.log(error);
         });
     }
   };
 
-  useEffect(() => {
-    setUpdateView(false);
-  }, [props.lecture]);
+  static getDerivedStateFromProps(props, state) {
+    if (props.lecture !== state.prevPropsLecture) {
+      return {
+        prevPropsLecture: props.lecture,
+        updateView: false,
+      };
+    }
+  }
 
-  return (
-    // <FullScreen handle={handle}>
-    <div className="fullscreen">
-      <div
-        className={
-          fullscreen
-            ? "learn-content-parent full-screen"
-            : "learn-content-parent"
-        }
-      >
-        <div className="learn-content-main">
-          {props.loading ? (
-            <ContentLoading />
-          ) : (
-            <LectureContent
-              lecture={props.lecture}
-              openLink={(url) => {
-                setFullscreen(false);
-                window.open(url, "_blank").focus();
-              }}
-              setTimeLeft={(timeLeft) => {
-                setTimeLeft(timeLeft);
-              }}
-              handleFullScreen={() => {
-                // if (fullscreen) handle.exit();
-                // else handle.enter();
-                // setFullscreen(!fullscreen);
-              }}
-              handleVideoEnded={() => {
-                props.markLectureCompleted();
-                if (autoNext && !props.isLast) {
-                  setTimeLeft(100);
-                  props.nextLecture();
-                }
-              }}
-              nextLecture={props.nextLecture}
-              markLectureCompleted={props.markLectureCompleted}
-              setQuestionLength={props.setQuestionLength}
-              countView={countView}
-              isLast={props.isLast}
-            />
-          )}
-        </div>
-        <div className="learn-content-control">
-          <div className="learn-content-control-left">
-            {props.isFirst ? (
-              <button
-                className="learn-content-control-btn content-control-btn-disabled"
-                disabled
-              >
-                <IoChevronBack />
-              </button>
+  changeVideoTime = (startTime) => {
+    this.playerChild.current.changeVideoTime(startTime);
+  };
+
+  render() {
+    return (
+      <div className="fullscreen">
+        <div
+          className={
+            this.state.fullscreen
+              ? "learn-content-parent full-screen"
+              : "learn-content-parent"
+          }
+        >
+          <div className="learn-content-main">
+            {this.props.loading ? (
+              <ContentLoading />
             ) : (
-              <button
-                className="learn-content-control-btn"
-                onClick={props.prevLecture}
-              >
-                <IoChevronBack />
-              </button>
+              <LectureContent
+                ref={this.playerChild}
+                lecture={this.props.lecture}
+                openLink={(url) => {
+                  this.setState({ fullscreen: false });
+                  window.open(url, "_blank").focus();
+                }}
+                setTimeLeft={(timeLeft) => {
+                  this.setState({ timeLeft: timeLeft });
+                }}
+                handleFullScreen={() => {
+                  // if (fullscreen) handle.exit();
+                  // else handle.enter();
+                  // setFullscreen(!fullscreen);
+                }}
+                handleVideoEnded={() => {
+                  this.props.markLectureCompleted();
+                  if (this.state.autoNext && !this.props.isLast) {
+                    this.setState({ timeLeft: 100 });
+                    this.props.nextLecture();
+                  }
+                }}
+                nextLecture={this.props.nextLecture}
+                markLectureCompleted={this.props.markLectureCompleted}
+                setQuestionLength={this.props.setQuestionLength}
+                countView={this.countView}
+                isLast={this.props.isLast}
+                setCurrentVideoTime={this.props.setCurrentVideoTime}
+              />
             )}
-            {props.isLast ? (
-              <button
-                className="learn-content-control-btn content-control-btn-disabled"
-                disabled
-              >
-                <IoChevronForward />
-              </button>
-            ) : (
-              <button
-                className="learn-content-control-btn"
-                onClick={props.nextLecture}
-              >
-                <IoChevronForward />
-              </button>
-            )}
-            <Toggle
-              Todo
-              className="learn-auto-next-control"
-              id="toggle-check"
-              type="checkbox"
-              variant="outline-secondary"
-              checked={autoNext}
-              onChange={(e) => setAutoNext(!autoNext)}
-            >
-              Tự động chuyển bài
-              {autoNext ? (
-                <IoCheckmarkCircleOutline className="learn-auto-next-control-icon" />
-              ) : (
-                <IoCloseCircleOutline className="learn-auto-next-control-icon" />
-              )}
-            </Toggle>
           </div>
-          <div className="learn-content-control-right">
-            {/* <button
-              className="learn-content-control-btn"
-              onClick={() => {
-                if (fullscreen) handle.exit();
-                else handle.enter();
-                setFullscreen(!fullscreen);
-              }}
-            >
-              {isFullscreenEnabled ? <IoContract /> : <IoExpand />}
-            </button> */}
-          </div>
-        </div>
-        {autoNext && !props.isLast && timeLeft !== null && timeLeft <= 5 ? (
-          <div className="learn-next-lecture">
-            <div className="learn-next-lecture-count">{timeLeft}</div>
-            <div className="learn-next-lecture-right">
-              <div>
-                <div className="learn-next-lecture-header">Next</div>
+          <div className="learn-content-control">
+            <div className="learn-content-control-left">
+              {this.props.isFirst ? (
                 <button
-                  className="learn-next-lecture-cancel"
-                  onClick={() => {
-                    setAutoNext(false);
-                  }}
+                  className="learn-content-control-btn content-control-btn-disabled"
+                  disabled
                 >
-                  <IoClose />
+                  <IoChevronBack />
                 </button>
+              ) : (
+                <button
+                  className="learn-content-control-btn"
+                  onClick={this.props.prevLecture}
+                >
+                  <IoChevronBack />
+                </button>
+              )}
+              {this.props.isLast ? (
+                <button
+                  className="learn-content-control-btn content-control-btn-disabled"
+                  disabled
+                >
+                  <IoChevronForward />
+                </button>
+              ) : (
+                <button
+                  className="learn-content-control-btn"
+                  onClick={this.props.nextLecture}
+                >
+                  <IoChevronForward />
+                </button>
+              )}
+              <Toggle
+                Todo
+                className="learn-auto-next-control"
+                id="toggle-check"
+                type="checkbox"
+                variant="outline-secondary"
+                checked={this.state.autoNext}
+                onChange={(e) =>
+                  this.setState({ autoNext: !this.state.autoNext })
+                }
+              >
+                Tự động chuyển bài
+                {this.state.autoNext ? (
+                  <IoCheckmarkCircleOutline className="learn-auto-next-control-icon" />
+                ) : (
+                  <IoCloseCircleOutline className="learn-auto-next-control-icon" />
+                )}
+              </Toggle>
+            </div>
+            <div className="learn-content-control-right"></div>
+          </div>
+          {this.state.autoNext &&
+          !this.props.isLast &&
+          this.state.timeLeft !== null &&
+          this.state.timeLeft <= 5 ? (
+            <div className="learn-next-lecture">
+              <div className="learn-next-lecture-count">
+                {this.state.timeLeft}
               </div>
-              <div className="learn-next-lecture-name">
-                {props.nextLectureName}
+              <div className="learn-next-lecture-right">
+                <div>
+                  <div className="learn-next-lecture-header">Next</div>
+                  <button
+                    className="learn-next-lecture-cancel"
+                    onClick={() => {
+                      this.setState({ autoNext: false });
+                    }}
+                  >
+                    <IoClose />
+                  </button>
+                </div>
+                <div className="learn-next-lecture-name">
+                  {this.props.nextLectureName}
+                </div>
               </div>
             </div>
-          </div>
-        ) : (
-          <></>
-        )}
+          ) : (
+            <></>
+          )}
+        </div>
       </div>
-      {/* </FullScreen> */}
-    </div>
-  );
+    );
+  }
 }
 
 export default class Learn extends React.Component {
@@ -1021,11 +1295,16 @@ export default class Learn extends React.Component {
         chapterId: 0,
         lectureId: 0,
         lecture: null,
+        transcript: null,
       },
       questionsLength: 0,
       nextLectureName: "",
       completedLectures: [],
+      currentVideoTime: 0,
     };
+    this.playerChild = React.createRef();
+    this.wordElement = React.createRef();
+    this.transcriptRef = React.createRef();
   }
 
   getHashParams() {
@@ -1065,14 +1344,11 @@ export default class Learn extends React.Component {
   }
 
   loadLecture(chapterIndex, lectureIndex) {
-    console.log(lectureIndex);
     let lectureId =
       this.state.course.chapters[chapterIndex].lectures[lectureIndex].lectureId;
     const path = lecturePath + lectureId;
     const init = {};
-
     this.setState({ loading: true });
-
     API.get(apiName, path, init)
       .then((response) => {
         this.setState(
@@ -1092,6 +1368,7 @@ export default class Learn extends React.Component {
                 workshopDesc: response.WorkshopDescription,
                 referDocs: response.ReferDocs,
                 referUrl: response.ReferUrl,
+                transcript: response.Transcription,
               },
             },
             loading: false,
@@ -1112,6 +1389,7 @@ export default class Learn extends React.Component {
             ) {
               this.markLectureCompleted(this.state.lecture.lecture.id);
             }
+            this.loadTranscript();
           }
         );
       })
@@ -1463,17 +1741,94 @@ export default class Learn extends React.Component {
   };
 
   downloadReferDoc = async (event, name) => {
-    const signedURL = await Storage.get(
-      name,
-      { level: 'public'}
-    );
+    const signedURL = await Storage.get(name, { level: "public" });
     const link = document.createElement("a");
     link.href = signedURL;
     link.setAttribute("download", name);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  };
+
+  changeVideoTime = (startTime) => {
+    this.playerChild.current.changeVideoTime(startTime);
+  };
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.state.currentVideoTime !== prevState.currentVideoTime) {
+      if (this.wordElement.current) {
+        if (
+          this.wordElement.current.offsetTop >
+          document.getElementsByTagName("aside")[0].offsetHeight
+        ) {
+          document.getElementsByTagName("aside")[0].scrollTop =
+            this.wordElement.current.offsetTop;
+        }
+      }
+    }
   }
+
+  loadTranscript = () => {
+    let i = 0;
+    let trancriptElement = [];
+    console.log("load transcript");
+    Storage.get(this.state.lecture.lecture.transcript, {
+      level: "public",
+    }).then((data) => {
+      console.log(data);
+      fetch(data)
+        .then((response) => response.json())
+        .then((json) => {
+          console.log(json);
+          if (json) {
+            while (i < json.results.items.length - 1) {
+              let item = JSON.parse(JSON.stringify(json.results.items[i]));
+              let content = "";
+              if (
+                item.alternatives[0].content === "," ||
+                item.alternatives[0].content === "."
+              ) {
+                trancriptElement.push(item);
+                i += 1;
+                continue;
+              }
+
+              if (
+                json.results.items[i + 1].alternatives[0].content === "," ||
+                json.results.items[i + 1].alternatives[0].content === "."
+              ) {
+                trancriptElement.push(item);
+                trancriptElement.push(
+                  JSON.parse(JSON.stringify(json.results.items[i + 1]))
+                );
+              } else {
+                content = item.alternatives[0].content.concat(
+                  " ",
+                  json.results.items[i + 1].alternatives[0].content
+                );
+                item.alternatives[0].content = content;
+                item.end_time = json.results.items[i + 1].end_time
+                  ? json.results.items[i + 1].end_time
+                  : item.end_time;
+                trancriptElement.push(item);
+              }
+              i += 2;
+            }
+          }
+          this.setState({
+            lecture: {
+              ...this.state.lecture, transcript: trancriptElement,
+            },
+          });
+          // console.log("1808", this.transcriptRef.current)
+        })
+        .catch((err) => console.error(err));
+    });
+  };
+
+  setCurrentVideoTime = (time) => {
+    this.setState({ currentVideoTime: time });
+  };
 
   render() {
     return this.state.loggedIn === false ? (
@@ -1642,24 +1997,107 @@ export default class Learn extends React.Component {
             />
           }
           tools={
-            <HelpPanel
-              header={<h2>Reference</h2>}
-            >
-              <div>
-                <h3>Documents</h3>
-                <ul>
-                  {this.state.lecture.lecture ? this.state.lecture.lecture.referDocs.map((item) => {
-                    return <li onClick={(e) => this.downloadReferDoc(e, item)}>{item.split("-")[2]}</li>
-                  }) : <></>}
-                </ul>
+            <HelpPanel header={<h2>Thêm</h2>}>
+              <Tabs
+                tabs={[
+                  {
+                    label: "Tài liệu Tham khảo",
+                    id: "refer",
+                    content: (
+                      <div>
+                        <h4>Tài liệu</h4>
+                        <ul>
+                          {this.state.lecture.lecture ? (
+                            this.state.lecture.lecture.referDocs.map((item) => {
+                              return (
+                                <li
+                                  onClick={(e) =>
+                                    this.downloadReferDoc(e, item)
+                                  }
+                                >
+                                  {item.split("-")[2]}
+                                </li>
+                              );
+                            })
+                          ) : (
+                            <></>
+                          )}
+                        </ul>
 
-                <h4>URL</h4>
-                <ul>
-                  {this.state.lecture.lecture ? this.state.lecture.lecture.referUrl.map((item) => {
-                    return <li><a href={item}>{item}</a></li>
-                  }) : <></>}
-                </ul>
-              </div>
+                        <h4>Đường dẫn tài liệu</h4>
+                        <ul>
+                          {this.state.lecture.lecture ? (
+                            this.state.lecture.lecture.referUrl.map((item) => {
+                              return (
+                                <li>
+                                  <a href={item}>{item}</a>
+                                </li>
+                              );
+                            })
+                          ) : (
+                            <></>
+                          )}
+                        </ul>
+                      </div>
+                    ),
+                  },
+                  {
+                    label: "Phiên âm",
+                    id: "transcript",
+                    content: (
+                      <>
+                        <span className="transcript">
+                          {this.state.lecture.transcript
+                            ? this.state.lecture.transcript.map(
+                                (item, index) => {
+                                  return (
+                                    <div
+                                      ref={
+                                        this.state.currentVideoTime >=
+                                          item.start_time &&
+                                        this.state.currentVideoTime <=
+                                          item.end_time
+                                          ? this.wordElement
+                                          : null
+                                      }
+                                      key={index}
+                                      className="trans-word"
+                                      onClick={(e) =>
+                                        this.changeVideoTime(item.start_time)
+                                      }
+                                    >
+                                      <span
+                                        className={
+                                          this.state.currentVideoTime >=
+                                            item.start_time &&
+                                          this.state.currentVideoTime <=
+                                            item.end_time
+                                            ? "bg-yellow-500"
+                                            : ""
+                                        }
+                                      >
+                                        {item.alternatives[0].content === "," ||
+                                        item.alternatives[0].content === "."
+                                          ? item.alternatives[0].content
+                                          : " " + item.alternatives[0].content}
+                                      </span>
+                                    </div>
+                                  );
+                                }
+                              )
+                            : ""}
+                        </span>
+                      </>
+                    ),
+                  },
+                  {
+                    label: "Third tab label",
+                    id: "third",
+                    content: "Third tab content area",
+                    disabled: true,
+                  },
+                ]}
+              />
             </HelpPanel>
           }
           content={
@@ -1689,6 +2127,7 @@ export default class Learn extends React.Component {
                     </div>
                     <div className="learn-board-content">
                       <MainContent
+                        ref={this.playerChild}
                         loading={this.state.loading}
                         lecture={this.state.lecture}
                         nextLectureName={this.state.nextLectureName}
@@ -1721,6 +2160,7 @@ export default class Learn extends React.Component {
                         }}
                         setQuestionLength={this.setQuestionLength}
                         countViewForCourse={this.countViewForCourse}
+                        setCurrentVideoTime={this.setCurrentVideoTime}
                       />
                     </div>
                   </div>

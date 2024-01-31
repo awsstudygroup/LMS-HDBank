@@ -20,6 +20,8 @@ import {
   FileUpload,
   Flashbar,
   Icon,
+  Popover,
+  Form,
 } from "@cloudscape-design/components";
 import { Storage } from "aws-amplify";
 import { API } from "aws-amplify";
@@ -40,6 +42,7 @@ function UpdateLecture(props) {
     workshopDescription: "",
     architectureDiagram: [],
     architectureDiagramS3Key: "",
+    transcription: null,
     referDocuments: [],
     deleteReferDocs: [],
     addReferDocs: [],
@@ -53,6 +56,16 @@ function UpdateLecture(props) {
     isLoadingNextStep: false,
     flashItem: [],
   });
+
+  const [transcriptFile, setTranscriptFile] = useState("");
+  const [currentWord, setCurrentWord] = useState({
+    type: "",
+    alternatives: [{ confidence: "", content: "" }],
+    start_time: "",
+    end_time: "",
+    index: null,
+  });
+  const [visiable, setVisiable] = useState(false);
 
   const { state } = useLocation();
 
@@ -69,7 +82,19 @@ function UpdateLecture(props) {
       referDocumentS3Keys: state.ReferDocs,
       referUrl: state.ReferUrl,
       lectureVideoLength: state.Length,
+      transcription: state.Transcription,
     });
+  }, []);
+
+  useEffect(() => {
+    Storage.get(state.Transcription, { level: "public" }).then((data) => {
+      console.log(data);
+      fetch(data)
+        .then((response) => response.json())
+        .then((json) => setTranscriptFile(json))
+        .catch((err) => console.error(err));
+    });
+    // console.log(transcriptFile)
   }, []);
 
   const resetFail = () => {
@@ -127,18 +152,32 @@ function UpdateLecture(props) {
   const submitRequest = async () => {
     // console.log(detail);
     setNewLecture({ ...newLecture, isLoadingNextStep: true });
-    if (newLecture.deleteReferDocs.length > 0){
-      for (let i=0; i < newLecture.deleteReferDocs.length; i++){
-        await Storage.remove( newLecture.deleteReferDocs[i], {level: "public"});
+    if (newLecture.deleteReferDocs.length > 0) {
+      for (let i = 0; i < newLecture.deleteReferDocs.length; i++) {
+        await Storage.remove(newLecture.deleteReferDocs[i], {
+          level: "public",
+        });
       }
     }
-    if (newLecture.addReferDocs.length > 0){
-      for (let i=0; i < newLecture.addReferDocs.length; i++){
-        const s3key = `refer-docs/${this.state.randomId}-${newLecture.addReferDocs[i].name.replace(/ /g,"_")}`;
-        await Storage.put(s3key, newLecture.addReferDocs[i], {level: "public"});
-        setNewLecture({...newLecture, referDocumentS3Keys: [...newLecture.referDocumentS3Keys, s3key]})
+    if (newLecture.addReferDocs.length > 0) {
+      for (let i = 0; i < newLecture.addReferDocs.length; i++) {
+        const s3key = `refer-docs/${
+          this.state.randomId
+        }-${newLecture.addReferDocs[i].name.replace(/ /g, "_")}`;
+        await Storage.put(s3key, newLecture.addReferDocs[i], {
+          level: "public",
+        });
+        setNewLecture({
+          ...newLecture,
+          referDocumentS3Keys: [...newLecture.referDocumentS3Keys, s3key],
+        });
       }
     }
+
+    // Upload updated transcription file
+    await Storage.put(newLecture.transcription, transcriptFile, {
+      level: "public",
+    });
 
     if (
       newLecture.lectureVideo[0] ||
@@ -172,7 +211,9 @@ function UpdateLecture(props) {
       LastUpdated: new Date().toISOString(),
       State: "Enabled",
       Views: state.Views,
+      Transcription: newLecture.transcription,
     };
+    
     const apiName = "lmsStudio";
     const path = "/lectures";
     API.post(apiName, path, { body: jsonData })
@@ -332,8 +373,12 @@ function UpdateLecture(props) {
 
   const deleteDocs = (index) => {
     let list = [...newLecture.referDocumentS3Keys];
-    setNewLecture({ ...newLecture, deleteReferDocs: list[index], referDocumentS3Keys: list.splice(index, 1)});
-  }
+    setNewLecture({
+      ...newLecture,
+      deleteReferDocs: list[index],
+      referDocumentS3Keys: list.splice(index, 1),
+    });
+  };
 
   const deleteUrl = (index) => {
     let list = [...newLecture.referUrl];
@@ -395,7 +440,8 @@ function UpdateLecture(props) {
             value={newLecture.currentUrl}
             onChange={(event) =>
               setNewLecture({
-                ...newLecture, currentUrl: event.detail.value,
+                ...newLecture,
+                currentUrl: event.detail.value,
               })
             }
           />
@@ -404,7 +450,8 @@ function UpdateLecture(props) {
           variant="primary"
           onClick={() => {
             let newUrl = newLecture.currentUrl;
-            setNewLecture({ ...newLecture,
+            setNewLecture({
+              ...newLecture,
               referUrl: [...newLecture.referUrl, newUrl],
               currentUrl: "",
             });
@@ -413,7 +460,7 @@ function UpdateLecture(props) {
           Add URL
         </Button>
         <ColumnLayout columns={1} variant="text-grid">
-          {this.renderReferUrl()}
+          {renderReferUrl()}
         </ColumnLayout>
       </>
     );
@@ -544,6 +591,226 @@ function UpdateLecture(props) {
         </SpaceBetween>
       );
     }
+  };
+
+  const submitChangeWord = (index) => {
+    const oldTranscript = { ...transcriptFile };
+    if (currentWord.alternatives[0].content === "") {
+      oldTranscript.results.items.splice(index, 1);
+    } else {
+      if (currentWord.index) delete currentWord.index;
+      oldTranscript.results.items[index] = currentWord;
+    }
+    setTranscriptFile(oldTranscript);
+    const popover = document.getElementById("transcript");
+    // console.log(popover)
+    // console.log(popover.getElementsByTagName("button"))
+  };
+
+  const addNewWords = () => {
+    if (currentWord.alternatives[0].content !== "") {
+      const oldTranscript = { ...transcriptFile };
+      const index = currentWord.index;
+      console.log(index)
+      delete currentWord.index;
+      // oldTranscript.results.items[index] = currentWord;
+      oldTranscript.results.items.splice(index, 0, currentWord);
+      setTranscriptFile(oldTranscript);
+      setVisiable(false);
+    }
+  }
+
+  const renderEditTrancription = () => {
+    return (
+      <div>
+        <SpaceBetween direction="vertical" size="s">
+          <Container
+            header={<Header variant="h2">Trancription Overview</Header>}
+          >
+            <div>
+              <FormField
+                label="Transcript"
+                description="You can pick a word, then delete or change its attribute or add a new word after it"
+              >
+                <div>
+                  {transcriptFile.results
+                    ? transcriptFile.results.items.map((item, index) => {
+                        return (
+                          <span>
+                            {item.alternatives[0].content === "," ||
+                            item.alternatives[0].content === "." ? (
+                              <></>
+                            ) : (
+                              <span> </span>
+                            )}
+                            <Popover
+                              header="Edit word"
+                              position="bottom"
+                              id="transcript"
+                              size="large"
+                              triggerType="custom"
+                              content={
+                                <form onSubmit={(e) => e.preventDefault()}>
+                                  <Form
+                                    actions={
+                                      <SpaceBetween
+                                        direction="horizontal"
+                                        size="xxs"
+                                      >
+                                        <Button
+                                          formAction="none"
+                                          variant="link"
+                                        >
+                                          Cancel
+                                        </Button>
+                                        <Button
+                                          variant="primary"
+                                          onClick={(event) =>
+                                            submitChangeWord(index)
+                                          }
+                                        >
+                                          {currentWord.alternatives[0]
+                                            .content === ""
+                                            ? "Delete"
+                                            : "Save"}
+                                        </Button>
+                                        <Button
+                                          variant="primary"
+                                          onClick={(e) => {
+                                            setVisiable(true);
+                                            setCurrentWord({
+                                              type: "",
+                                              alternatives: [
+                                                { confidence: "", content: "" },
+                                              ],
+                                              start_time: "",
+                                              end_time: "",
+                                              index: index + 1,
+                                            });
+                                          }}
+                                        >
+                                          Add new word
+                                        </Button>
+                                      </SpaceBetween>
+                                    }
+                                  >
+                                    <Container>
+                                      <SpaceBetween
+                                        direction="vertical"
+                                        size="xxs"
+                                      >
+                                        <FormField label="Content">
+                                          <Input
+                                            value={
+                                              currentWord.alternatives[0]
+                                                .content
+                                            }
+                                            onChange={(event) => {
+                                              // console.log(event.detail);
+                                              const oldWord = {
+                                                ...currentWord,
+                                              };
+                                              oldWord.alternatives[0].content =
+                                                event.detail.value;
+                                              setCurrentWord(oldWord);
+                                            }}
+                                          />
+                                        </FormField>
+                                        <FormField label="Start time">
+                                          <Input
+                                            value={currentWord.start_time}
+                                            onChange={(event) =>
+                                              setCurrentWord({
+                                                ...currentWord,
+                                                start_time: event.detail.value,
+                                              })
+                                            }
+                                          />
+                                        </FormField>
+                                        <FormField label="End time">
+                                          <Input
+                                            value={currentWord.end_time}
+                                            onChange={(event) =>
+                                              setCurrentWord({
+                                                ...currentWord,
+                                                end_time: event.detail.value,
+                                              })
+                                            }
+                                          />
+                                        </FormField>
+                                      </SpaceBetween>
+                                    </Container>
+                                  </Form>
+                                </form>
+                              }
+                            >
+                              <span onClick={(event) => setCurrentWord(JSON.parse(JSON.stringify(item)))}>
+                                {item.alternatives[0].content === "," ||
+                                item.alternatives[0].content === "."
+                                  ? item.alternatives[0].content
+                                  : " " + item.alternatives[0].content}
+                              </span>
+                            </Popover>
+                          </span>
+                        );
+                      })
+                    : ""}
+                </div>
+              </FormField>
+            </div>
+          </Container>
+          <div style={visiable ? { display: "block" } : { display: "none" }}>
+            <Container header={<Header variant="h2">Add new word</Header>}>
+              <SpaceBetween direction="vertical" size="s">
+                <FormField label="Content" description="">
+                  <Input
+                    autoFocus
+                    value={currentWord.alternatives[0].content}
+                    onChange={(event) => {
+                      const oldWord = {
+                        ...currentWord,
+                      };
+                      oldWord.alternatives[0].content = event.detail.value;
+                      setCurrentWord(oldWord);
+                    }}
+                  />
+                </FormField>
+                <FormField label="Start Time" description="">
+                  <Input
+                    value={currentWord.start_time}
+                    onChange={(event) =>
+                      setCurrentWord({
+                        ...currentWord,
+                        start_time: event.detail.value,
+                      })
+                    }
+                  />
+                </FormField>
+                <FormField label="End Time" description="">
+                  <Input
+                    value={currentWord.end_time}
+                    onChange={(event) =>
+                      setCurrentWord({
+                        ...currentWord,
+                        end_time: event.detail.value,
+                      })
+                    }
+                  />
+                </FormField>
+                <SpaceBetween direction="horizontal" size="xs">
+                <Button variant="normal" onClick={(event) => setVisiable(false)}>
+                  Cancel
+                </Button>
+                <Button variant="primary" onClick={(event) => addNewWords()}>
+                  Add
+                </Button>
+                </SpaceBetween>
+              </SpaceBetween>
+            </Container>
+          </div>
+        </SpaceBetween>
+      </div>
+    );
   };
 
   // render review section in step 3
@@ -696,7 +963,7 @@ function UpdateLecture(props) {
               ),
             },
             {
-              title: "Add Content",
+              title: "Edit Content",
               content: (
                 <Container
                   header={<Header variant="h2">Lecture Content</Header>}
@@ -706,6 +973,11 @@ function UpdateLecture(props) {
                   </SpaceBetween>
                 </Container>
               ),
+              isOptional: false,
+            },
+            {
+              title: "Edit Transcription",
+              content: <div>{renderEditTrancription()}</div>,
               isOptional: false,
             },
             {

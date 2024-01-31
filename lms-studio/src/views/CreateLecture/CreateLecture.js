@@ -36,6 +36,11 @@ class CreateLecture extends React.Component {
 
   submitRequest = async () => {
     // console.log(detail);
+    if ( this.state.continue ){
+      this.setState(this.getDefaultState());
+      return;
+    }
+
     this.setState({ isLoadingNextStep: true });
 
     if (this.state.referDocuments.length > 0) {
@@ -125,7 +130,10 @@ class CreateLecture extends React.Component {
 
   writeLectureToDB = async (lectureContent) => {
     // console.log(lectureContent)
-
+    let transcription = lectureContent.split("/")[1];
+    transcription = transcription.split(".")[0];
+    transcription = "transcription/" + transcription + ".json";
+    
     const jsonData = {
       ID: uuid(),
       Name: this.state.lectureTitle,
@@ -143,13 +151,14 @@ class CreateLecture extends React.Component {
       ReferUrl: this.state.referUrl,
       State: "Enabled",
       Views: 0,
+      Transcription: transcription,
     };
     const apiName = "lmsStudio";
     const path = "/lectures";
     try {
       await API.put(apiName, path, { body: jsonData });
       this.setState({
-        redirectToHome: true,
+        // redirectToHome: true,
         isLoadingNextStep: false,
         flashItem: [
           {
@@ -161,6 +170,7 @@ class CreateLecture extends React.Component {
             id: "success_message",
           },
         ],
+        continue: true,
       });
     } catch (error) {
       this.setState({
@@ -202,6 +212,7 @@ class CreateLecture extends React.Component {
       redirectToHome: false,
       isLoadingNextStep: false,
       flashItem: [],
+      continue: false,
     };
   };
 
@@ -593,7 +604,7 @@ class CreateLecture extends React.Component {
               cancelButton: "Cancel",
               previousButton: "Previous",
               nextButton: "Next",
-              submitButton: "Submit",
+              submitButton: this.state.continue ? "Create Continue" : "Submit",
               optional: "optional",
             }}
             isLoadingNextStep={this.state.isLoadingNextStep}

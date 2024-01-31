@@ -15,14 +15,6 @@
     },
     "s3Key": {
       "Type": "String"
-    },
-    "storageLecturesName": {
-      "Type": "String",
-      "Default": "storageLecturesName"
-    },
-    "storageLecturesArn": {
-      "Type": "String",
-      "Default": "storageLecturesArn"
     }
   },
   "Conditions": {
@@ -55,12 +47,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "lectures",
+            "transcribeVideoToText",
             {
               "Fn::Join": [
                 "",
                 [
-                  "lectures",
+                  "transcribeVideoToText",
                   "-",
                   {
                     "Ref": "env"
@@ -86,7 +78,7 @@
             "Arn"
           ]
         },
-        "Runtime": "nodejs14.x",
+        "Runtime": "nodejs18.x",
         "Layers": [],
         "Timeout": 25
       }
@@ -97,12 +89,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "lmsLambdaRole222cbc2a",
+            "lmsLambdaRole8f747b5f",
             {
               "Fn::Join": [
                 "",
                 [
-                  "lmsLambdaRole222cbc2a",
+                  "lmsLambdaRole8f747b5f",
                   "-",
                   {
                     "Ref": "env"
@@ -168,34 +160,6 @@
                   }
                 ]
               }
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
-                "dynamodb:DescribeTable",
-                "dynamodb:GetItem",
-                "dynamodb:Query",
-                "dynamodb:Scan",
-                "dynamodb:PutItem",
-                "dynamodb:UpdateItem",
-                "dynamodb:DeleteItem"
-              ],
-              "Resource": [
-                {
-                  "Ref": "storageLecturesArn"
-                },
-                {
-                  "Fn::Join": [
-                    "/",
-                    [
-                      {
-                        "Ref": "storageLecturesArn"
-                      },
-                      "index/*"
-                    ]
-                  ]
-                }
-              ]
             }
           ]
         }
@@ -211,7 +175,7 @@
             {
               "Action": [
                 "s3:PutObject",
-                "s3:GetObject"
+                "transcribe:StartTranscriptionJob"
               ],
               "Resource": [
                 "*"
