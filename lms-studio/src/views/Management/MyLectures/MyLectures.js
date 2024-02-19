@@ -171,27 +171,41 @@ const MyLectures = () => {
   const deleteLecture = async () => {
     setDisable(true);
     setDeleting(true);
-    let lectureList = lectures;
-    let countDeleteItems = currentLecture ? 1 : selectedItems.length;
-    let deleteItems = currentLecture ? currentLecture : selectedItems;
+    let lectureList = [...lectures];
+    // let countDeleteItems = currentLecture ? 1 : selectedItems.length;
+    // let deleteItems = currentLecture ? currentLecture : selectedItems;
 
-    for (let i = 0; i < countDeleteItems; i++) {
+    if ( currentLecture ){
       try {
-        if (deleteItems[i].Content) {
-          await Storage.remove(deleteItems[i].Content, { level: "public" });
-        }
-
-        await API.del(apiName, lecturePath + "/object/" + deleteItems[i].ID);
+        await API.del(apiName, lecturePath + "/object/" + currentLecture.ID);
         lectureList = lectureList.filter(
-          (course) => course.ID != deleteItems[i].ID
+          (lecture) => lecture.ID != currentLecture.ID
         );
-        if (i === countDeleteItems - 1) {
-          resetSuccess();
-          setLectures(lectureList);
-        }
-      } catch (error) {
+        resetSuccess();
+        setLectures(lectureList);
+      }catch (error) {
         resetFail();
         console.log(error);
+      }
+    }else {
+      for (let i = 0; i < selectedItems.length; i++) {
+        try {
+          if (selectedItems[i].Content) {
+            await Storage.remove(selectedItems[i].Content, { level: "public" });
+          }
+  
+          await API.del(apiName, lecturePath + "/object/" + selectedItems[i].ID);
+          lectureList = lectureList.filter(
+            (lecture) => lecture.ID != selectedItems[i].ID
+          );
+          if (i === selectedItems.length - 1) {
+            resetSuccess();
+            setLectures(lectureList);
+          }
+        } catch (error) {
+          resetFail();
+          console.log(error);
+        }
       }
     }
   };

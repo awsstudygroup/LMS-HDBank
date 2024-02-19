@@ -13,6 +13,14 @@
   width: 100%;
 }
 
+.learn-loading-gif {
+  height: 16px;
+}
+
+.learn-parent-loading {
+  text-align: center;
+}
+
 .lecture-list ul {
   margin: 0;
   padding: 0;

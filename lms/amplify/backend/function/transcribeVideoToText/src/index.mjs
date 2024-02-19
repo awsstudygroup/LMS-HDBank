@@ -16,12 +16,13 @@ export const handler = async (event) => {
     event.Records[0].eventName.includes("ObjectCreated") &&
     key.includes("public/lecture-videos/")
   ) {
-    console.log("uploaded");
-
+    let jobName = key.split("/")[2];
+    jobName = jobName.split(".")[0];
+    
     const params = {
-      TranscriptionJobName: Math.floor(Math.random() * 1000000),
+      TranscriptionJobName: jobName,
       Media: {
-        MediaFileUri: `https://${sourceBucketName}.s3-${REGION}.amazonaws.com/public/lecture-videos/${key}`,
+        MediaFileUri: `https://${sourceBucketName}.s3.${REGION}.amazonaws.com/${key}`,
         // For example, "https://transcribe-demo.s3-REGION.amazonaws.com/hello_world.wav"
       },
       IdentifyLanguage: true,

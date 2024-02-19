@@ -25,6 +25,7 @@ import {
 } from "@cloudscape-design/components";
 import { Storage } from "aws-amplify";
 import { API } from "aws-amplify";
+import { apiName, secretKeyPath, lecturePath } from "../../utils/api"
 
 const successMes = "Update success";
 const errorMess = "Error! An error occurred. Please try again later";
@@ -65,7 +66,8 @@ function UpdateLecture(props) {
     end_time: "",
     index: null,
   });
-  const [visiable, setVisiable] = useState(false);
+  const [mode, setMode] = useState(0);
+  const [videoMode, setVideoMode] = useState("s3");
 
   const { state } = useLocation();
 
@@ -83,7 +85,11 @@ function UpdateLecture(props) {
       referUrl: state.ReferUrl,
       lectureVideoLength: state.Length,
       transcription: state.Transcription,
+      youtubeVideo: state.YoutubeVideoURL,
     });
+    if (state.YoutubeVideoURL) {
+      setVideoMode("youtube");
+    }
   }, []);
 
   useEffect(() => {
@@ -162,7 +168,7 @@ function UpdateLecture(props) {
     if (newLecture.addReferDocs.length > 0) {
       for (let i = 0; i < newLecture.addReferDocs.length; i++) {
         const s3key = `refer-docs/${
-          this.state.randomId
+          newLecture.randomId
         }-${newLecture.addReferDocs[i].name.replace(/ /g, "_")}`;
         await Storage.put(s3key, newLecture.addReferDocs[i], {
           level: "public",
@@ -186,7 +192,11 @@ function UpdateLecture(props) {
     ) {
       updateLectureWithNewFile();
       removeOldFile(state.Content);
-    } else {
+    } else if ( state.Content && videoMode === "youtube") {
+      updateLectureInDB("");
+      removeOldFile(state.Content);
+    }
+    else {
       updateLectureInDB(state.Content);
     }
   };
@@ -212,11 +222,10 @@ function UpdateLecture(props) {
       State: "Enabled",
       Views: state.Views,
       Transcription: newLecture.transcription,
+      YoutubeVideoURL: newLecture.youtubeVideo,
     };
-    
-    const apiName = "lmsStudio";
-    const path = "/lectures";
-    API.post(apiName, path, { body: jsonData })
+
+    API.post(apiName, lecturePath, { body: jsonData })
       .then(() => {
         setNewLecture({
           ...newLecture,
@@ -323,6 +332,51 @@ function UpdateLecture(props) {
       await Storage.remove(newLecture.lectureVideoS3Key, {
         level: "protected",
       });
+    }
+  };
+
+  const getDuration = (durationString) => {
+    let durationNum = 0;
+    if ( !durationString ){
+      return;
+    }
+    const durationParts = durationString
+      .replace("PT", "")
+      .replace("H", ":")
+      .replace("M", ":")
+      .replace("S", "")
+      .split(":");
+
+    if (durationParts.length === 3) {
+      durationNum = Number(durationParts[0])*3600 + Number(durationParts[1])*60 + Number(durationParts[2])
+    }
+
+    if (durationParts.length === 2) {
+      durationNum = Number(durationParts[0])*60 + Number(durationParts[1]);
+    }
+
+    if (durationParts.length === 1) {
+      durationNum = Number(durationParts[0])
+    }
+    console.log(durationNum)
+    return durationNum;
+  };
+
+  const getYouVideoDuration = async (videoUrl) => {
+    if ( videoUrl ){
+      const res = await API.get(apiName, secretKeyPath);
+      const secret = JSON.parse(res.SecretString);
+      const videoID = videoUrl.split("=")[1];
+      const url = `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&key=${secret["youtube-api-key"]}&id=${videoID}`;
+  
+      console.log(url);
+      fetch(url)
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data?.items[0]?.contentDetails?.duration)
+          const duration = () => getDuration(data?.items[0]?.contentDetails?.duration);
+          setNewLecture({ ...newLecture, lectureVideoLength: duration });
+        });
     }
   };
 
@@ -450,11 +504,13 @@ function UpdateLecture(props) {
           variant="primary"
           onClick={() => {
             let newUrl = newLecture.currentUrl;
-            setNewLecture({
-              ...newLecture,
-              referUrl: [...newLecture.referUrl, newUrl],
-              currentUrl: "",
-            });
+            if (newUrl) {
+              setNewLecture({
+                ...newLecture,
+                referUrl: [...newLecture.referUrl, newUrl],
+                currentUrl: "",
+              });
+            }
           }}
         >
           Add URL
@@ -468,7 +524,22 @@ function UpdateLecture(props) {
     if (newLecture.lectureType === "Video") {
       return (
         <SpaceBetween direction="vertical" size="s">
-          <FormField
+          <RadioGroup
+            onChange={({ detail }) =>
+              setVideoMode(detail.value)
+            }
+            value={videoMode}
+            items={[
+              {
+                value: "s3",
+                label: "Upload video",
+                description: "Upload your own video",
+              },
+              { value: "youtube", label: "Youtube video" },
+            ]}
+          />
+          {videoMode === "s3" ? (
+            <FormField
             label="Lecture Videos"
             description="Theory video for lecture"
           >
@@ -500,6 +571,20 @@ function UpdateLecture(props) {
               accept=".mov,.mp4"
             />
           </FormField>
+          ) : (
+            <FormField
+              label="Youtube Video URL"
+              description="For example: https://www.youtube.com/watch?v=zbiNEyZRhDU"
+            >
+              <Input
+                value={newLecture.youtubeVideo}
+                onChange={async (event) => {
+                    setNewLecture({ ...newLecture, youtubeVideo: event.detail.value });
+                    getYouVideoDuration(event.detail.value);
+                }}
+              />
+            </FormField>
+          )}
           {reference}
         </SpaceBetween>
       );
@@ -596,29 +681,27 @@ function UpdateLecture(props) {
   const submitChangeWord = (index) => {
     const oldTranscript = { ...transcriptFile };
     if (currentWord.alternatives[0].content === "") {
-      oldTranscript.results.items.splice(index, 1);
+      // oldTranscript.results.items.splice(index, 1);
+      return;
     } else {
       if (currentWord.index) delete currentWord.index;
       oldTranscript.results.items[index] = currentWord;
     }
     setTranscriptFile(oldTranscript);
-    const popover = document.getElementById("transcript");
-    // console.log(popover)
-    // console.log(popover.getElementsByTagName("button"))
   };
 
   const addNewWords = () => {
     if (currentWord.alternatives[0].content !== "") {
       const oldTranscript = { ...transcriptFile };
       const index = currentWord.index;
-      console.log(index)
+
       delete currentWord.index;
-      // oldTranscript.results.items[index] = currentWord;
+
       oldTranscript.results.items.splice(index, 0, currentWord);
       setTranscriptFile(oldTranscript);
-      setVisiable(false);
+
     }
-  }
+  };
 
   const renderEditTrancription = () => {
     return (
@@ -644,7 +727,7 @@ function UpdateLecture(props) {
                               <span> </span>
                             )}
                             <Popover
-                              header="Edit word"
+                              header={mode === 0 ? "Edit word" : "Add word"}
                               position="bottom"
                               id="transcript"
                               size="large"
@@ -657,40 +740,72 @@ function UpdateLecture(props) {
                                         direction="horizontal"
                                         size="xxs"
                                       >
-                                        <Button
-                                          formAction="none"
-                                          variant="link"
-                                        >
-                                          Cancel
-                                        </Button>
-                                        <Button
-                                          variant="primary"
-                                          onClick={(event) =>
-                                            submitChangeWord(index)
-                                          }
-                                        >
-                                          {currentWord.alternatives[0]
-                                            .content === ""
-                                            ? "Delete"
-                                            : "Save"}
-                                        </Button>
-                                        <Button
-                                          variant="primary"
-                                          onClick={(e) => {
-                                            setVisiable(true);
-                                            setCurrentWord({
-                                              type: "",
-                                              alternatives: [
-                                                { confidence: "", content: "" },
-                                              ],
-                                              start_time: "",
-                                              end_time: "",
-                                              index: index + 1,
-                                            });
-                                          }}
-                                        >
-                                          Add new word
-                                        </Button>
+                                        {mode === 0 ? (
+                                          <>
+                                            <Button
+                                              formAction="none"
+                                              variant="link"
+                                              onClick={(event) =>
+                                                {setTranscriptFile(
+                                                  transcriptFile.results.items.splice(
+                                                    index,
+                                                    1
+                                                  )
+                                                )
+                                                setCurrentWord({
+                                                  type: "",
+                                                  alternatives: [
+                                                    {
+                                                      confidence: "",
+                                                      content: "",
+                                                    },
+                                                  ],
+                                                  start_time: "",
+                                                  end_time: "",
+                                                  index: null,
+                                                });
+                                              }
+                                              }
+                                            >
+                                              Delete
+                                            </Button>
+                                            <Button
+                                              variant="primary"
+                                              onClick={(event) =>
+                                                submitChangeWord(index)
+                                              }
+                                            >
+                                              Save
+                                            </Button>
+                                            <Button
+                                              variant="primary"
+                                              onClick={(e) => {
+                                                setMode(1);
+                                                setCurrentWord({
+                                                  type: "",
+                                                  alternatives: [
+                                                    {
+                                                      confidence: "",
+                                                      content: "",
+                                                    },
+                                                  ],
+                                                  start_time: "",
+                                                  end_time: "",
+                                                  index: index + 1,
+                                                });
+                                              }}
+                                            >
+                                              Add new word
+                                            </Button>
+                                          </>
+                                        ) : (
+                                          <Button
+                                            variant="primary"
+                                            onClick={(e) => addNewWords()}
+                                          >
+                                            Add
+                                          </Button>
+                                        )}
                                       </SpaceBetween>
                                     }
                                   >
@@ -744,7 +859,14 @@ function UpdateLecture(props) {
                                 </form>
                               }
                             >
-                              <span onClick={(event) => setCurrentWord(JSON.parse(JSON.stringify(item)))}>
+                              <span
+                                onClick={(event) => {
+                                  setCurrentWord(
+                                    JSON.parse(JSON.stringify(item))
+                                  );
+                                  setMode(0);
+                                }}
+                              >
                                 {item.alternatives[0].content === "," ||
                                 item.alternatives[0].content === "."
                                   ? item.alternatives[0].content
@@ -759,55 +881,6 @@ function UpdateLecture(props) {
               </FormField>
             </div>
           </Container>
-          <div style={visiable ? { display: "block" } : { display: "none" }}>
-            <Container header={<Header variant="h2">Add new word</Header>}>
-              <SpaceBetween direction="vertical" size="s">
-                <FormField label="Content" description="">
-                  <Input
-                    autoFocus
-                    value={currentWord.alternatives[0].content}
-                    onChange={(event) => {
-                      const oldWord = {
-                        ...currentWord,
-                      };
-                      oldWord.alternatives[0].content = event.detail.value;
-                      setCurrentWord(oldWord);
-                    }}
-                  />
-                </FormField>
-                <FormField label="Start Time" description="">
-                  <Input
-                    value={currentWord.start_time}
-                    onChange={(event) =>
-                      setCurrentWord({
-                        ...currentWord,
-                        start_time: event.detail.value,
-                      })
-                    }
-                  />
-                </FormField>
-                <FormField label="End Time" description="">
-                  <Input
-                    value={currentWord.end_time}
-                    onChange={(event) =>
-                      setCurrentWord({
-                        ...currentWord,
-                        end_time: event.detail.value,
-                      })
-                    }
-                  />
-                </FormField>
-                <SpaceBetween direction="horizontal" size="xs">
-                <Button variant="normal" onClick={(event) => setVisiable(false)}>
-                  Cancel
-                </Button>
-                <Button variant="primary" onClick={(event) => addNewWords()}>
-                  Add
-                </Button>
-                </SpaceBetween>
-              </SpaceBetween>
-            </Container>
-          </div>
         </SpaceBetween>
       </div>
     );

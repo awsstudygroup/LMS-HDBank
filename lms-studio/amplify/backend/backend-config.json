@@ -81,6 +81,14 @@
           ],
           "category": "function",
           "resourceName": "studioCourseOpp"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "studioSecretManager"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -162,6 +170,11 @@
       "service": "Lambda"
     },
     "studioLectures": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "studioSecretManager": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
@@ -329,6 +342,22 @@
         {
           "category": "function",
           "resourceName": "studioLectures"
+        }
+      ]
+    },
+    "AMPLIFY_function_studioSecretManager_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "studioSecretManager"
+        }
+      ]
+    },
+    "AMPLIFY_function_studioSecretManager_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "studioSecretManager"
         }
       ]
     },

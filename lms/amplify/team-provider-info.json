@@ -59,7 +59,7 @@
         "UserLecture": {},
         "transcribeVideoToText": {
           "deploymentBucketName": "amplify-lms-mrbinh-130645-deployment",
-          "s3Key": "amplify-builds/transcribeVideoToText-75484e6f44552b4c3477-build.zip"
+          "s3Key": "amplify-builds/transcribeVideoToText-6d64524642353139706a-build.zip"
         }
       },
       "hosting": {

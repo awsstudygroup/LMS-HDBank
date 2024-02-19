@@ -173,6 +173,7 @@ class LectureContent extends React.Component {
           <VideoContent
             ref={this.playerChild}
             videoSrc={this.props.lecture.lecture.content}
+            youtubeVideoSrc={this.props.lecture.lecture.youtubeVideoSrc}
             setTimeLeft={this.props.setTimeLeft}
             handleFullScreen={this.props.handleFullScreen}
             handleVideoEnded={this.props.handleVideoEnded}
@@ -241,15 +242,35 @@ class VideoContent extends React.Component {
       videoSrc: null,
       updateView: false,
       isFullscreenEnabled: false,
-      // uploading: false,
     };
     this.uploadingRef = React.createRef();
     this.uploadingRef.current = false;
   }
 
   componentDidMount() {
-    this.getVideoURL(this.props.videoSrc);
-    this.player.subscribeToStateChange(this.handleStateChange.bind(this));
+    if (this.props.videoSrc) {
+      this.getVideoURL(this.props.videoSrc);
+      this.player.subscribeToStateChange(this.handleStateChange.bind(this));
+    } else {
+      console.log(this.props.youtubeVideoSrc);
+      // fetch(`https://noembed.com/embed?url=${this.props.youtubeVideoSrc}`)
+      //   .then((res) => res.json())
+      //   .then((out) => {
+      //     let youtubeVideo = document.getElementById("youtube-video");
+      //     youtubeVideo.innerHTML = out.html;
+      //     let iframe = document.getElementsByTagName('iframe');
+      //     iframe.width = "400";
+      //   })
+      //   .catch((err) => {
+      //     throw err;
+      //   });
+      const videoID = this.props.youtubeVideoSrc.split("=")[1];
+      let iframe = document.getElementById("youtube-video");
+      iframe.src = `https://www.youtube.com/embed/${videoID}`;
+      iframe.width = "100%";
+      iframe.height = "100%";
+    }
+
     // this.player.actions.toggleFullscreen = () => {
     //   this.props.handleFullScreen();
     // };
@@ -271,8 +292,12 @@ class VideoContent extends React.Component {
   }
 
   getVideoURL = async (key) => {
-    const signedURL = await Storage.get(key, { level: "public" });
-    this.setState({ videoSrc: signedURL });
+    if (key) {
+      const signedURL = await Storage.get(key, { level: "public" });
+      this.setState({ videoSrc: signedURL });
+    } else {
+      this.setState({ videoSrc: this.props.youtubeVideoSrc });
+    }
   };
 
   changeVideoTime = (startTime) => {
@@ -280,35 +305,44 @@ class VideoContent extends React.Component {
   };
 
   render() {
-    return (
-      <Player
-        ref={(player) => {
-          this.player = player;
-        }}
-        className={
-          !this.state.isFullscreenEnabled ? "learn-transparent-player" : ""
-        }
-        autoPlay
-        playsInline
-        fluid={false}
-        height="100%"
-        width="100%"
-        src={this.state.videoSrc}
-      >
-        <LoadingSpinner />
-        <BigPlayButton position="center" />
-        <ControlBar>
-          <ReplayControl seconds={5} order={2.1} />
-          <ForwardControl seconds={5} order={2.2} />
-          <PlaybackRateMenuButton
-            rates={[2, 1.5, 1.25, 1, 0.9, 0.75]}
-            order={7}
-          />
-          <VolumeMenuButton order={8} />
-          {/* <FullscreenToggle disabled/> */}
-        </ControlBar>
-      </Player>
-    );
+    if ( this.props.videoSrc ){
+      return (
+        <Player
+          ref={(player) => {
+            this.player = player;
+          }}
+          className={
+            !this.state.isFullscreenEnabled ? "learn-transparent-player" : ""
+          }
+          autoPlay
+          playsInline
+          fluid={false}
+          height="100%"
+          width="100%"
+          src={this.state.videoSrc}
+        >
+          <LoadingSpinner />
+          <BigPlayButton position="center" />
+          <ControlBar>
+            <ReplayControl seconds={5} order={2.1} />
+            <ForwardControl seconds={5} order={2.2} />
+            <PlaybackRateMenuButton
+              rates={[2, 1.5, 1.25, 1, 0.9, 0.75]}
+              order={7}
+            />
+            <VolumeMenuButton order={8} />
+            {/* <FullscreenToggle disabled/> */}
+          </ControlBar>
+        </Player>
+      );
+    }else {
+      return (
+        <div style={{width: "100%", height: "100%"}}>
+          <iframe id="youtube-video" src=""></iframe>
+        </div>
+      )
+    }
+    
   }
 }
 
@@ -1359,6 +1393,7 @@ export default class Learn extends React.Component {
               lecture: {
                 id: response.ID,
                 content: response.Content,
+                youtubeVideoSrc: response.YoutubeVideoURL,
                 desc: response.Desc,
                 name: response.Name,
                 type: response.Type,
@@ -1757,13 +1792,13 @@ export default class Learn extends React.Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (this.state.currentVideoTime !== prevState.currentVideoTime) {
       if (this.wordElement.current) {
-        if (
-          this.wordElement.current.offsetTop >
-          document.getElementsByTagName("aside")[0].offsetHeight
-        ) {
-          document.getElementsByTagName("aside")[0].scrollTop =
-            this.wordElement.current.offsetTop;
-        }
+        // if (
+        //   this.wordElement.current.offsetTop >
+        //   document.getElementsByTagName("aside")[0].offsetHeight
+        // ) {
+        //   document.getElementsByTagName("aside")[0].scrollTop =
+        //     this.wordElement.current.offsetTop;
+        // }
       }
     }
   }
@@ -1772,58 +1807,61 @@ export default class Learn extends React.Component {
     let i = 0;
     let trancriptElement = [];
     console.log("load transcript");
-    Storage.get(this.state.lecture.lecture.transcript, {
-      level: "public",
-    }).then((data) => {
-      console.log(data);
-      fetch(data)
-        .then((response) => response.json())
-        .then((json) => {
-          console.log(json);
-          if (json) {
-            while (i < json.results.items.length - 1) {
-              let item = JSON.parse(JSON.stringify(json.results.items[i]));
-              let content = "";
-              if (
-                item.alternatives[0].content === "," ||
-                item.alternatives[0].content === "."
-              ) {
-                trancriptElement.push(item);
-                i += 1;
-                continue;
+    if ( this.state.lecture.lecture.transcript ){
+      Storage.get(this.state.lecture.lecture.transcript, {
+        level: "public",
+      }).then((data) => {
+        console.log(data);
+        fetch(data)
+          .then((response) => response.json())
+          .then((json) => {
+            console.log(json);
+            if (json) {
+              while (i < json.results.items.length - 1) {
+                let item = JSON.parse(JSON.stringify(json.results.items[i]));
+                let content = "";
+                if (
+                  item.alternatives[0].content === "," ||
+                  item.alternatives[0].content === "."
+                ) {
+                  trancriptElement.push(item);
+                  i += 1;
+                  continue;
+                }
+  
+                if (
+                  json.results.items[i + 1].alternatives[0].content === "," ||
+                  json.results.items[i + 1].alternatives[0].content === "."
+                ) {
+                  trancriptElement.push(item);
+                  trancriptElement.push(
+                    JSON.parse(JSON.stringify(json.results.items[i + 1]))
+                  );
+                } else {
+                  content = item.alternatives[0].content.concat(
+                    " ",
+                    json.results.items[i + 1].alternatives[0].content
+                  );
+                  item.alternatives[0].content = content;
+                  item.end_time = json.results.items[i + 1].end_time
+                    ? json.results.items[i + 1].end_time
+                    : item.end_time;
+                  trancriptElement.push(item);
+                }
+                i += 2;
               }
-
-              if (
-                json.results.items[i + 1].alternatives[0].content === "," ||
-                json.results.items[i + 1].alternatives[0].content === "."
-              ) {
-                trancriptElement.push(item);
-                trancriptElement.push(
-                  JSON.parse(JSON.stringify(json.results.items[i + 1]))
-                );
-              } else {
-                content = item.alternatives[0].content.concat(
-                  " ",
-                  json.results.items[i + 1].alternatives[0].content
-                );
-                item.alternatives[0].content = content;
-                item.end_time = json.results.items[i + 1].end_time
-                  ? json.results.items[i + 1].end_time
-                  : item.end_time;
-                trancriptElement.push(item);
-              }
-              i += 2;
             }
-          }
-          this.setState({
-            lecture: {
-              ...this.state.lecture, transcript: trancriptElement,
-            },
-          });
-          // console.log("1808", this.transcriptRef.current)
-        })
-        .catch((err) => console.error(err));
-    });
+            this.setState({
+              lecture: {
+                ...this.state.lecture,
+                transcript: trancriptElement,
+              },
+            });
+            // console.log("1808", this.transcriptRef.current)
+          })
+          .catch((err) => console.error(err));
+      });
+    }
   };
 
   setCurrentVideoTime = (time) => {
