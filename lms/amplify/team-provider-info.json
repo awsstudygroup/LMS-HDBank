@@ -56,7 +56,11 @@
         "Categories": {},
         "Cert": {},
         "Lectures": {},
-        "UserLecture": {}
+        "UserLecture": {},
+        "transcribeVideoToText": {
+          "deploymentBucketName": "amplify-lms-mrbinh-130645-deployment",
+          "s3Key": "amplify-builds/transcribeVideoToText-6d64524642353139706a-build.zip"
+        }
       },
       "hosting": {
         "amplifyhosting": {
@@ -78,7 +82,8 @@
         "UserLecture": {},
         "courses": {},
         "lectureresource": {},
-        "Contributor": {}
+        "Contributor": {},
+        "CourseOpportunity": {}
       }
     }
   }

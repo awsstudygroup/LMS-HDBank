@@ -59,12 +59,12 @@ app.get('/item', function(req, res) {
 app.get(path + "/topContributor", function (req, res) {
   let getItemParams = {
     TableName: tableName,
-    Limit: "5",
+    Limit: Number("5"),
   };
-  let command = new GetCommand(getItemParams);
+  let command = new ScanCommand(getItemParams);
   docClient.send(command).then(
     (data) => {
-      res.json(data.Item);
+      res.json(data.Items);
     },
     (err) => {
       console.log(err)
@@ -90,4 +90,4 @@ app.listen(3000, function() {
 // Export the app object. When executing the application local this does nothing. However,
 // to port it to AWS Lambda we will create a wrapper around that will load the app from
 // this file
-module.exports = app
+export default app;

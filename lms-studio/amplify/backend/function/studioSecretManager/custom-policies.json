@@ -1,0 +1,6 @@
+[
+  {
+    "Action": ["secretsmanager:GetSecretValue"],
+    "Resource": ["*"]
+  }
+]

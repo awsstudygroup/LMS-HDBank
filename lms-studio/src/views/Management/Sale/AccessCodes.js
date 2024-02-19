@@ -31,7 +31,7 @@ export default function AccessCodes(props) {
   const getAllAccessCode = async () => {
     setLoading(true)
     try {
-      const response = await API.get(apiName, accessCodePath);
+      const response = await API.get(apiName, "courses/addAc/solution-architecture-association");
       console.log(response);
       setAccessCode(response)
       setLoading(false)

@@ -208,6 +208,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "transcribeVideoToText": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "uiConfig": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -342,6 +347,22 @@
         }
       ]
     },
+    "AMPLIFY_function_transcribeVideoToText_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "transcribeVideoToText"
+        }
+      ]
+    },
+    "AMPLIFY_function_transcribeVideoToText_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "transcribeVideoToText"
+        }
+      ]
+    },
     "AMPLIFY_function_uiConfig_deploymentBucketName": {
       "usedBy": [
         {
@@ -428,6 +449,10 @@
       "providerPlugin": "awscloudformation",
       "service": "DynamoDB"
     },
+    "CourseOpportunity": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
+    },
     "FAQs": {
       "providerPlugin": "awscloudformation",
       "service": "DynamoDB"
@@ -453,7 +478,17 @@
       "service": "DynamoDB"
     },
     "lectureresource": {
-      "dependsOn": [],
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn",
+            "LambdaExecutionRole"
+          ],
+          "category": "function",
+          "resourceName": "transcribeVideoToText"
+        }
+      ],
       "providerPlugin": "awscloudformation",
       "service": "S3"
     }

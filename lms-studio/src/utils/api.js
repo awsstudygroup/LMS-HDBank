@@ -7,7 +7,7 @@ export const myLecturePath = "/lectures/myLectures";
 export const lectureTopViewPath = "/topViews";
 export const coursePath = "/courses";
 export const courseTopViewPath = "/topViews";
-export const courseTopContributor = "/topContributor";
+export const addAccessCode = "/addAc";
 export const userOverview = "/userOverview";
 export const userCourse = "/usercourse";
 export const accessCodePath = "/accessCode";
@@ -16,7 +16,10 @@ export const uiConfigPath = "/configUI";
 export const userPath = "/users";
 export const byUserName = "/byUserName";
 export const contributorPath = "/contributor";
-export const topContributor = "/topContributor";
+export const topContributorPath = "/topContributor";
+export const courseOppPath = "/courseOpp";
+export const topOppValuePath = "/topOppValue";
+export const secretKeyPath = "/secretKey";
 
 const api = axios.create({
   baseURL: 'https://ax8w57g1dk.execute-api.ap-southeast-1.amazonaws.com/newenv'

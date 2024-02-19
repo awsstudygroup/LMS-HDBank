@@ -3,28 +3,32 @@ import { Navigate } from "react-router-dom";
 import "./CreateLecture.css";
 import NavBar from "../../components/NavBar/NavBar";
 import Footer from "../../components/Footer/Footer";
-import ColumnLayout from "@cloudscape-design/components/column-layout";
-import BreadcrumbGroup from "@cloudscape-design/components/breadcrumb-group";
-import Wizard from "@cloudscape-design/components/wizard";
-import Container from "@cloudscape-design/components/container";
-import Header from "@cloudscape-design/components/header";
-import SpaceBetween from "@cloudscape-design/components/space-between";
-import FormField from "@cloudscape-design/components/form-field";
-import Input from "@cloudscape-design/components/input";
-import Button from "@cloudscape-design/components/button";
-import Alert from "@cloudscape-design/components/alert";
-import Box from "@cloudscape-design/components/box";
-import Link from "@cloudscape-design/components/link";
-import Textarea from "@cloudscape-design/components/textarea";
-import RadioGroup from "@cloudscape-design/components/radio-group";
-import FileUpload from "@cloudscape-design/components/file-upload";
-import Flashbar from "@cloudscape-design/components/flashbar";
-import Toggle from "@cloudscape-design/components/toggle";
-import Icon from "@cloudscape-design/components/icon";
-import StatusIndicator from "@cloudscape-design/components/status-indicator";
+import {
+  ColumnLayout,
+  BreadcrumbGroup,
+  Wizard,
+  Container,
+  Header,
+  SpaceBetween,
+  FormField,
+  Input,
+  Button,
+  Box,
+  Link,
+  Textarea,
+  RadioGroup,
+  FileUpload,
+  Flashbar,
+  Toggle,
+  Icon,
+  Popover,
+  Form,
+} from "@cloudscape-design/components";
+import loadingGif from "../../assets/images/loading.gif";
 import { Storage } from "aws-amplify";
 import { API } from "aws-amplify";
 import { v4 as uuid } from "uuid";
+import { apiName, secretKeyPath, lecturePath } from "../../utils/api"
 
 const successMes = "Created success";
 const errorMess = "Error! An error occurred. Please try again later";
@@ -36,44 +40,57 @@ class CreateLecture extends React.Component {
 
   submitRequest = async () => {
     // console.log(detail);
+    if (this.state.continue) {
+      this.setState(this.getDefaultState());
+      return;
+    }
+
     this.setState({ isLoadingNextStep: true });
 
     if (this.state.referDocuments.length > 0) {
       let i;
-      for (i = 0; i < this.state.referDocuments.length; i++){
-        const s3key = `refer-docs/${this.state.randomId}-${this.state.referDocuments[i].name.replace(/ /g,"_")}`;
+      for (i = 0; i < this.state.referDocuments.length; i++) {
+        const s3key = `refer-docs/${
+          this.state.randomId
+        }-${this.state.referDocuments[i].name.replace(/ /g, "_")}`;
         try {
           await Storage.put(s3key, this.state.referDocuments[i], {
             level: "public",
           });
-          this.setState({ referDocumentS3Keys: [...this.state.referDocumentS3Keys, s3key] });
-        }catch(error) {
+          this.setState({
+            referDocumentS3Keys: [...this.state.referDocumentS3Keys, s3key],
+          });
+        } catch (error) {
           console.log(error);
         }
       }
     }
 
     if (this.state.lectureType === "Video") {
-      this.uploadLectureVideo(this.state.lectureVideo[0])
-        .then((res) => {
-          this.writeLectureToDB(res.key);
-        })
-        .catch((error) => {
-          this.resetLectureVideo();
-          this.setState({
-            isLoadingNextStep: false,
-            flashItem: [
-              {
-                type: "error",
-                content: errorMess,
-                dismissible: true,
-                dismissLabel: "Dismiss message",
-                onDismiss: () => this.setState({ flashItem: [] }),
-                id: "error_message",
-              },
-            ],
+      if (this.state.checked || this.state.videoMode === "youtube") {
+        this.writeLectureToDB(this.state.lectureVideoS3Key);
+      } else {
+        this.uploadLectureVideo(this.state.lectureVideo[0])
+          .then((res) => {
+            this.writeLectureToDB(res.key);
+          })
+          .catch((error) => {
+            this.resetLectureVideo();
+            this.setState({
+              isLoadingNextStep: false,
+              flashItem: [
+                {
+                  type: "error",
+                  content: errorMess,
+                  dismissible: true,
+                  dismissLabel: "Dismiss message",
+                  onDismiss: () => this.setState({ flashItem: [] }),
+                  id: "error_message",
+                },
+              ],
+            });
           });
-        });
+      }
     } else if (this.state.lectureType === "Workshop") {
       if (this.state.architectureDiagram[0]) {
         this.uploadArchitectureDiagram(this.state.architectureDiagram[0])
@@ -125,6 +142,12 @@ class CreateLecture extends React.Component {
 
   writeLectureToDB = async (lectureContent) => {
     // console.log(lectureContent)
+    let transcription = "";
+    if (lectureContent) {
+      transcription = lectureContent.split("/")[1];
+      transcription = transcription.split(".")[0];
+      transcription = "transcription/" + transcription + ".json";
+    }
 
     const jsonData = {
       ID: uuid(),
@@ -136,6 +159,7 @@ class CreateLecture extends React.Component {
       Length: Math.round(this.state.lectureVideoLength),
       WorkshopUrl: this.state.workshopUrl,
       WorkshopDescription: this.state.workshopDescription,
+      YoutubeVideoURL: this.state.youtubeVideo,
       // ArchitectureDiagramS3Key: this.state.architectureDiagramS3Key,
       // QuizS3Key: this.state.quizS3Key,
       LastUpdated: new Date().toISOString(),
@@ -143,13 +167,12 @@ class CreateLecture extends React.Component {
       ReferUrl: this.state.referUrl,
       State: "Enabled",
       Views: 0,
+      Transcription: transcription,
     };
-    const apiName = "lmsStudio";
-    const path = "/lectures";
     try {
-      await API.put(apiName, path, { body: jsonData });
+      await API.put(apiName, lecturePath, { body: jsonData });
       this.setState({
-        redirectToHome: true,
+        // redirectToHome: true,
         isLoadingNextStep: false,
         flashItem: [
           {
@@ -161,6 +184,7 @@ class CreateLecture extends React.Component {
             id: "success_message",
           },
         ],
+        continue: true,
       });
     } catch (error) {
       this.setState({
@@ -186,6 +210,7 @@ class CreateLecture extends React.Component {
       publicity: false,
       lectureType: "Video",
       lectureVideo: [],
+      youtubeVideo: "",
       lectureVideoLength: 0,
       lectureVideoS3Key: "",
       workshopUrl: "",
@@ -196,12 +221,25 @@ class CreateLecture extends React.Component {
       referDocumentS3Keys: [],
       referUrl: [],
       currentUrl: "",
+      transcription: null,
       randomId: Math.floor(Math.random() * 1000000),
       quiz: [],
       quizS3Key: "",
       redirectToHome: false,
       isLoadingNextStep: false,
       flashItem: [],
+      continue: false,
+      loading: false,
+      checked: "",
+      mode: 0,
+      videoMode: "s3",
+      currentWord: {
+        type: "",
+        alternatives: [{ confidence: "", content: "" }],
+        start_time: "",
+        end_time: "",
+        index: null,
+      },
     };
   };
 
@@ -217,6 +255,7 @@ class CreateLecture extends React.Component {
       const res = await Storage.put(s3Key, file, {
         level: "public",
       });
+      this.setState({ lectureVideoS3Key: res.key });
       return res;
     } catch (error) {
       console.log("Error uploading file: ", error);
@@ -282,6 +321,51 @@ class CreateLecture extends React.Component {
     }
   };
 
+  getDuration = (durationString) => {
+    let durationNum = 0;
+    if ( !durationString ){
+      return;
+    }
+    const durationParts = durationString
+      .replace("PT", "")
+      .replace("H", ":")
+      .replace("M", ":")
+      .replace("S", "")
+      .split(":");
+
+    if (durationParts.length === 3) {
+      durationNum = Number(durationParts[0])*3600 + Number(durationParts[1])*60 + Number(durationParts[2])
+    }
+
+    if (durationParts.length === 2) {
+      durationNum = Number(durationParts[0])*60 + Number(durationParts[1]);
+    }
+
+    if (durationParts.length === 1) {
+      durationNum = Number(durationParts[0])
+    }
+    console.log(durationNum)
+    return durationNum;
+  };
+
+  getYouVideoDuration = async (videoUrl) => {
+    if ( videoUrl ){
+      const res = await API.get(apiName, secretKeyPath);
+      const secret = JSON.parse(res.SecretString);
+      const videoID = videoUrl.split("=")[1];
+      const url = `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&key=${secret["youtube-api-key"]}&id=${videoID}`;
+  
+      console.log(url);
+      fetch(url)
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data?.items[0]?.contentDetails?.duration)
+          const duration = this.getDuration(data?.items[0]?.contentDetails?.duration);
+          this.setState({ lectureVideoLength: duration });
+        });
+    }
+  };
+
   setLectureLength = (file) =>
     new Promise((resolve, reject) => {
       if (file.length > 0) {
@@ -297,7 +381,7 @@ class CreateLecture extends React.Component {
             reject("Invalid video. Please select a video file.");
           };
 
-          video.src = window.URL.createObjectURL(file[0]);
+          video.src = window.URL.createObjectURL(file);
         } catch (e) {
           reject(e);
         }
@@ -310,6 +394,38 @@ class CreateLecture extends React.Component {
     let list = [...this.state.referUrl];
     list.splice(index, 1);
     this.setState({ referUrl: list });
+  };
+
+  editTranscription = async (value) => {
+    if (this.state.lectureVideo.length > 0) {
+      this.setState({ loading: true, checked: value });
+
+      this.uploadLectureVideo(this.state.lectureVideo[0]).then((res) => {
+        // console.log(res)
+        setTimeout(() => this.loadTranscription(res.key), 25000);
+      });
+    }
+  };
+
+  loadTranscription = (videoName) => {
+    let transcription = videoName.split("/")[1];
+    transcription = transcription.split(".")[0];
+    transcription = "transcription/" + transcription + ".json";
+    console.log(transcription);
+
+    Storage.get(transcription, { level: "public" }).then((data) => {
+      console.log(data);
+      fetch(data)
+        .then((response) => response.json())
+        .then((json) => {
+          this.setState({ transcription: json, loading: false });
+          console.log(json);
+        })
+        .catch((err) => {
+          console.error(err);
+          this.setState({ loading: false });
+        });
+    });
   };
 
   renderReferUrl = () => {
@@ -333,6 +449,250 @@ class CreateLecture extends React.Component {
     );
   };
 
+  submitChangeWord = (index) => {
+    const oldTranscript = { ...this.state.transcription };
+    if (this.state.currentWord.alternatives[0].content === "") {
+      // oldTranscript.results.items.splice(index, 1);
+      return;
+    } else {
+      if (this.state.currentWord.index) delete this.state.currentWord.index;
+      oldTranscript.results.items[index] = this.state.currentWord;
+    }
+    this.setState({ transcription: oldTranscript });
+  };
+
+  addNewWords = () => {
+    if (this.state.currentWord.alternatives[0].content !== "") {
+      const oldTranscript = { ...this.state.transcription };
+      const index = this.state.currentWord.index;
+      console.log(index);
+      delete this.state.currentWord.index;
+
+      oldTranscript.results.items.splice(index, 0, this.state.currentWord);
+      this.setState({ transcription: oldTranscript });
+      // setVisiable(false);
+    }
+  };
+
+  renderEditTransciption = () => {
+    return (
+      <div>
+        {this.state.loading ? (
+          <div fluid="true" className="learn-parent-loading">
+            <img
+              src={loadingGif}
+              alt="loading..."
+              className="learn-loading-gif"
+            />
+          </div>
+        ) : (
+          <div>
+            {this.state.transcription ? (
+              <FormField
+                label="Transcript"
+                description="You can pick a word, then delete or change its attribute or add a new word after it."
+              >
+                <div>
+                  {this.state.transcription.results
+                    ? this.state.transcription.results.items.map(
+                        (item, index) => {
+                          return (
+                            <span>
+                              {item.alternatives[0].content === "," ||
+                              item.alternatives[0].content === "." ? (
+                                <></>
+                              ) : (
+                                <span> </span>
+                              )}
+                              <Popover
+                                header={
+                                  this.state.mode === 0
+                                    ? "Edit word"
+                                    : "Add word"
+                                }
+                                position="bottom"
+                                id="transcript"
+                                size="large"
+                                triggerType="custom"
+                                content={
+                                  <form onSubmit={(e) => e.preventDefault()}>
+                                    <Form
+                                      actions={
+                                        <SpaceBetween
+                                          direction="horizontal"
+                                          size="xxs"
+                                        >
+                                          {this.state.mode === 0 ? (
+                                            <>
+                                              <Button
+                                                formAction="none"
+                                                variant="link"
+                                                onClick={(event) => {
+                                                  const newTrans = {
+                                                    ...this.state.transcription,
+                                                  };
+                                                  newTrans.results.items.splice(
+                                                    index,
+                                                    1
+                                                  );
+                                                  this.setState({
+                                                    transcription: newTrans,
+                                                    currentWord: {
+                                                      type: "",
+                                                      alternatives: [
+                                                        {
+                                                          confidence: "",
+                                                          content: "",
+                                                        },
+                                                      ],
+                                                      start_time: "",
+                                                      end_time: "",
+                                                      index: null,
+                                                    },
+                                                  });
+                                                }}
+                                              >
+                                                Delete
+                                              </Button>
+                                              <Button
+                                                variant="primary"
+                                                onClick={(event) =>
+                                                  this.submitChangeWord(index)
+                                                }
+                                              >
+                                                Save
+                                              </Button>
+                                              <Button
+                                                variant="primary"
+                                                onClick={(e) =>
+                                                  // setVisiable(true);
+                                                  this.setState({
+                                                    mode: 1,
+                                                    currentWord: {
+                                                      type: "",
+                                                      alternatives: [
+                                                        {
+                                                          confidence: "",
+                                                          content: "",
+                                                        },
+                                                      ],
+                                                      start_time: "",
+                                                      end_time: "",
+                                                      index: index + 1,
+                                                    },
+                                                  })
+                                                }
+                                              >
+                                                Add new word
+                                              </Button>
+                                            </>
+                                          ) : (
+                                            <Button
+                                              variant="primary"
+                                              onClick={(e) =>
+                                                this.addNewWords()
+                                              }
+                                            >
+                                              Add
+                                            </Button>
+                                          )}
+                                        </SpaceBetween>
+                                      }
+                                    >
+                                      <Container>
+                                        <SpaceBetween
+                                          direction="vertical"
+                                          size="xxs"
+                                        >
+                                          <FormField label="Content">
+                                            <Input
+                                              value={
+                                                this.state.currentWord
+                                                  .alternatives[0].content
+                                              }
+                                              onChange={(event) => {
+                                                // console.log(event.detail);
+                                                const oldWord = {
+                                                  ...this.state.currentWord,
+                                                };
+                                                oldWord.alternatives[0].content =
+                                                  event.detail.value;
+                                                this.setState({
+                                                  currentWord: oldWord,
+                                                });
+                                              }}
+                                            />
+                                          </FormField>
+                                          <FormField label="Start time">
+                                            <Input
+                                              value={
+                                                this.state.currentWord
+                                                  .start_time
+                                              }
+                                              onChange={(event) =>
+                                                this.setState({
+                                                  currentWord: {
+                                                    ...this.state.currentWord,
+                                                    start_time:
+                                                      event.detail.value,
+                                                  },
+                                                })
+                                              }
+                                            />
+                                          </FormField>
+                                          <FormField label="End time">
+                                            <Input
+                                              value={
+                                                this.state.currentWord.end_time
+                                              }
+                                              onChange={(event) =>
+                                                this.setState({
+                                                  currentWord: {
+                                                    ...this.state.currentWord,
+                                                    end_time:
+                                                      event.detail.value,
+                                                  },
+                                                })
+                                              }
+                                            />
+                                          </FormField>
+                                        </SpaceBetween>
+                                      </Container>
+                                    </Form>
+                                  </form>
+                                }
+                              >
+                                <span
+                                  onClick={(event) => {
+                                    this.setState({
+                                      mode: 0,
+                                      currentWord: JSON.parse(
+                                        JSON.stringify(item)
+                                      ),
+                                    });
+                                  }}
+                                >
+                                  {item.alternatives[0].content === "," ||
+                                  item.alternatives[0].content === "."
+                                    ? item.alternatives[0].content
+                                    : " " + item.alternatives[0].content}
+                                </span>
+                              </Popover>
+                            </span>
+                          );
+                        }
+                      )
+                    : ""}
+                </div>
+              </FormField>
+            ) : (
+              <></>
+            )}
+          </div>
+        )}
+      </div>
+    );
+  };
   // render 'Add Content' in step 2
   renderAddContent = () => {
     const reference = (
@@ -374,58 +734,104 @@ class CreateLecture extends React.Component {
           variant="primary"
           onClick={() => {
             let newUrl = this.state.currentUrl;
-            this.setState({
-              referUrl: [...this.state.referUrl, newUrl],
-              currentUrl: "",
-            });
+            if (newUrl) {
+              this.setState({
+                referUrl: [...this.state.referUrl, newUrl],
+                currentUrl: "",
+              });
+            }
           }}
         >
           Add URL
         </Button>
         <ColumnLayout columns={1} variant="text-grid">
-          {this.renderReferUrl()}
+          {this.renderReferUrl}
         </ColumnLayout>
       </>
     );
 
     if (this.state.lectureType === "Video") {
       return (
-        <SpaceBetween direction="vertical" size="s">
-          <FormField
-            label="Lecture Videos"
-            description="Theory video for lecture"
-          >
-            <FileUpload
-              onChange={async ({ detail }) => {
-                this.setState({ lectureVideo: detail.value });
-                const video = await this.setLectureLength(detail.value);
-                this.setState({ lectureVideoLength: video.duration });
-                //  console.log(detail.value[0])
-                //   if (detail.value.length === 0) {
-                //     this.resetLectureVideo();
-                //   } else {
-                //     this.uploadLectureVideo(detail.value[0]);
-                //   }
-              }}
-              value={this.state.lectureVideo}
-              i18nStrings={{
-                uploadButtonText: (e) => (e ? "Choose files" : "Choose file"),
-                dropzoneText: (e) =>
-                  e ? "Drop files to upload" : "Drop file to upload",
-                removeFileAriaLabel: (e) => `Remove file ${e + 1}`,
-                limitShowFewer: "Show fewer files",
-                limitShowMore: "Show more files",
-                errorIconAriaLabel: "Error",
-              }}
-              showFileLastModified
-              showFileSize
-              showFileThumbnail
-              tokenLimit={3}
-              constraintText=".mov, .mp4"
-              accept=".mov,.mp4"
-            />
-          </FormField>
+        <SpaceBetween direction="vertical" size="m">
+          <RadioGroup
+            onChange={({ detail }) =>
+              this.setState({ videoMode: detail.value })
+            }
+            value={this.state.videoMode}
+            items={[
+              {
+                value: "s3",
+                label: "Upload video",
+                description: "Upload your own video",
+              },
+              { value: "youtube", label: "Youtube video" },
+            ]}
+          />
+          {this.state.videoMode === "s3" ? (
+            <FormField
+              label="Lecture Videos"
+              description="Theory video for lecture"
+            >
+              <FileUpload
+                onChange={async ({ detail }) => {
+                  this.setState({ lectureVideo: detail.value });
+                  const video = await this.setLectureLength(detail.value[0]);
+                  this.setState({ lectureVideoLength: video.duration });
+                  if (this.state.checked) {
+                    this.setState({ checked: false });
+                    this.resetLectureVideo();
+                  }
+                  //  console.log(detail.value[0])
+                  //   if (detail.value.length === 0) {
+                  //     this.resetLectureVideo();
+                  //   } else {
+                  //     this.uploadLectureVideo(detail.value[0]);
+                  //   }
+                }}
+                value={this.state.lectureVideo}
+                i18nStrings={{
+                  uploadButtonText: (e) => (e ? "Choose files" : "Choose file"),
+                  dropzoneText: (e) =>
+                    e ? "Drop files to upload" : "Drop file to upload",
+                  removeFileAriaLabel: (e) => `Remove file ${e + 1}`,
+                  limitShowFewer: "Show fewer files",
+                  limitShowMore: "Show more files",
+                  errorIconAriaLabel: "Error",
+                }}
+                showFileLastModified
+                showFileSize
+                showFileThumbnail
+                tokenLimit={3}
+                constraintText=".mov, .mp4"
+                accept=".mov,.mp4"
+              />
+            </FormField>
+          ) : (
+            <FormField
+              label="Youtube Video URL"
+              description="For example: https://www.youtube.com/watch?v=zbiNEyZRhDU"
+            >
+              <Input
+                value={this.state.youtubeVideo}
+                onChange={async (event) => {
+                    this.setState({ youtubeVideo: event.detail.value });
+                    this.getYouVideoDuration(event.detail.value);
+                }}
+              />
+            </FormField>
+          )}
           {reference}
+          <RadioGroup
+            onChange={({ detail }) => this.editTranscription(detail.value)}
+            value={this.state.checked}
+            items={[
+              {
+                value: "checkEdit",
+                label: <strong>Edit transcription</strong>,
+              },
+            ]}
+          />
+          {this.renderEditTransciption()}
         </SpaceBetween>
       );
     } else if (this.state.lectureType === "Workshop") {
@@ -528,7 +934,7 @@ class CreateLecture extends React.Component {
             <Box variant="awsui-key-label">File name</Box>
             <div>
               {this.state.lectureVideo.length > 0
-                ? this.state.lectureVideo[0].name
+                ? this.state.lectureVideo[0].name || this.state.youtubeVideo
                 : ""}
             </div>
           </div>
@@ -593,7 +999,7 @@ class CreateLecture extends React.Component {
               cancelButton: "Cancel",
               previousButton: "Previous",
               nextButton: "Next",
-              submitButton: "Submit",
+              submitButton: this.state.continue ? "Create Continue" : "Submit",
               optional: "optional",
             }}
             isLoadingNextStep={this.state.isLoadingNextStep}

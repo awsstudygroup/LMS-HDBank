@@ -11,5 +11,6 @@
     "READ",
     "DELETE"
   ],
-  "groupAccess": {}
+  "groupAccess": {},
+  "triggerFunction": "transcribeVideoToText"
 }

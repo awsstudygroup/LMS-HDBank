@@ -4,6 +4,7 @@ import { API, Auth } from 'aws-amplify';
 import { Navigate } from "react-router-dom";
 import NavBar from '../../components/NavBar/NavBar';
 import Footer from '../../components/Footer/Footer';
+import certBase from "../../assets/images/cert.png"
 import { transformDateTime, calcTime, calcTimeBrief } from "../../utils/tools"
 
 import { Button, Icon, Modal, Box, SpaceBetween } from '@cloudscape-design/components';
@@ -125,7 +126,7 @@ export default class Cert extends React.Component {
         console.log("generateCert")
         API.put(apiName, path, myInit)
         .then((response) => {
-            this.setState({cert: myInit.body});
+            this.setState({cert: myInit.body, disabled: false});
             console.log(myInit)
             let userCourse = this.state.userCourse;
             userCourse.CertificateID = myInit.body.ID;
@@ -172,6 +173,50 @@ export default class Cert extends React.Component {
             .catch((error) => {
                 console.log(error.response);
             });
+    }
+
+    getCourseName = () => {
+        let courseNameList = this.state.course.name.split("-");
+        return courseNameList.pop().toUpperCase();
+    }
+
+    downloadCert = () => {
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let img = new Image();
+        img.src = certBase;
+        img.addEventListener("load", ()=>{
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const x = canvas.width / 2;
+
+            ctx.drawImage(img,0,0);
+            ctx.textAlign = "center";
+            ctx.font = 'bold 90px Amazon Ember';
+            ctx.fillStyle = '#ec7211';
+            ctx.fillText(this.state.cert.UserName, x, img.height / 2);
+
+            ctx.font = 'bold 60px Amazon Ember';
+            ctx.fillStyle = 'black';
+            ctx.fillText(this.getCourseName(), x, img.height/2 + 180);
+
+            ctx.font = 'bold 20px Amazon Ember';
+            let certURL = `https://${window.location.host}/#/certPublic/`;
+            let issueDate = "ISSUED DATE - ";
+            issueDate += this.state.cert ? transformDateTime(this.state.cert.CompletedTime).toUpperCase() : new Date().toDateString().toUpperCase();
+            certURL += !!this.state.cert ? this.state.cert.ID : "";
+            console.log(issueDate)
+            ctx.fillText(issueDate, x, img.height - 50);
+            ctx.fillText(certURL, x, img.height - 20);
+
+            
+            const link = document.createElement("a");
+            link.href = canvas.toDataURL();
+            link.setAttribute("download", "certificate");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
     }
 
     render() {
@@ -228,6 +273,8 @@ export default class Cert extends React.Component {
                             </Button>
                             <Button variant="primary" className='btn-orange cert-continue-btn' onClick={() => this.setState({shareCertOpen: true})}>
                                 Share certificate <Icon name='share' />
+                            <Button variant="primary" className='cert-continue-btn' onClick={this.downloadCert}>
+                                Download <Icon name='download' />
                             </Button>
                         </div>
                         <div className='cert-view'>
@@ -235,12 +282,14 @@ export default class Cert extends React.Component {
                                 ? <img src={loadingGif} alt="loading..." className='cert-view-loading-gif' />
                                 : <div className='cert-view-container'>
                                     {/* <div>{this.state.cert.UserEmail}</div> */}
+                                    <canvas id="canvas"></canvas>
                                     <div className="cert-view-user-name">{this.state.cert.UserName}</div>
                                     <div className="cert-view-course-name">
-                                        {(() => {
+                                        {/* {(() => {
                                             let courseNameList = this.state.course.name.split("-");
                                             return courseNameList.pop().toUpperCase()
-                                        })()}
+                                        })()} */}
+                                        {this.getCourseName()}
                                     </div>
                                     <div className="cert-view-issued-date">
                                         ISSUED DATE - {this.state.cert ? transformDateTime(this.state.cert.CompletedTime).toUpperCase() : new Date().toDateString().toUpperCase()}

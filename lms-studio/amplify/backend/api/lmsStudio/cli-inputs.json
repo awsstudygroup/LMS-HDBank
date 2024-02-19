@@ -75,6 +75,26 @@
       "permissions": {
         "setting": "open"
       }
+    },
+    "/courseOpp": {
+      "name": "/courseOpp",
+      "lambdaFunction": "studioCourseOpp",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/secretKey": {
+      "name": "/secretKey",
+      "lambdaFunction": "studioSecretManager",
+      "permissions": {
+        "setting": "private",
+        "auth": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ]
+      }
     }
   }
 }

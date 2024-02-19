@@ -383,6 +383,7 @@ function CreateCourse(props) {
         State: "Enabled",
         Views: 0,
         LastUpdated: new Date().toISOString(),
+        AccessCode: new Set(),
     }
 
     const apiName = "lmsStudio";

@@ -484,6 +484,21 @@ a.learn-fill-div:hover {
     max-height: 100%;
 }
 
+.transcript {
+    font-size: 18px;
+    line-height: 1em;
+}
+
+.trans-word {
+    display: inline;
+    cursor: pointer;
+}
+
+.bg-yellow-500 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(254 191 0/var(--tw-bg-opacity));
+}
+
 @media only screen and (max-width: 500px) {
     .learn-content-control{
         height: 25px;

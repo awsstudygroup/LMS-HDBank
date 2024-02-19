@@ -308,6 +308,7 @@ app.delete(path + '/object' + hashKeyPath + sortKeyPath, function(req, res) {
     res.statusCode = 500;
     res.json({error: 'Wrong column type ' + err});
   }
+
   if (hasSortKey) {
     try {
       params[sortKeyName] = convertUrlType(req.params[sortKeyName], sortKeyType);
