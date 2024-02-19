@@ -2039,11 +2039,11 @@ export default class Learn extends React.Component {
               <Tabs
                 tabs={[
                   {
-                    label: "Tài liệu Tham khảo",
+                    label: "References",
                     id: "refer",
                     content: (
                       <div>
-                        <h4>Tài liệu</h4>
+                        <h4>Document</h4>
                         <ul>
                           {this.state.lecture.lecture ? (
                             this.state.lecture.lecture.referDocs.map((item) => {
@@ -2062,7 +2062,7 @@ export default class Learn extends React.Component {
                           )}
                         </ul>
 
-                        <h4>Đường dẫn tài liệu</h4>
+                        <h4>Document URL</h4>
                         <ul>
                           {this.state.lecture.lecture ? (
                             this.state.lecture.lecture.referUrl.map((item) => {
@@ -2080,7 +2080,7 @@ export default class Learn extends React.Component {
                     ),
                   },
                   {
-                    label: "Phiên âm",
+                    label: "Transcription",
                     id: "transcript",
                     content: (
                       <>
