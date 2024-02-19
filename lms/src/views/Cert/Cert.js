@@ -273,6 +273,7 @@ export default class Cert extends React.Component {
                             </Button>
                             <Button variant="primary" className='btn-orange cert-continue-btn' onClick={() => this.setState({shareCertOpen: true})}>
                                 Share certificate <Icon name='share' />
+                            </Button>
                             <Button variant="primary" className='cert-continue-btn' onClick={this.downloadCert}>
                                 Download <Icon name='download' />
                             </Button>
