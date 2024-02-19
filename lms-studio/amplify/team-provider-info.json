@@ -30,25 +30,45 @@
           "s3Key": "amplify-builds/studioLectures-334d5831545163555159-build.zip"
         },
         "studioUserCourse": {
-          "deploymentBucketName": "amplify-lmsstudio-test-144203-deployment",
+          "deploymentBucketName": "amplify-lmsstudio-thailand-101518-deployment",
           "s3Key": "amplify-builds/studioUserCourse-627534684d2f4472474c-build.zip"
         },
         "studioUsers": {
-          "deploymentBucketName": "amplify-lmsstudio-test-144203-deployment",
+          "deploymentBucketName": "amplify-lmsstudio-thailand-101518-deployment",
           "s3Key": "amplify-builds/studioUsers-5131422f4a3856625963-build.zip"
         },
         "userOverview": {
-          "deploymentBucketName": "amplify-lmsstudio-test-144203-deployment",
+          "deploymentBucketName": "amplify-lmsstudio-thailand-101518-deployment",
           "s3Key": "amplify-builds/userOverview-446b386a44345a6a4547-build.zip"
         },
         "studioUIConfig": {
-          "deploymentBucketName": "amplify-lmsstudio-test-144203-deployment",
+          "deploymentBucketName": "amplify-lmsstudio-thailand-101518-deployment",
           "s3Key": "amplify-builds/studioUIConfig-53792b412b7550415473-build.zip"
+        },
+        "studioContributor": {
+          "deploymentBucketName": "amplify-lmsstudio-mrbinh-134006-deployment",
+          "s3Key": "amplify-builds/studioContributor-7675652f476867587a66-build.zip"
+        },
+        "addCourseContributor": {
+          "deploymentBucketName": "amplify-lmsstudio-mrbinh-134006-deployment",
+          "s3Key": "amplify-builds/addCourseContributor-61723335496835496558-build.zip"
+        },
+        "addCourseOpportunity": {
+          "deploymentBucketName": "amplify-lmsstudio-mrbinh-134006-deployment",
+          "s3Key": "amplify-builds/addCourseOpportunity-32316d50787957555451-build.zip"
+        },
+        "studioCourseOpp": {
+          "deploymentBucketName": "amplify-lmsstudio-mrbinh-134006-deployment",
+          "s3Key": "amplify-builds/studioCourseOpp-4444482f445564514f64-build.zip"
+        },
+        "studioSecretManager": {
+          "deploymentBucketName": "amplify-lmsstudio-mrbinh-134006-deployment",
+          "s3Key": "amplify-builds/studioSecretManager-3837322f657072344b77-build.zip"
         }
       },
       "hosting": {
         "amplifyhosting": {
-          "appId": "di4ny7w9wbefi",
+          "appId": "d158fb1fy2fugr",
           "type": "manual"
         }
       },
@@ -57,7 +77,7 @@
       },
       "storage": {
         "lmsstudiodcbd5e2f": {
-          "bucketName": "lecture-resource142735-test",
+          "bucketName": "lecture-resource100850-thailand",
           "region": "ap-southeast-1"
         },
         "lmsstudiof4e07fec": {}
