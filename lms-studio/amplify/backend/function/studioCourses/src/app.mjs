@@ -1,22 +1,22 @@
-/* Amplify Params - DO NOT EDIT
-	ENV
-	REGION
-Amplify Params - DO NOT EDIT */ /*
-Copyright 2017 - 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance with the License. A copy of the License is located at
-    http://aws.amazon.com/apache2.0/
-or in the "license" file accompanying this file. This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and limitations under the License.
-*/
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import {
+  DynamoDBDocumentClient,
+  PutCommand,
+  GetCommand,
+  ScanCommand,
+  QueryCommand,
+  DeleteCommand,
+  UpdateCommand,
+} from "@aws-sdk/lib-dynamodb";
 
-const AWS = require("aws-sdk");
-const awsServerlessExpressMiddleware = require("aws-serverless-express/middleware");
-const bodyParser = require("body-parser");
-const express = require("express");
+import express from "express";
+import bodyParser from "body-parser";
+import awsServerlessExpressMiddleware from "aws-serverless-express/middleware.js";
 
-AWS.config.update({ region: process.env.TABLE_REGION });
+// AWS.config.update({ region: process.env.TABLE_REGION });
 
-const dynamodb = new AWS.DynamoDB.DocumentClient();
+const client = new DynamoDBClient({});
+const docClient = DynamoDBDocumentClient.from(client);
 
 let tableName = "courses";
 if (process.env.ENV && process.env.ENV !== "NONE") {
@@ -26,7 +26,6 @@ if (process.env.ENV && process.env.ENV !== "NONE") {
 const userIdPresent = true; // TODO: update in case is required to use that definition
 const partitionKeyName = "ID";
 const partitionKeyType = "S";
-const userIndex = "CreatorID-index";
 const publicityIndex = "Publicity-index";
 const creatorIDIndex = "CreatorID-index";
 const viewsIndex = "Views-index";
@@ -51,8 +50,8 @@ app.use(function (req, res, next) {
   next();
 });
 
-// convert url string param to expected Type
-const convertUrlType = (param, type) => {
+// convert infor string param to expected Type
+const convertInfoType = (param, type) => {
   switch (type) {
     case "N":
       return Number.parseInt(param);
@@ -66,108 +65,69 @@ const convertUrlType = (param, type) => {
  ********************************/
 
 app.get(path, function (req, res) {
-  const condition = {};
-  condition[sortKeyName] = {
-    ComparisonOperator: "EQ",
-  };
-  condition[sortKeyName]["AttributeValueList"] = [
-    req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH,
-  ];
-  // condition[partitionKeyName] = {
-  //   ComparisonOperator: 'EQ'
-  // }
-
-  // if (userIdPresent && req.apiGateway) {
-  //   condition[partitionKeyName]['AttributeValueList'] = [req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH ];
-  // } else {
-  //   try {
-  //     condition[partitionKeyName]['AttributeValueList'] = [ convertUrlType(req.params[partitionKeyName], partitionKeyType) ];
-  //   } catch(err) {
-  //     res.statusCode = 500;
-  //     res.json({error: 'Wrong column type ' + err});
-  //   }
-  // }
+  const userId =
+    req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
 
   let queryParams = {
     TableName: tableName,
-    KeyConditions: condition,
+    KeyConditionExpression: "CreatorID = :userId",
+    ExpressionAttributeValues: {
+      ":userId": { S: userId },
+    },
     IndexName: "CreatorID-index",
   };
+
+  const command = new QueryCommand(queryParams);
   console.log(queryParams);
 
-  dynamodb.query(queryParams, (err, data) => {
-    if (err) {
+  docClient.send(command).then(
+    (data) => {
+      res.json(data.Items);
+    },
+    (err) => {
+      console.log(err);
       res.statusCode = 500;
       res.json({ error: "Could not load items: " + err });
-    } else {
-      res.json(data.Items);
     }
-  });
+  );
 });
 
 //PUBLIC
 app.get(path + "/public", function (req, res) {
-  const condition = {};
-  condition[sortKeyName] = {
-    ComparisonOperator: "EQ",
-  };
-  // condition[sortKeyName]['AttributeValueList'] = [req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH ];
-  // condition[partitionKeyName] = {
-  //   ComparisonOperator: 'EQ'
-  // }
-
-  // if (userIdPresent && req.apiGateway) {
-  //   condition[partitionKeyName]['AttributeValueList'] = [req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH ];
-  // } else {
-  //   try {
-  //     condition[partitionKeyName]['AttributeValueList'] = [ convertUrlType(req.params[partitionKeyName], partitionKeyType) ];
-  //   } catch(err) {
-  //     res.statusCode = 500;
-  //     res.json({error: 'Wrong column type ' + err});
-  //   }
-  // }
-
   let queryParams = {
     TableName: tableName,
     IndexName: publicityIndex,
-    KeyConditionExpression: "Publicity = :value",
-    ExpressionAttributeValues: {
-      ":value": 1,
+    KeyConditions: {
+      Publicity: {
+        ComparisonOperator: "EQ",
+        AttributeValueList: [1],
+      },
+    },
+    QueryFilter: {
+      CreatorID: {
+        ComparisonOperator: "NE",
+        AttributeValueList: [
+          req.apiGateway.event.requestContext.identity.cognitoAuthenticationProvider.split(":CognitoSignIn:")[1],
+        ],
+      },
     },
   };
-  console.log(queryParams);
 
-  dynamodb.query(queryParams, (err, data) => {
-    if (err) {
+  const command = new QueryCommand(queryParams);
+  docClient.send(command).then(
+    (data) => {
+      res.json(data.Items);
+    },
+    (err) => {
+      console.log(err);
       res.statusCode = 500;
       res.json({ error: "Could not load items: " + err });
-    } else {
-      res.json(data.Items);
     }
-  });
+  );
 });
 
+//PRIVATE
 app.get(path + "/private", function (req, res) {
-  const condition = {};
-  condition[sortKeyName] = {
-    ComparisonOperator: "EQ",
-  };
-  // condition[sortKeyName]['AttributeValueList'] = [req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH ];
-  // condition[partitionKeyName] = {
-  //   ComparisonOperator: 'EQ'
-  // }
-
-  // if (userIdPresent && req.apiGateway) {
-  //   condition[partitionKeyName]['AttributeValueList'] = [req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH ];
-  // } else {
-  //   try {
-  //     condition[partitionKeyName]['AttributeValueList'] = [ convertUrlType(req.params[partitionKeyName], partitionKeyType) ];
-  //   } catch(err) {
-  //     res.statusCode = 500;
-  //     res.json({error: 'Wrong column type ' + err});
-  //   }
-  // }
-
   let queryParams = {
     TableName: tableName,
     IndexName: publicityIndex,
@@ -178,14 +138,17 @@ app.get(path + "/private", function (req, res) {
   };
   console.log(queryParams);
 
-  dynamodb.query(queryParams, (err, data) => {
-    if (err) {
+  const command = new QueryCommand(queryParams);
+  docClient.send(command).then(
+    (data) => {
+      res.json(data.Items);
+    },
+    (err) => {
+      console.log(err);
       res.statusCode = 500;
       res.json({ error: "Could not load items: " + err });
-    } else {
-      res.json(data.Items);
     }
-  });
+  );
 });
 
 // /*********************************************
@@ -213,14 +176,17 @@ app.get(path + "/myCourses", function (req, res) {
     },
   };
 
-  dynamodb.query(queryItemParams, (err, data) => {
-    if (err) {
-      res.statusCode = 500;
-      res.json({ error: "Could not load items: " + err.message });
-    } else {
+  const command = new QueryCommand(queryItemParams);
+  docClient.send(command).then(
+    (data) => {
       res.json(data.Items);
+    },
+    (err) => {
+      console.log(err);
+      res.statusCode = 500;
+      res.json({ error: "Could not load items: " + err });
     }
-  });
+  );
 });
 
 // /*********************************************
@@ -228,23 +194,23 @@ app.get(path + "/myCourses", function (req, res) {
 //  *********************************************/
 
 app.get(path + "/topViews", function (req, res) {
-  let value = "";
-
   let scanParams = {
     TableName: tableName,
     IndexName: viewsIndex,
-    Limit: "10",
+    Limit: Number("10"),
   };
 
-  dynamodb.scan(scanParams, (err, data) => {
-    if (err) {
+  const command = new ScanCommand(scanParams);
+  docClient.send(command).then(
+    (data) => {
+      res.json(data.Items);
+    },
+    (err) => {
       console.log(err);
       res.statusCode = 500;
-      res.json({ error: "Could not load items: " + err.message });
-    } else {
-      res.json(data.Items);
+      res.json({ error: "Could not load items: " + err });
     }
-  });
+  );
 });
 
 // /*****************************************
@@ -269,20 +235,22 @@ app.get(path + hashKeyPath, function (req, res) {
     Key: params,
   };
 
-  dynamodb.get(getItemParams, (err, data) => {
-    if (err) {
-      res.statusCode = 500;
-      res.json({ error: "Could not load items: " + err.message });
-    } else {
+  const command = new GetCommand(getItemParams);
+  docClient.send(command).then(
+    (data) => {
       if (data.Item) {
         res.json(data.Item);
       } else {
         res.json(data);
       }
+    },
+    (err) => {
+      console.log(err);
+      res.statusCode = 500;
+      res.json({ error: "Could not load items: " + err });
     }
-  });
+  );
 });
-
 
 // /************************************
 // * HTTP put method for insert object *
@@ -290,7 +258,7 @@ app.get(path + hashKeyPath, function (req, res) {
 
 app.put(path, function (req, res) {
   if (userIdPresent) {
-    req.body["userId"] =
+    req.body["CreatorID"] =
       req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
   }
 
@@ -298,14 +266,16 @@ app.put(path, function (req, res) {
     TableName: tableName,
     Item: req.body,
   };
-  dynamodb.put(putItemParams, (err, data) => {
-    if (err) {
-      res.statusCode = 500;
-      res.json({ error: err, url: req.url, body: req.body });
-    } else {
+  const command = new PutCommand(putItemParams);
+  docClient.send(command).then(
+    (data) => {
       res.json({ success: req.body, url: req.url, data: data });
+    },
+    (err) => {
+      res.statusCode = 500;
+      res.json({ error: err, info: req.info, body: req.body });
     }
-  });
+  );
 });
 
 // /************************************
@@ -322,12 +292,17 @@ app.post(path, function (req, res) {
   if (req.body["OldID"]) {
     let deleteParams = {
       TableName: tableName,
-      Key: { ID: req.body['OldID'] }
-    }
-    dynamodb.delete(deleteParams, function(err, data) {
-      if (err) console.log(err);
-      else console.log(data);
-    });
+      Key: { ID: req.body["OldID"] },
+    };
+    const deleteCommand = new DeleteCommand(deleteParams);
+    docClient.send(deleteCommand).then(
+      (data) => {
+        console.log(data);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   }
   // req.body = { ...req.body, OldID: _ }
   delete req.body["OldID"];
@@ -335,15 +310,17 @@ app.post(path, function (req, res) {
     TableName: tableName,
     Item: req.body,
   };
-  console.log(req.body);
-  dynamodb.put(putItemParams, (err, data) => {
-    if (err) {
+
+  const putCommand = new PutCommand(putItemParams);
+  docClient.send(putCommand).then(
+    (data) => {
+      res.json({ success: req.body, url: req.url, data: data });
+    },
+    (err) => {
       res.statusCode = 500;
-      res.json({ error: err, url: req.url, body: req.body });
-    } else {
-      res.json({ success: "post call succeed!", url: req.url, data: data });
+      res.json({ error: err, info: req.info, body: req.body });
     }
-  });
+  );
 });
 
 app.put(path + "/addAC" + aCPath, function (req, res) {
@@ -369,16 +346,17 @@ app.put(path + "/addAC" + aCPath, function (req, res) {
     },
     ReturnValues: "UPDATED_NEW",
   };
-  
-  dynamodb.update(upadteItemParams, (err, data) => {
-    if (err) {
-      console.log(err);
+
+  const command = new UpdateCommand(upadteItemParams);
+  docClient.send(command).then(
+    (data) => {
+      res.json({ success: req.body, url: req.url, data: data });
+    },
+    (err) => {
       res.statusCode = 500;
-      res.json({ error: "Could not update item: " + err.message });
-    } else {
-      res.json(data);
+      res.json({ error: err, info: req.info, body: req.body });
     }
-  });
+  );
 });
 
 // /**************************************
@@ -387,9 +365,6 @@ app.put(path + "/addAC" + aCPath, function (req, res) {
 
 app.delete(path + "/object" + hashKeyPath + sortKeyPath, function (req, res) {
   const params = {};
-  // if (userIdPresent && req.apiGateway) {
-  // params[partitionKeyName] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
-  // } else {
   params[partitionKeyName] = req.params[partitionKeyName];
   try {
     params[partitionKeyName] = convertUrlType(
@@ -400,7 +375,7 @@ app.delete(path + "/object" + hashKeyPath + sortKeyPath, function (req, res) {
     res.statusCode = 500;
     res.json({ error: "Wrong column type " + err });
   }
-  // }
+
   if (hasSortKey) {
     try {
       params[sortKeyName] = convertUrlType(
@@ -417,14 +392,17 @@ app.delete(path + "/object" + hashKeyPath + sortKeyPath, function (req, res) {
     TableName: tableName,
     Key: params,
   };
-  dynamodb.delete(removeItemParams, (err, data) => {
-    if (err) {
+
+  const command = new DeleteCommand(removeItemParams);
+  docClient.send(command).then(
+    (data) => {
+      res.json({ url: req.url, data: data });
+    },
+    (err) => {
       res.statusCode = 500;
       res.json({ error: err, url: req.url });
-    } else {
-      res.json({ url: req.url, data: data });
     }
-  });
+  );
 });
 
 app.listen(3000, function () {
@@ -434,4 +412,4 @@ app.listen(3000, function () {
 // Export the app object. When executing the application local this does nothing. However,
 // to port it to AWS Lambda we will create a wrapper around that will load the app from
 // this file
-module.exports = app;
+export default app;

@@ -368,7 +368,7 @@ class CreateLecture extends React.Component {
 
   setLectureLength = (file) =>
     new Promise((resolve, reject) => {
-      if (file.length > 0) {
+      if (file) {
         try {
           let video = document.createElement("video");
           video.preload = "metadata";
@@ -931,11 +931,10 @@ class CreateLecture extends React.Component {
       return (
         <ColumnLayout columns={2} vareiant="text-grid">
           <div>
-            <Box variant="awsui-key-label">File name</Box>
+            <Box variant="awsui-key-label">{this.state.videoMode === "s3" ? "File name" : "Video URL"}</Box>
             <div>
               {this.state.lectureVideo.length > 0
-                ? this.state.lectureVideo[0].name || this.state.youtubeVideo
-                : ""}
+                ? this.state.lectureVideo[0].name : this.state.youtubeVideo }
             </div>
           </div>
         </ColumnLayout>

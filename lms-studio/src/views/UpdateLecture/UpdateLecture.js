@@ -746,12 +746,10 @@ function UpdateLecture(props) {
                                               formAction="none"
                                               variant="link"
                                               onClick={(event) =>
-                                                {setTranscriptFile(
-                                                  transcriptFile.results.items.splice(
-                                                    index,
-                                                    1
-                                                  )
-                                                )
+                                                {
+                                                let newTrans = { ...transcriptFile };
+                                                newTrans.results.items.splice(index,1);
+                                                setTranscriptFile(newTrans)
                                                 setCurrentWord({
                                                   type: "",
                                                   alternatives: [
