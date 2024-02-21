@@ -2039,7 +2039,7 @@ export default class Learn extends React.Component {
             />
           }
           tools={
-            <HelpPanel header={<h2>Thêm</h2>}>
+            <HelpPanel header={<h2>More</h2>}>
               <Tabs
                 tabs={[
                   {
@@ -2049,7 +2049,7 @@ export default class Learn extends React.Component {
                       <div>
                         <h4>Document</h4>
                         <ul>
-                          {this.state.lecture.lecture > 0 ? (
+                          {this.state.lecture.lecture ? (
                             this.state.lecture.lecture.referDocs.map((item) => {
                               return (
                                 <li
@@ -2068,7 +2068,7 @@ export default class Learn extends React.Component {
 
                         <h4>Document URL</h4>
                         <ul>
-                          {this.state.lecture.lecture > 0 ? (
+                          {this.state.lecture.lecture ? (
                             this.state.lecture.lecture.referUrl.map((item) => {
                               return (
                                 <li>
