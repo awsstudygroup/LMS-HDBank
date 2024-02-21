@@ -1,16 +1,16 @@
 {
-  "thailand": {
+  "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-lms-thailand-100850-authRole",
-      "UnauthRoleArn": "arn:aws:iam::340879421878:role/amplify-lms-thailand-100850-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::340879421878:role/amplify-lms-thailand-100850-authRole",
+      "AuthRoleName": "amplify-lms-dev-182155-authRole",
+      "UnauthRoleArn": "arn:aws:iam::340879421878:role/amplify-lms-dev-182155-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::340879421878:role/amplify-lms-dev-182155-authRole",
       "Region": "ap-southeast-1",
-      "DeploymentBucketName": "amplify-lms-thailand-100850-deployment",
-      "UnauthRoleName": "amplify-lms-thailand-100850-unauthRole",
-      "StackName": "amplify-lms-thailand-100850",
-      "StackId": "arn:aws:cloudformation:ap-southeast-1:340879421878:stack/amplify-lms-thailand-100850/41e4dbc0-a91c-11ee-b1c3-068989eec7c4",
-      "AmplifyAppId": "d296ff3c6twnky",
-      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-lms-thailand-100850-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
+      "DeploymentBucketName": "amplify-lms-dev-182155-deployment",
+      "UnauthRoleName": "amplify-lms-dev-182155-unauthRole",
+      "StackName": "amplify-lms-dev-182155",
+      "StackId": "arn:aws:cloudformation:ap-southeast-1:340879421878:stack/amplify-lms-dev-182155/17bfc580-cf19-11ee-9c44-0ae89ddc1045",
+      "AmplifyAppId": "d59d4kaqhfdo8",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-lms-dev-182155-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
     },
     "categories": {
       "auth": {
@@ -18,53 +18,53 @@
       },
       "function": {
         "FAQs": {
-          "deploymentBucketName": "amplify-lms-prod-130645-deployment",
+          "deploymentBucketName": "amplify-lms-dev-182155-deployment",
           "s3Key": "amplify-builds/FAQs-42535278566a724a3766-build.zip"
         },
         "UserCourse": {
-          "deploymentBucketName": "amplify-lms-thailand-100850-deployment",
-          "s3Key": "amplify-builds/UserCourse-3376704f315056325859-build.zip"
+          "deploymentBucketName": "amplify-lms-dev-182155-deployment",
+          "s3Key": "amplify-builds/UserCourse-5a537465382f70764d39-build.zip"
         },
         "categories": {
-          "deploymentBucketName": "amplify-lms-thailand-100850-deployment",
-          "s3Key": "amplify-builds/categories-666d6e6e7833766f4977-build.zip"
+          "deploymentBucketName": "amplify-lms-dev-182155-deployment",
+          "s3Key": "amplify-builds/categories-4c304e71647263583954-build.zip"
         },
         "certs": {
-          "deploymentBucketName": "amplify-lms-thailand-100850-deployment",
-          "s3Key": "amplify-builds/certs-303178534470514d512b-build.zip"
+          "deploymentBucketName": "amplify-lms-dev-182155-deployment",
+          "s3Key": "amplify-builds/certs-79596d4141434945676f-build.zip"
         },
         "courses": {
-          "deploymentBucketName": "amplify-lms-thailand-100850-deployment",
-          "s3Key": "amplify-builds/courses-517a7634397a59627677-build.zip"
+          "deploymentBucketName": "amplify-lms-dev-182155-deployment",
+          "s3Key": "amplify-builds/courses-737143494d5433467136-build.zip"
         },
         "lectures": {
-          "deploymentBucketName": "amplify-lms-thailand-100850-deployment",
-          "s3Key": "amplify-builds/lectures-76694374326172456c6f-build.zip"
+          "deploymentBucketName": "amplify-lms-dev-182155-deployment",
+          "s3Key": "amplify-builds/lectures-4e6a70486a707073784d-build.zip"
+        },
+        "transcribeVideoToText": {
+          "deploymentBucketName": "amplify-lms-dev-182155-deployment",
+          "s3Key": "amplify-builds/transcribeVideoToText-48386761723667747072-build.zip"
         },
         "uiConfig": {
-          "deploymentBucketName": "amplify-lms-thailand-100850-deployment",
+          "deploymentBucketName": "amplify-lms-dev-182155-deployment",
           "s3Key": "amplify-builds/uiConfig-3459476656484b583276-build.zip"
         },
         "users": {
-          "deploymentBucketName": "amplify-lms-prod-130645-deployment",
+          "deploymentBucketName": "amplify-lms-dev-182155-deployment",
           "s3Key": "amplify-builds/users-4e747642647735434439-build.zip"
         },
         "usersLectures": {
-          "deploymentBucketName": "amplify-lms-thailand-100850-deployment",
-          "s3Key": "amplify-builds/usersLectures-304d5a43397376554453-build.zip"
+          "deploymentBucketName": "amplify-lms-dev-182155-deployment",
+          "s3Key": "amplify-builds/usersLectures-71764e4e34674a6e7044-build.zip"
         },
         "Categories": {},
         "Cert": {},
         "Lectures": {},
-        "UserLecture": {},
-        "transcribeVideoToText": {
-          "deploymentBucketName": "amplify-lms-mrbinh-130645-deployment",
-          "s3Key": "amplify-builds/transcribeVideoToText-6d64524642353139706a-build.zip"
-        }
+        "UserLecture": {}
       },
       "hosting": {
         "amplifyhosting": {
-          "appId": "d296ff3c6twnky",
+          "appId": "d59d4kaqhfdo8",
           "type": "manual"
         }
       },
@@ -75,15 +75,16 @@
         "AccessCode": {},
         "Categories": {},
         "Cert": {},
+        "Contributor": {},
         "CourseCode": {},
+        "CourseOpportunity": {},
+        "FAQs": {},
         "Lectures": {},
         "UIConfig": {},
         "UserCourse": {},
         "UserLecture": {},
         "courses": {},
-        "lectureresource": {},
-        "Contributor": {},
-        "CourseOpportunity": {}
+        "lectureresource": {}
       }
     }
   }

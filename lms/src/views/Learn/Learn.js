@@ -279,6 +279,7 @@ class VideoContent extends React.Component {
 
   handleStateChange(state, prevState) {
     this.props.setTimeLeft(Math.floor(state.duration - state.currentTime));
+    console.log(state.ended);
     if (state.ended) this.props.handleVideoEnded();
     // if (!this.uploadingRef.current && !this.state.updateView && state.currentTime / state.duration > 0.05) {
     //   this.countView()
@@ -2048,7 +2049,7 @@ export default class Learn extends React.Component {
                       <div>
                         <h4>Document</h4>
                         <ul>
-                          {this.state.lecture.lecture ? (
+                          {this.state.lecture.lecture > 0 ? (
                             this.state.lecture.lecture.referDocs.map((item) => {
                               return (
                                 <li
@@ -2067,7 +2068,7 @@ export default class Learn extends React.Component {
 
                         <h4>Document URL</h4>
                         <ul>
-                          {this.state.lecture.lecture ? (
+                          {this.state.lecture.lecture > 0 ? (
                             this.state.lecture.lecture.referUrl.map((item) => {
                               return (
                                 <li>
