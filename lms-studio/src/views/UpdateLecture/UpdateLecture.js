@@ -375,7 +375,7 @@ function UpdateLecture(props) {
         .then((data) => {
           console.log(data?.items[0]?.contentDetails?.duration)
           const duration = () => getDuration(data?.items[0]?.contentDetails?.duration);
-          setNewLecture({ ...newLecture, lectureVideoLength: duration });
+          setNewLecture(prevLecture => ({...prevLecture, lectureVideoLength: duration}))
         });
     }
   };
@@ -400,7 +400,7 @@ function UpdateLecture(props) {
           reject(e);
         }
       } else {
-        setNewLecture({ ...newLecture, lectureVideoLength: 0 });
+        setNewLecture({ ...newLecture, lectureVideo: [], lectureVideoLength: 0 });
       }
     });
 
@@ -890,11 +890,10 @@ function UpdateLecture(props) {
       return (
         <ColumnLayout columns={2} variant="text-grid">
           <div>
-            <Box variant="awsui-key-label">File name</Box>
+            <Box variant="awsui-key-label">{videoMode === "s3" ? "File name" : "Video URL"}</Box>
             <div>
-              {newLecture.lectureVideo.length > 0
-                ? newLecture.lectureVideo[0].name
-                : state.Content}
+              {videoMode === "s3"
+                ? (newLecture.lectureVideo.length > 0 && newLecture.lectureVideo[0].name) || state.Content : newLecture.youtubeVideo}
             </div>
           </div>
         </ColumnLayout>
