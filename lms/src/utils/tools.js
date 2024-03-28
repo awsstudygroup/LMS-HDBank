@@ -1,4 +1,7 @@
 import moment from "moment";
+import { API } from "aws-amplify";
+import { apiName, configUI } from "./api"
+import { uiConfigId } from "./uiConfig"
 
 export function transformDateTime(createAt) {
   const date = moment(createAt);
@@ -33,4 +36,23 @@ export function calcTimeBrief(time) {
     timeString = timeString + (Math.floor((time % 3600) / 60) + " minutes ")
   }
   return timeString;
+}
+
+export async function getUISet() {
+  let localParams = localStorage.getItem("AWSLIBVN_UISET");
+  let data = JSON.parse(localParams)
+  if(data){
+    return data;
+  }else{
+    try{
+      const uiSet = await API.get(apiName, configUI + uiConfigId);
+      if ( uiSet ) {
+        localStorage.setItem("AWSLIBVN_UISET", JSON.stringify(uiSet));
+        return uiSet;
+      }
+    }catch(error){
+      console.log(error)
+      return null;
+    }
+  }
 }

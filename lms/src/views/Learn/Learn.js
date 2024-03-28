@@ -18,6 +18,8 @@ import {
   SpaceBetween,
   HelpPanel,
   Tabs,
+  Header,
+  Icon,
 } from "@cloudscape-design/components";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import { csv } from "csvtojson";
@@ -174,6 +176,7 @@ class LectureContent extends React.Component {
             ref={this.playerChild}
             videoSrc={this.props.lecture.lecture.content}
             youtubeVideoSrc={this.props.lecture.lecture.youtubeVideoSrc}
+            transcript={this.props.lecture.transcript}
             setTimeLeft={this.props.setTimeLeft}
             handleFullScreen={this.props.handleFullScreen}
             handleVideoEnded={this.props.handleVideoEnded}
@@ -235,13 +238,58 @@ class LectureContent extends React.Component {
   }
 }
 
+class Trancription extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isActive: false
+    }
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    if (props.isOpenTranscript !== state.prevPropsIsOpenTranscript) {
+      return {
+        prevPropsIsOpenTranscript: props.isOpenTranscript,
+        isActive: props.isOpenTranscript,
+      };
+    }
+  }
+
+  handleClick = (event) => {
+    console.log(this.props.actions)
+    if (!this.props.isOpenTranscript){
+      // event.target.classList.add("video-react-icon-transcript-active");
+      this.props.openTrans();
+      // this.isActive.current = true;
+      this.setState({isActive: true})
+    }else{
+      // event.target.classList.remove("video-react-icon-transcript-active");
+      this.props.closeTrans();
+      // this.isActive.current = false;
+      this.setState({isActive: false})
+    }
+    
+  }
+  render() {
+    return (
+      <button className={!this.state.isActive ? "video-react-control video-react-button video-react-icon-transcript" : "video-react-control video-react-button video-react-icon-transcript video-react-icon-transcript-active"}
+        onClick={(event) => this.handleClick(event)}
+      >
+      </button>
+    );
+  }
+} 
+
 class VideoContent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       videoSrc: null,
       updateView: false,
+      isOpenTranscript: false,
       isFullscreenEnabled: false,
+      currentVideoTime: 0,
+      isMobile: window.innerWidth < 500,
       // uploading: false,
     };
     this.uploadingRef = React.createRef();
@@ -272,6 +320,12 @@ class VideoContent extends React.Component {
       iframe.height = "100%";
     }
 
+    window.addEventListener('resize', () => {
+      this.setState({
+          isMobile: window.innerWidth < 500
+      });
+    }, false);
+
     // this.player.actions.toggleFullscreen = () => {
     //   this.props.handleFullScreen();
     // };
@@ -279,7 +333,7 @@ class VideoContent extends React.Component {
 
   handleStateChange(state, prevState) {
     this.props.setTimeLeft(Math.floor(state.duration - state.currentTime));
-    console.log(state.ended);
+    // console.log(state.ended);
     if (state.ended) this.props.handleVideoEnded();
     // if (!this.uploadingRef.current && !this.state.updateView && state.currentTime / state.duration > 0.05) {
     //   this.countView()
@@ -290,7 +344,8 @@ class VideoContent extends React.Component {
     if (prevState.isFullscreen !== state.isFullscreen) {
       this.setState({ isFullscreenEnabled: state.isFullscreen });
     }
-    this.props.setCurrentVideoTime(state.currentTime);
+    // this.props.setCurrentVideoTime(state.currentTime);
+    this.setState({ currentVideoTime: state.currentTime});
   }
 
   getVideoURL = async (key) => {
@@ -302,49 +357,111 @@ class VideoContent extends React.Component {
     }
   };
 
+  closeTrans = () => {
+    let videoEle = document.getElementsByClassName('lesson-video');
+    let transEle = document.getElementsByClassName('transcription');
+    transEle[0].style.display = "none";
+    videoEle[0].style.width = "100%";
+    this.setState({ isOpenTranscript: false });
+  }
+
+  openTrans = () => {
+    let transEle = document.getElementsByClassName('transcription');
+    transEle[0].style.display = "block";
+    this.setState({ isOpenTranscript: true });
+  }
+
   changeVideoTime = (startTime) => {
     this.player.seek(startTime);
   };
 
   render() {
-    if ( this.props.videoSrc ){
+    const classNames = [
+      'lesson-video',
+    ];
+    if ( !this.state.isFullscreenEnabled ){
+      classNames.push("learn-transparent-player")
+    }
+    if ( this.state.isMobile & this.state.isOpenTranscript ){
+      classNames.push("video-hidden")
+    }
+
+    if (this.props.videoSrc) {
       return (
-        <Player
-          ref={(player) => {
-            this.player = player;
-          }}
-          className={
-            !this.state.isFullscreenEnabled ? "learn-transparent-player" : ""
-          }
-          autoPlay
-          playsInline
-          fluid={false}
-          height="100%"
-          width="100%"
-          src={this.state.videoSrc}
-        >
-          <LoadingSpinner />
-          <BigPlayButton position="center" />
-          <ControlBar>
-            <ReplayControl seconds={5} order={2.1} />
-            <ForwardControl seconds={5} order={2.2} />
-            <PlaybackRateMenuButton
-              rates={[2, 1.5, 1.25, 1, 0.9, 0.75]}
-              order={7}
-            />
-            <VolumeMenuButton order={8} />
-            {/* <FullscreenToggle disabled/> */}
-          </ControlBar>
-        </Player>
+        <div className="video-lesson">
+          <Player
+            ref={(player) => {
+              this.player = player;
+            }}
+            className={classNames.join(' ')}
+            autoPlay
+            playsInline
+            fluid={false}
+            height="100%"
+            width="100%"
+            src={this.state.videoSrc}
+          >
+            <LoadingSpinner />
+            <BigPlayButton position="center" />
+            <ControlBar>
+              <ReplayControl seconds={5} order={2.1} />
+              <ForwardControl seconds={5} order={2.2} />
+              <PlaybackRateMenuButton
+                rates={[2, 1.5, 1.25, 1, 0.9, 0.75]}
+                order={7}
+              />
+              <VolumeMenuButton order={8} />
+              <Trancription openTrans={this.openTrans} closeTrans={this.closeTrans} isOpenTranscript={this.state.isOpenTranscript} order={9}></Trancription>
+              {/* <FullscreenToggle disabled/> */}
+            </ControlBar>
+          </Player>
+          <div className="transcription">
+            <Header variant="h3" actions={<div style={{cursor: "pointer"}} onClick={() => this.closeTrans()}><Icon name="close" /></div>} >
+              Transcription
+            </Header>
+            <span className="transcript">
+              {this.props.transcript
+                ? this.props.transcript.map((item, index) => {
+                    return (
+                      <div
+                        ref={
+                          this.state.currentVideoTime >= item.start_time &&
+                          this.state.currentVideoTime <= item.end_time
+                            ? this.wordElement
+                            : null
+                        }
+                        key={index}
+                        className="trans-word"
+                        onClick={(e) => this.changeVideoTime(item.start_time)}
+                      >
+                        <span
+                          className={
+                            this.state.currentVideoTime >= item.start_time &&
+                            this.state.currentVideoTime <= item.end_time
+                              ? "bg-yellow-500"
+                              : ""
+                          }
+                        >
+                          {item.alternatives[0].content === "," ||
+                          item.alternatives[0].content === "."
+                            ? item.alternatives[0].content
+                            : " " + item.alternatives[0].content}
+                        </span>
+                      </div>
+                    );
+                  })
+                : ""}
+            </span>
+          </div>
+        </div>
       );
-    }else {
+    } else {
       return (
-        <div style={{width: "100%", height: "100%"}}>
+        <div style={{ width: "100%", height: "100%" }}>
           <iframe id="youtube-video" src=""></iframe>
         </div>
-      )
+      );
     }
-    
   }
 }
 
@@ -2083,61 +2200,61 @@ export default class Learn extends React.Component {
                       </div>
                     ),
                   },
-                  {
-                    label: "Transcription",
-                    id: "transcript",
-                    content: (
-                      <>
-                        <span className="transcript">
-                          {this.state.lecture.transcript
-                            ? this.state.lecture.transcript.map(
-                                (item, index) => {
-                                  return (
-                                    <div
-                                      ref={
-                                        this.state.currentVideoTime >=
-                                          item.start_time &&
-                                        this.state.currentVideoTime <=
-                                          item.end_time
-                                          ? this.wordElement
-                                          : null
-                                      }
-                                      key={index}
-                                      className="trans-word"
-                                      onClick={(e) =>
-                                        this.changeVideoTime(item.start_time)
-                                      }
-                                    >
-                                      <span
-                                        className={
-                                          this.state.currentVideoTime >=
-                                            item.start_time &&
-                                          this.state.currentVideoTime <=
-                                            item.end_time
-                                            ? "bg-yellow-500"
-                                            : ""
-                                        }
-                                      >
-                                        {item.alternatives[0].content === "," ||
-                                        item.alternatives[0].content === "."
-                                          ? item.alternatives[0].content
-                                          : " " + item.alternatives[0].content}
-                                      </span>
-                                    </div>
-                                  );
-                                }
-                              )
-                            : ""}
-                        </span>
-                      </>
-                    ),
-                  },
-                  {
-                    label: "Third tab label",
-                    id: "third",
-                    content: "Third tab content area",
-                    disabled: true,
-                  },
+                  // {
+                  //   label: "Transcription",
+                  //   id: "transcript",
+                  //   content: (
+                  //     <>
+                  //       <span className="transcript">
+                  //         {this.state.lecture.transcript
+                  //           ? this.state.lecture.transcript.map(
+                  //               (item, index) => {
+                  //                 return (
+                  //                   <div
+                  //                     ref={
+                  //                       this.state.currentVideoTime >=
+                  //                         item.start_time &&
+                  //                       this.state.currentVideoTime <=
+                  //                         item.end_time
+                  //                         ? this.wordElement
+                  //                         : null
+                  //                     }
+                  //                     key={index}
+                  //                     className="trans-word"
+                  //                     onClick={(e) =>
+                  //                       this.changeVideoTime(item.start_time)
+                  //                     }
+                  //                   >
+                  //                     <span
+                  //                       className={
+                  //                         this.state.currentVideoTime >=
+                  //                           item.start_time &&
+                  //                         this.state.currentVideoTime <=
+                  //                           item.end_time
+                  //                           ? "bg-yellow-500"
+                  //                           : ""
+                  //                       }
+                  //                     >
+                  //                       {item.alternatives[0].content === "," ||
+                  //                       item.alternatives[0].content === "."
+                  //                         ? item.alternatives[0].content
+                  //                         : " " + item.alternatives[0].content}
+                  //                     </span>
+                  //                   </div>
+                  //                 );
+                  //               }
+                  //             )
+                  //           : ""}
+                  //       </span>
+                  //     </>
+                  //   ),
+                  // },
+                  // {
+                  //   label: "Third tab label",
+                  //   id: "third",
+                  //   content: "Third tab content area",
+                  //   disabled: true,
+                  // },
                 ]}
               />
             </HelpPanel>

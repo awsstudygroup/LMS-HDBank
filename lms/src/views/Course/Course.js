@@ -7,7 +7,7 @@ import courseDefaultThumbnail from '../../assets/images/course-default-thumbnail
 import NavBar from '../../components/NavBar/NavBar';
 import Footer from '../../components/Footer/Footer';
 import loadingGif from '../../assets/images/loading.gif';
-import { calcTimeBrief } from "../../utils/tools";
+import { calcTimeBrief, getUISet } from "../../utils/tools";
 
 export default class Course extends React.Component {
     constructor(props) {
@@ -16,6 +16,7 @@ export default class Course extends React.Component {
             course: null,
             redirectToLearn: false,
             loading: true,
+            uiSet: null,
         };
     }
 
@@ -48,6 +49,9 @@ export default class Course extends React.Component {
     }
 
     componentDidMount() {
+        getUISet().then((data) => {
+            this.setState({ uiSet: data})
+        });
         this.getCourse();
     }
 
@@ -132,7 +136,19 @@ export default class Course extends React.Component {
                                     What you'll learn
                                 </div>
                                 {course.whatToLearn.map((item, index) => <div key={index} className='course-what-to-learn-item'>
-                                    <Icon variant='subtle' name='check'/> 
+                                    <Icon variant='subtle'
+                                        svg={
+                                            <svg
+                                              viewBox="0 0 16 16"
+                                              xmlns="http://www.w3.org/2000/svg"
+                                              focusable="false"
+                                              aria-hidden="true"
+                                              style={{color: `${this.state.uiSet?.MainColor}`}}
+                                            >
+                                              <path d="m14.254 4.254-8.25 8.25L6 12.5l-.004.004-4.25-4.25.008-.008L6 12.493l8.246-8.247.008.008Z"></path>
+                                            </svg>
+                                        }
+                                    /> 
                                     <div>{item}</div>
                                 </div>)}
                             </div>
@@ -143,12 +159,38 @@ export default class Course extends React.Component {
                                     </div>
                                     <div className='board-content'>
                                         <div className='course-what-to-learn-item'>
-                                            <Icon variant='subtle' name='multiscreen'/> 
-                                            <div>{videoCount} video bài giảng</div>
+                                            <Icon 
+                                                variant='subtle'
+                                                svg={
+                                                    <svg 
+                                                        viewBox="0 0 16 16" 
+                                                        xmlns="http://www.w3.org/2000/svg" 
+                                                        focusable="false" 
+                                                        aria-hidden="true"
+                                                        style={{color: `${this.state.uiSet?.MainColor}`}}
+                                                    >
+                                                            <path class="stroke-linejoin-round" d="M11 5H1v7h10V5Z"></path>
+                                                            <path class="stroke-linejoin-round" d="M11 8.229h4v-7H5V5M1 15h10M6 15v-3"></path>
+                                                    </svg>
+                                                }
+                                            
+                                            /> 
+                                            <div>{videoCount} lesson videos</div>
                                         </div>
                                         { labCount > 0 ? <div className='course-what-to-learn-item'>
-                                            <Icon variant='subtle' name='thumbs-up-filled'/>
-                                            <div>{labCount} bài tập</div>
+                                            <Icon
+                                                svg={
+                                                    <svg viewBox="0 0 16 16" 
+                                                        xmlns="http://www.w3.org/2000/svg" 
+                                                        focusable="false" 
+                                                        style={{color: `${this.state.uiSet?.MainColor}`}}
+                                                        aria-hidden="true">
+                                                        <path d="M7.981 1.047a.02.02 0 0 1 .038 0l1.96 4.973 4.974 1.961a.02.02 0 0 1 0 .038L9.98 9.979l-1.961 4.974a.02.02 0 0 1-.038 0L6.021 9.98 1.046 8.019a.02.02 0 0 1 0-.038l4.973-1.96 1.961-4.974Z"></path>
+                                                        <path d="m2.5 2.65.045-.095.095-.045-.095-.045L2.5 2.37l-.045.095-.095.045.095.045.045.095Z" class="filled"></path>
+                                                    </svg>
+                                                }
+                                            />
+                                            <div>{labCount} hand-on labs</div>
                                         </div> : <></> }
                                         {/* <div className='course-what-to-learn-item'>
                                             <Icon variant='subtle' name='calendar'/>
@@ -156,9 +198,18 @@ export default class Course extends React.Component {
                                         </div> */}
                                     </div>
                                     <div className='board-footer'>
-                                        <Button variant='primary' className='btn-orange' onClick={() => this.openLearn()}>
+                                        {/* <Button variant='primary' className='btn-orange' onClick={() => this.openLearn()}>
                                             Start Course
-                                        </Button>
+                                        </Button> */}
+                                        <button 
+                                            className='btn-normal' 
+                                            style={{background: `${this.state.uiSet.MainColor}`, 
+                                                    borderColor: `${this.state.uiSet.MainColor}`, 
+                                                    color: `${this.state.uiSet.TextColor}`}} 
+                                            onClick={() => this.openLearn()}
+                                        >
+                                            Start Course
+                                        </button>
                                     </div>
                                 </div>
                             </div>

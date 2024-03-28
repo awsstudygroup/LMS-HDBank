@@ -39,6 +39,24 @@
       ],
       "list_title": "Available courses",
       "list_title_unauthen": "Popular courses"
+    },
+    "auth":{
+      "password": {
+        "label": "Password:",
+        "placeholder": "Enter your password"
+      },
+      "confirm_pass": {
+        "label": "Confirm password:",
+        "placeholder": "Enter your password again"
+      },
+      "certificate": {
+        "label": "Name on certificate:",
+        "placeholder": "Enter your name on nertificate "
+      },
+      "email": {
+        "label": "Email:",
+        "placeholder": "Enter your email"
+      }
     }
   }
 }

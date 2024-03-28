@@ -3,6 +3,7 @@ import "./Footer.css";
 import { API } from "aws-amplify";
 import { apiName, configUI } from "../../utils/api";
 import { uiConfigId } from "../../utils/uiConfig";
+import { getUISet } from "../../utils/tools"
 
 export default class Footer extends React.Component {
   constructor(props) {
@@ -12,24 +13,27 @@ export default class Footer extends React.Component {
     };
   }
 
-  loadUISet = () => {
-    API.get(apiName, configUI + uiConfigId)
-      .then((data) => {
-        this.setState({ uiSet: data });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  // loadUISet = () => {
+  //   API.get(apiName, configUI + uiConfigId)
+  //     .then((data) => {
+  //       this.setState({ uiSet: data });
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
 
   componentDidMount() {
-    let localParams = localStorage.getItem("AWSLIBVN_UISET");
-    // console.log(localParams)
-    if (localParams) {
-      this.setState({ uiSet: JSON.parse(localParams) });
-    } else {
-      this.loadUISet();
-    }
+    // let localParams = localStorage.getItem("AWSLIBVN_UISET");
+    // if (localParams) {
+    //   this.setState({ uiSet: JSON.parse(localParams) });
+    // } else {
+    //   this.loadUISet();
+    // }
+    getUISet().then((data) => {
+      this.setState({ uiSet: data });
+    })
+    .catch((error) => console.log(error))
   }
   render() {
     return (

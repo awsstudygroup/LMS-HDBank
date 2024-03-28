@@ -35,6 +35,24 @@
       ],
       "list_title": "Các khoá học",
       "list_title_unauthen": "Các khoá học phổ biến"
+    },
+    "auth":{
+      "password": {
+        "label": "Mật khẩu:",
+        "placeholder": "Nhập mật khẩu của bạn"
+      },
+      "confirm_pass": {
+        "label": "Xác nhận mật khẩu:",
+        "placeholder": "Nhập lại mật khẩu của bạn"
+      },
+      "certificate": {
+        "label": "Tên trên giấy chứng nhận:",
+        "placeholder": "Nhập tên của bạn trên giấy chứng nhận"
+      },
+      "email": {
+        "label": "Email:",
+        "placeholder": "Nhập email của bạn"
+      }
     }
   }
 }

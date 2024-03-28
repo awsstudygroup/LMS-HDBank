@@ -9,6 +9,7 @@
   padding: 40px 100px;
   vertical-align: middle;
   display: table-cell;
+  width: 100vw;
 }
 
 .dashboard-banner-title {
@@ -140,6 +141,33 @@
 
 .dashboard-loading-gif {
   height: 16px;
+}
+
+.btn-normal {
+  border: none;
+  padding: 5px 15px;
+  border-radius: 20px;
+  background-color: #EB5F07 ;
+  border-color: #EB5F07;
+  display: inline-block;
+  position: relative;
+  text-decoration: none;
+  border-collapse: separate;
+  border-spacing: 0;
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+  /* font-family: var(--font-family-base-dnvic8, "Open Sans", "Helvetica Neue", Roboto, Arial, sans-serif); */
+  cursor: pointer;
+}
+
+.loading{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
 }
 
 @media only screen and (max-width: 768px) {

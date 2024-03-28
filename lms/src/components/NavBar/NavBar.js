@@ -8,6 +8,7 @@ import { calcTime } from "../../utils/tools";
 import { apiName, configUI } from "../../utils/api";
 import { API, Storage } from "aws-amplify";
 import { uiConfigId } from "../../utils/uiConfig";
+import { getUISet } from "../../utils/tools";
 
 export class NavBar extends React.Component {
   constructor(props) {
@@ -47,22 +48,30 @@ export class NavBar extends React.Component {
         });
       });
 
-    API.get(apiName, configUI + uiConfigId)
-      .then((data) => {
-        // console.log(data)
-        localStorage.setItem("AWSLIBVN_UISET", JSON.stringify(data));
-        this.setState({ uiSet: data });
-        // console.log(data);
-        if (data) {
-          Storage.get(data.Logo, { level: "public" }).then((res) => {
-            this.setState({ logo: res });
-            // console.log(res);
-          });
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    getUISet().then((data) => {
+      this.setState({ uiSet: data });
+      if (data) {
+        Storage.get(data.Logo, { level: "public" }).then((res) => {
+          this.setState({ logo: res });
+        });
+      }
+    });
+    // API.get(apiName, configUI + uiConfigId)
+    //   .then((data) => {
+    //     // console.log(data)
+    //     localStorage.setItem("AWSLIBVN_UISET", JSON.stringify(data));
+    //     this.setState({ uiSet: data });
+    //     // console.log(data);
+    //     if (data) {
+    //       Storage.get(data.Logo, { level: "public" }).then((res) => {
+    //         this.setState({ logo: res });
+    //         // console.log(res);
+    //       });
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
   }
 
   startAuthentication(action) {
@@ -74,7 +83,7 @@ export class NavBar extends React.Component {
 
   async startSignOut() {
     try {
-      await Auth.signOut({global: true});
+      await Auth.signOut({ global: true });
     } catch (error) {
       console.log("error signing out: ", error);
       Auth.userHasAuthenticated(false);
@@ -112,11 +121,13 @@ export class NavBar extends React.Component {
         <TopNavigation
           identity={{
             href: "/",
-            title: this.state.uiSet.WebName ? this.state.uiSet.WebName : "Cloud Solutions Journey",
-            logo: {
-              src: this.state.logo ? this.state.logo : AWSLogo,
-              alt: "AWS Logo",
-            },
+            title: this.state.uiSet.WebName
+              ? this.state.uiSet.WebName
+              : "Cloud Solutions Journey",
+            // logo: {
+            //   src: this.state.logo ? this.state.logo : AWSLogo,
+            //   alt: "AWS Logo",
+            // },
           }}
           search={
             <Input
@@ -212,10 +223,10 @@ export class NavBar extends React.Component {
                       } else if (e.detail.id === "signout") {
                         this.startSignOut();
                       }
-                      if (e.detail.id === "help"){
+                      if (e.detail.id === "help") {
                         this.setState({
                           redirectHelp: true,
-                        })
+                        });
                       }
                     },
                   },

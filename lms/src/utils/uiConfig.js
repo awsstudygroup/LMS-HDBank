@@ -1,1 +1,1 @@
-export const uiConfigId = "uet-university-397860"
+export const uiConfigId = "ui-mrb-573253"
