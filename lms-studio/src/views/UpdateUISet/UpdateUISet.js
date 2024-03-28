@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useLayoutEffect } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, useLocation } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import {
   BreadcrumbGroup,
@@ -29,7 +29,11 @@ import NavBar from "../../components/NavBar/NavBar";
 import { API, Storage } from "aws-amplify";
 import { uiConfigPath, apiName } from "../../utils/api";
 
-export default function CreateSetUI(props) {
+const errorMess = "Error! An error occurred. Please try again later";
+
+export default function UpdateSetUI(props) {
+  const { state } = useLocation();
+
   const [id, setId] = useState("");
   const [banner, setBanner] = useState([]);
   const [bannerIcon, setBannerIcon] = useState([]);
@@ -52,23 +56,36 @@ export default function CreateSetUI(props) {
 
   const [activeStepIndex, setActiveStepIndex] = React.useState(0);
   const [loading, setLoading] = useState(false);
+  const [flashItem, setFlashItem] = useState([]);
 
-  const uploadConfig = async () => {
+
+  useEffect(() => {
+    console.log(state);
+    setId(state.ID);
+    // setBanner(state.Banner);
+    // setBannerIcon(state.BannerIcon);
+    // setLogo(state.Logo);
+    // setHlImage(state.HLImages);
+    setMainColor(state.MainColor);
+    setTextColor(state.TextColor);
+    setHighLight(state.Highlight);
+    setHeader(state.WebTitle);
+    setName(state.WebName);
+    setDesc(state.WebDesc);
+    setLeftFooter(state.Footer.Left);
+    setRightFooter(state.Footer.Right);
+  }, []);
+
+  const updateConfig = async () => {
     setLoading(true);
-    var convertedID = id.toLowerCase().replace(/ /g, "-");
-    var randomID = Math.floor(Math.random() * 1000000);
-    var ID = convertedID + "-" + randomID;
-    const folderImage = `UI/${ID}/`;
+    const folderImage = `UI/${id}/`;
     const jsonData = {
-      ID: ID,
+      ID: id,
       WebName: name,
       WebTitle: header,
       WebDesc: desc,
       Highlight: highlight,
       HLImages: [],
-      Logo: "",
-      Banner: "",
-      BannerIcon: "",
       MainColor: mainColor,
       TextColor: textColor,
       Footer: {
@@ -124,17 +141,28 @@ export default function CreateSetUI(props) {
         });
         jsonData.HLImages.push(s3KeyHl);
       }
+
+      await API.put(apiName, uiConfigPath, { body: jsonData });
+      setLoading(false);
     } catch (error) {
+      resetFail();
       console.log(error);
     }
 
-    try {
-      console.log(jsonData);
-      await API.put(apiName, uiConfigPath, { body: jsonData });
-    } catch (error) {
-      setLoading(false);
-    }
+  };
+
+  const resetFail = () => {
     setLoading(false);
+    setFlashItem([
+      {
+        type: "error",
+        content: errorMess,
+        dismissible: true,
+        dismissLabel: "Dismiss message",
+        onDismiss: () => setFlashItem([]),
+        id: "error_message",
+      },
+    ]);
   };
 
   const deleteInfor = (index, kind) => {
@@ -194,11 +222,11 @@ export default function CreateSetUI(props) {
                 cancelButton: "Cancel",
                 previousButton: "Previous",
                 nextButton: "Next",
-                submitButton: "Add",
+                submitButton: "Update",
                 // optional: "optional",
               }}
               isLoadingNextStep={loading}
-              onSubmit={uploadConfig}
+              onSubmit={updateConfig}
               onNavigate={({ detail }) =>
                 setActiveStepIndex(detail.requestedStepIndex)
               }
@@ -206,7 +234,7 @@ export default function CreateSetUI(props) {
               allowSkipTo
               steps={[
                 {
-                  title: "Add title",
+                  title: "Update title",
                   info: <Link variant="info">Info</Link>,
                   description: "Choose title and description for flatform",
                   content: (
@@ -215,7 +243,7 @@ export default function CreateSetUI(props) {
                         header={<Header variant="h2">Web header config</Header>}
                       >
                         <SpaceBetween direction="vertical" size="l">
-                          <FormField
+                          {/* <FormField
                             label="Set name"
                             description="Enter the set of name"
                           >
@@ -223,7 +251,11 @@ export default function CreateSetUI(props) {
                               onChange={({ detail }) => setId(detail.value)}
                               value={id}
                             />
-                          </FormField>
+                          </FormField> */}
+                          <div>
+                              <Box variant="awsui-key-label">Set ID</Box>
+                              <div>{id}</div>
+                          </div>
                           <FormField
                             label="Web name"
                             description="Enter the name of web"
@@ -347,14 +379,14 @@ export default function CreateSetUI(props) {
                   ),
                 },
                 {
-                  title: "Add images",
+                  title: "Update images",
                   info: <Link variant="info">Info</Link>,
                   content: (
                     <Container
                       header={<Header variant="h2">Images and Icon</Header>}
                     >
                       <SpaceBetween direction="vertical" size="l">
-                        <FormField label="Banner">
+                        <FormField label="Banner" description={state.Banner ? "Current file: " + `${state.Banner.split("/")[2]}` : ""}>
                           <FileUpload
                             onChange={({ detail }) => setBanner(detail.value)}
                             value={banner}
@@ -379,7 +411,7 @@ export default function CreateSetUI(props) {
                             constraintText=".jpg, .jpeg, .png"
                           />
                         </FormField>
-                        <FormField label="Banner icon">
+                        <FormField label="Banner icon" description={state.BannerIcon ? "Current file: " + `${state.BannerIcon.split("/")[2]}` : ""}>
                           <FileUpload
                             onChange={({ detail }) =>
                               setBannerIcon(detail.value)
@@ -406,7 +438,7 @@ export default function CreateSetUI(props) {
                             constraintText=".jpg, .jpeg, .png"
                           />
                         </FormField>
-                        <FormField label="Web logo">
+                        <FormField label="Web logo" description={state.Logo ? "Current file: " + `${state.Logo.split("/")[2]}` : ""}>
                           <FileUpload
                             onChange={({ detail }) => setLogo(detail.value)}
                             value={logo}
@@ -497,7 +529,7 @@ export default function CreateSetUI(props) {
                   ),
                 },
                 {
-                  title: "Add footer information",
+                  title: "Update footer information",
                   info: <Link variant="info">Info</Link>,
                   content: (
                     <SpaceBetween direction="vertical" size="l">
@@ -563,6 +595,7 @@ export default function CreateSetUI(props) {
                   content: (
                     <SpaceBetween size="l">
                       <SpaceBetween size="xs">
+                        <Flashbar items={flashItem} />
                         <Header
                           variant="h3"
                           actions={

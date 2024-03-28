@@ -7,7 +7,7 @@ See the License for the specific language governing permissions and limitations 
 */
 
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import { DynamoDBDocumentClient, PutCommand, GetCommand, ScanCommand } from "@aws-sdk/lib-dynamodb";
+import { DynamoDBDocumentClient, PutCommand, GetCommand, ScanCommand, DeleteCommand } from "@aws-sdk/lib-dynamodb";
 
 import express from "express";
 import bodyParser from "body-parser";
@@ -52,7 +52,8 @@ const convertInfoType = (param, type) => {
   }
 }
 
-app.get(path, function (req, res) {
+// get ui set
+app.get(path + hashKeyPath, function (req, res) {
   console.log(req)
   const params = {};
   if ( req.query[partitionKeyName] ){
@@ -81,17 +82,20 @@ app.get(path, function (req, res) {
         res.json({error: 'Could not load items: ' + err});
       }
     );
-  }else {
-    docClient.send(new ScanCommand({TableName: tableName})).then(
-      (data) => {
-        res.json(data.Items);
-      },
-      (err) => {
-        res.statusCode = 500;
-        res.json({error: 'Could not load items: ' + err});
-      }
-    )
   }
+});
+
+// scan table
+app.get(path, function (req, res) {
+  docClient.send(new ScanCommand({ TableName: tableName })).then(
+    (data) => {
+      res.json(data.Items);
+    },
+    (err) => {
+      res.statusCode = 500;
+      res.json({ error: "Could not load items: " + err });
+    }
+  );
 });
 
 app.put(path, function (req, res) {
@@ -118,6 +122,69 @@ app.put(path, function (req, res) {
   );
 });
 
+app.post(path, function (req, res) {
+  if (userIdPresent) {
+    req.body["userId"] =
+      req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
+  }
+
+  let putItemParams = {
+    TableName: tableName,
+    Item: req.body,
+  };
+  let command = new PutCommand(putItemParams);
+  docClient.send(command).then(
+    (data) => {
+      res.json({ success: "post call succeed!", info: req.info, data: data });
+    },
+    (err) => {
+      res.statusCode = 500;
+      res.json({ error: err, info: req.info, body: req.body });
+    }
+  );
+});
+
+app.delete(path + hashKeyPath, function (req, res) {
+  const params = {};
+  params[partitionKeyName] = req.params[partitionKeyName];
+  try {
+    params[partitionKeyName] = convertUrlType(
+      req.params[partitionKeyName],
+      partitionKeyType
+    );
+  } catch (err) {
+    res.statusCode = 500;
+    res.json({ error: "Wrong column type " + err });
+  }
+
+  if (hasSortKey) {
+    try {
+      params[sortKeyName] = convertUrlType(
+        req.params[sortKeyName],
+        sortKeyType
+      );
+    } catch (err) {
+      res.statusCode = 500;
+      res.json({ error: "Wrong column type " + err });
+    }
+  }
+
+  let removeItemParams = {
+    TableName: tableName,
+    Key: params,
+  };
+
+  const command = new DeleteCommand(removeItemParams);
+  docClient.send(command).then(
+    (data) => {
+      res.json({ url: req.url, data: data });
+    },
+    (err) => {
+      res.statusCode = 500;
+      res.json({ error: err, url: req.url });
+    }
+  );
+});
 
 app.listen(3000, function () {
   console.log("App started");

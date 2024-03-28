@@ -42,6 +42,7 @@ import AccessCodes from './views/Management/Sale/AccessCodes'
 import GenerateCode from './views/GenerateCode/GenerateCode'
 import SetUI from './views/Management/SetUI/SetUI'
 import CreateSetUI from './views/CreateSetUI/CreateSetUI'
+import UpdateUISet from './views/UpdateUISet/UpdateUISet'
 
 // Configure Amplify
 Amplify.configure(awsExports);
@@ -220,6 +221,10 @@ const router = createHashRouter([
   {
     path: "/createSetUI",
     element: <CreateSetUI />
+  },
+  {
+    path: "/updateUISet/:id",
+    element: <UpdateUISet/>
   },
 ]);
 
