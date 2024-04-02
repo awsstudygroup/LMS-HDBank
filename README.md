@@ -208,4 +208,4 @@ After publishing, follow these additional steps:
 - Select the "Sign-up experience" tab.
 - In the "Custom attributes" section, click "Add custom attributes."
 - Enter "name_on_certificate."
-
+- Enter "role"
