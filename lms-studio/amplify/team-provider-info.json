@@ -144,7 +144,7 @@
         },
         "studioUIConfig": {
           "deploymentBucketName": "amplify-lmsstudio-hdbank-e8a68-deployment",
-          "s3Key": "amplify-builds/studioUIConfig-7737504b36314f6d6b66-build.zip"
+          "s3Key": "amplify-builds/studioUIConfig-77757478514b52386842-build.zip"
         },
         "studioUserCourse": {
           "deploymentBucketName": "amplify-lmsstudio-hdbank-e8a68-deployment",

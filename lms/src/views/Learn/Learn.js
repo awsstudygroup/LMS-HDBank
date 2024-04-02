@@ -4,6 +4,7 @@ import "video-react/dist/video-react.css";
 import { API, Auth, Storage } from "aws-amplify";
 import { Helmet } from "react-helmet";
 import NavBar from "../../components/NavBar/NavBar";
+import { withTranslation } from "react-i18next";
 import {
   AppLayout,
   BreadcrumbGroup,
@@ -1437,7 +1438,7 @@ class MainContent extends React.Component {
   }
 }
 
-export default class Learn extends React.Component {
+class Learn extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -1990,6 +1991,7 @@ export default class Learn extends React.Component {
   };
 
   render() {
+    const { t } = this.props;
     return this.state.loggedIn === false ? (
       <Navigate
         to="/auth"
@@ -2145,7 +2147,7 @@ export default class Learn extends React.Component {
             <BreadcrumbGroup
               items={[
                 {
-                  text: "My Learning",
+                  text: t("breadcrumbs.mylearning"),
                   href: "#/mylearning",
                 },
                 {
@@ -2333,3 +2335,5 @@ export default class Learn extends React.Component {
     );
   }
 }
+
+export default withTranslation()(Learn)

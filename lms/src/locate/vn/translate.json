@@ -34,7 +34,11 @@
         }
       ],
       "list_title": "Các khoá học",
-      "list_title_unauthen": "Các khoá học phổ biến"
+      "list_title_unauthen": "Các khoá học phổ biến",
+      "start": "Bắt đầu"
+    },
+    "breadcrumbs": {
+      "mylearning": "Bài học"
     },
     "auth":{
       "password": {
