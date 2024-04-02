@@ -19,43 +19,43 @@
       "function": {
         "FAQs": {
           "deploymentBucketName": "amplify-lms-dev-182155-deployment",
-          "s3Key": "amplify-builds/FAQs-4651596d547646485671-build.zip"
+          "s3Key": "amplify-builds/FAQs-7072546f43463265794f-build.zip"
         },
         "UserCourse": {
           "deploymentBucketName": "amplify-lms-dev-182155-deployment",
-          "s3Key": "amplify-builds/UserCourse-56436f4c423847556f30-build.zip"
+          "s3Key": "amplify-builds/UserCourse-4a644d34354976337171-build.zip"
         },
         "categories": {
           "deploymentBucketName": "amplify-lms-dev-182155-deployment",
-          "s3Key": "amplify-builds/categories-57644a6c544b3837744d-build.zip"
+          "s3Key": "amplify-builds/categories-39477455346f73694930-build.zip"
         },
         "certs": {
           "deploymentBucketName": "amplify-lms-dev-182155-deployment",
-          "s3Key": "amplify-builds/certs-354d7356316135755a34-build.zip"
+          "s3Key": "amplify-builds/certs-764f3141714f76417654-build.zip"
         },
         "courses": {
           "deploymentBucketName": "amplify-lms-dev-182155-deployment",
-          "s3Key": "amplify-builds/courses-50373970797765694f64-build.zip"
+          "s3Key": "amplify-builds/courses-7531426b6864374b5351-build.zip"
         },
         "lectures": {
           "deploymentBucketName": "amplify-lms-dev-182155-deployment",
-          "s3Key": "amplify-builds/lectures-3948424850672b454347-build.zip"
+          "s3Key": "amplify-builds/lectures-3465784f316e63486747-build.zip"
         },
         "transcribeVideoToText": {
           "deploymentBucketName": "amplify-lms-dev-182155-deployment",
-          "s3Key": "amplify-builds/transcribeVideoToText-307239413858374c6f54-build.zip"
+          "s3Key": "amplify-builds/transcribeVideoToText-6469584b72495a64344b-build.zip"
         },
         "uiConfig": {
           "deploymentBucketName": "amplify-lms-dev-182155-deployment",
-          "s3Key": "amplify-builds/uiConfig-2f516a656e465a692b4f-build.zip"
+          "s3Key": "amplify-builds/uiConfig-706c7478585447793331-build.zip"
         },
         "users": {
           "deploymentBucketName": "amplify-lms-dev-182155-deployment",
-          "s3Key": "amplify-builds/users-776236593338656e5a69-build.zip"
+          "s3Key": "amplify-builds/users-77456a704a6151793734-build.zip"
         },
         "usersLectures": {
           "deploymentBucketName": "amplify-lms-dev-182155-deployment",
-          "s3Key": "amplify-builds/usersLectures-74433362566974513732-build.zip"
+          "s3Key": "amplify-builds/usersLectures-6c2b6848632b62616e66-build.zip"
         },
         "Categories": {},
         "Cert": {},

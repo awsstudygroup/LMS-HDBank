@@ -121,7 +121,7 @@ export class NavBar extends React.Component {
         <TopNavigation
           identity={{
             href: "/",
-            title: this.state.uiSet.WebName
+            title: this.state.uiSet?.WebName
               ? this.state.uiSet.WebName
               : "Cloud Solutions Journey",
             // logo: {
