@@ -57,6 +57,46 @@
         "label": "Email:",
         "placeholder": "Enter your email"
       }
+    },
+    "course":{
+      "level": "Level:",
+      "category": "Category:",
+      "tag": "Tag:",
+      "benefit": "What you'll learn",
+      "summerize": {
+        "title": "This couse includes",
+        "video": "lesson videos",
+        "lab": "hand-on labs"
+      },
+      "start": "Start Course",
+      "content": "Course Content",
+      "requirement": "Requirements"
+    },
+    "learn": {
+      "start": "Start",
+      "finish": "Finish",
+      "retry": "Retry",
+      "answer": "Answer",
+      "next": "Next",
+      "ok": "OK",
+      "pass": "Congratulation! You passed the quiz.",
+      "fail": "Unfortunately you didn't pass. Keep trying!",
+      "more": "More",
+      "document": "Document",
+      "docURL": "Document URL"
+    },
+    "cert":{
+      "review": "Xem lại khoá học",
+      "share": "Chia sẻ",
+      "download": "Tải xuống"
+    },
+    "mylearning": {
+      "recent": "Hoạt động gần đây",
+      "notice": "Không có khoá học nào",
+      "assign": "Khoá học được đăng ký",
+      "self_enroll": "Khoá học tự đăng ký",
+      "cert": "Chứng chỉ",
+      "continue": "Tiếp tục"
     }
   }
 }

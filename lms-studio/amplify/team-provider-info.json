@@ -87,5 +87,94 @@
         "lmsStudio": {}
       }
     }
+  },
+  "hdbank": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-lmsstudio-hdbank-e8a68-authRole",
+      "UnauthRoleArn": "arn:aws:iam::340879421878:role/amplify-lmsstudio-hdbank-e8a68-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::340879421878:role/amplify-lmsstudio-hdbank-e8a68-authRole",
+      "Region": "ap-southeast-1",
+      "DeploymentBucketName": "amplify-lmsstudio-hdbank-e8a68-deployment",
+      "UnauthRoleName": "amplify-lmsstudio-hdbank-e8a68-unauthRole",
+      "StackName": "amplify-lmsstudio-hdbank-e8a68",
+      "StackId": "arn:aws:cloudformation:ap-southeast-1:340879421878:stack/amplify-lmsstudio-hdbank-e8a68/3008a200-f0d0-11ee-b418-02e429dc5135",
+      "AmplifyAppId": "d1o9deq9nzv6n5",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-lmsstudio-hdbank-e8a68-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
+    },
+    "categories": {
+      "auth": {
+        "lmsstudioc3fd255f": {}
+      },
+      "function": {
+        "addCourseContributor": {
+          "deploymentBucketName": "amplify-lmsstudio-hdbank-e8a68-deployment",
+          "s3Key": "amplify-builds/addCourseContributor-3475797759795a565642-build.zip"
+        },
+        "addCourseOpportunity": {
+          "deploymentBucketName": "amplify-lmsstudio-hdbank-e8a68-deployment",
+          "s3Key": "amplify-builds/addCourseOpportunity-77316d65665162455338-build.zip"
+        },
+        "studioAccessCode": {
+          "deploymentBucketName": "amplify-lmsstudio-hdbank-e8a68-deployment",
+          "s3Key": "amplify-builds/studioAccessCode-344d6656717963417361-build.zip"
+        },
+        "studioContributor": {
+          "deploymentBucketName": "amplify-lmsstudio-hdbank-e8a68-deployment",
+          "s3Key": "amplify-builds/studioContributor-684e6673685a31574a76-build.zip"
+        },
+        "studioCourseCode": {
+          "deploymentBucketName": "amplify-lmsstudio-hdbank-e8a68-deployment",
+          "s3Key": "amplify-builds/studioCourseCode-474e303733324e546b6d-build.zip"
+        },
+        "studioCourseOpp": {
+          "deploymentBucketName": "amplify-lmsstudio-hdbank-e8a68-deployment",
+          "s3Key": "amplify-builds/studioCourseOpp-4d756d64737039613273-build.zip"
+        },
+        "studioCourses": {
+          "deploymentBucketName": "amplify-lmsstudio-hdbank-e8a68-deployment",
+          "s3Key": "amplify-builds/studioCourses-6d734a41594d6b527530-build.zip"
+        },
+        "studioLectures": {
+          "deploymentBucketName": "amplify-lmsstudio-hdbank-e8a68-deployment",
+          "s3Key": "amplify-builds/studioLectures-59393941666b3871544c-build.zip"
+        },
+        "studioSecretManager": {
+          "deploymentBucketName": "amplify-lmsstudio-hdbank-e8a68-deployment",
+          "s3Key": "amplify-builds/studioSecretManager-676947577367382f2f30-build.zip"
+        },
+        "studioUIConfig": {
+          "deploymentBucketName": "amplify-lmsstudio-hdbank-e8a68-deployment",
+          "s3Key": "amplify-builds/studioUIConfig-7737504b36314f6d6b66-build.zip"
+        },
+        "studioUserCourse": {
+          "deploymentBucketName": "amplify-lmsstudio-hdbank-e8a68-deployment",
+          "s3Key": "amplify-builds/studioUserCourse-4f676946367474775764-build.zip"
+        },
+        "studioUsers": {
+          "deploymentBucketName": "amplify-lmsstudio-hdbank-e8a68-deployment",
+          "s3Key": "amplify-builds/studioUsers-417a50377969755a7573-build.zip"
+        },
+        "userOverview": {
+          "deploymentBucketName": "amplify-lmsstudio-hdbank-e8a68-deployment",
+          "s3Key": "amplify-builds/userOverview-7a71746a716631426e34-build.zip"
+        },
+        "lmsstudioc3fd255f": {}
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d1o9deq9nzv6n5",
+          "type": "manual"
+        }
+      },
+      "storage": {
+        "lmsstudiodcbd5e2f": {
+          "bucketName": "lecture-resource22c49-hdbank",
+          "region": "ap-southeast-1"
+        }
+      },
+      "api": {
+        "lmsStudio": {}
+      }
+    }
   }
 }

@@ -1,1 +1,1 @@
-export const uiConfigId = "ui-mrb-573253"
+export const uiConfigId = "hdbank---first-cloud-journey-19667"
