@@ -84,12 +84,12 @@ class MyLearning extends React.Component {
                     : <div className='mylearning-main-container'>
                         {!this.state.mostRecentCourse ? "" : <div>
                             <p className='mylearning-courses-header'>{t("mylearning.recent")}</p>
-                            <div className='mylearning-courses-header-decor' style={{borderTop: `solid 3px ${this.state.uiSet?.MainColor}`}}/>
+                            <div className='mylearning-courses-header-decor' style={{borderTop: `solid 3px ${this.state.uiSet?.MainColor || "#0073bb"}`}}/>
                             <MyLearningCourse courseId={this.state.mostRecentCourse} uiSet={this.state.uiSet}/>
                         </div>}
                         <div>
                             <p className='mylearning-courses-header'>{t("mylearning.assign")}</p>
-                            <div className='mylearning-courses-header-decor' style={{borderTop: `solid 3px ${this.state.uiSet?.MainColor}`}}/>
+                            <div className='mylearning-courses-header-decor' style={{borderTop: `solid 3px ${this.state.uiSet?.MainColor || "#0073bb"}`}}/>
                             {this.state.assignedCourses.length === 0
                                 ? <div>{t("mylearning.notice")}</div>
                                 : this.state.assignedCourses.map((course, index) => <MyLearningCourse key={index} courseId={course} uiSet={this.state.uiSet}/>)
@@ -97,7 +97,7 @@ class MyLearning extends React.Component {
                         </div>
                         <div>
                             <p className='mylearning-courses-header'>{t("mylearning.self_enroll")}</p>
-                            <div className='mylearning-courses-header-decor' style={{borderTop: `solid 3px ${this.state.uiSet?.MainColor}`}}/>
+                            <div className='mylearning-courses-header-decor' style={{borderTop: `solid 3px ${this.state.uiSet?.MainColor || "#0073bb"}`}}/>
                             {console.log(this.state.selfEnrolledCourses)}
                             {this.state.selfEnrolledCourses.length === 0
                                 ? <div>

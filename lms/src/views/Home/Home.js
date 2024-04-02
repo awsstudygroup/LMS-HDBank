@@ -312,6 +312,7 @@ export class Home extends React.Component {
         </div>
         <div className="dashboard-courses-list-item-separator" />
         <div className="dashboard-courses-list-item-action">
+          {console.log(this.state.uiSet)}
           {this.state.uiSet ? (
             <button
               variant="primary"
@@ -398,7 +399,7 @@ export class Home extends React.Component {
                 ? t("home.list_title")
                 : t("home.list_title_unauthen")}
             </p>
-            <div className="dashboard-courses-header-decor" />
+            <div className="dashboard-courses-header-decor" style={{borderTop: `solid 3px ${this.state.uiSet?.MainColor || "#EC7211"}`}}/>
             <div className="dashboard-courses-list">
               {this.state.loading ? (
                 <img
@@ -470,7 +471,7 @@ export class Home extends React.Component {
                 ? t("home.list_title")
                 : t("home.list_title_unauthen")}
             </p>
-            <div className="dashboard-courses-header-decor" />
+            <div className="dashboard-courses-header-decor" style={{borderTop: `solid 3px ${this.state.uiSet?.MainColor || "#EC7211"}`}}/>
             <div className="dashboard-courses-list">
               {this.state.loading ? (
                 <img
