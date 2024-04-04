@@ -119,6 +119,7 @@ export class NavBar extends React.Component {
     ) : (
       <div id="h" style={{ position: "sticky", top: 0, zIndex: 1002 }}>
         <TopNavigation
+          className=""
           identity={{
             href: "/",
             title: this.state.uiSet?.WebName

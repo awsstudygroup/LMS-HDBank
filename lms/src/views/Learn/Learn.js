@@ -184,6 +184,7 @@ class LectureContent extends React.Component {
             lectureId={this.props.lecture.lecture.id}
             countView={this.props.countView}
             setCurrentVideoTime={this.props.setCurrentVideoTime}
+            t={this.props.t}
           />
         );
       case "Workshop":
@@ -227,6 +228,7 @@ class LectureContent extends React.Component {
             setQuestionLength={this.props.setQuestionLength}
             countView={this.props.countView}
             isLast={this.props.isLast}
+            t={this.props.t}
           />
         );
       default:
@@ -377,6 +379,7 @@ class VideoContent extends React.Component {
   };
 
   render() {
+    const t = this.props.t
     const classNames = [
       'lesson-video',
     ];
@@ -418,7 +421,7 @@ class VideoContent extends React.Component {
           </Player>
           <div className="transcription">
             <Header variant="h3" actions={<div style={{cursor: "pointer"}} onClick={() => this.closeTrans()}><Icon name="close" /></div>} >
-              Transcription
+              {t("learn.transcription")}
             </Header>
             <span className="transcript">
               {this.props.transcript
@@ -672,6 +675,7 @@ class QuizContent extends React.Component {
   }
 
   render() {
+    const t = this.props.t;
     return (
       <div className="learn-lab-content-container learn-lab-content-container-quiz">
         {/* <div className="learn-lab-content-desc learn-lab-content-quiz">
@@ -852,11 +856,11 @@ class QuizContent extends React.Component {
           ) : this.state.quizDone ? (
             this.state.quizPassed ? (
               <div className="learn-lab-content-question">
-                Congratulation! You passed the quiz.
+                {t("learn.pass")}
               </div>
             ) : (
               <div className="learn-lab-content-question">
-                Unfortunately you didn't pass. Keep trying!
+                {t("learn.fail")}
               </div>
             )
           ) : !this.state.currentQuestionAnswered ? (
@@ -947,7 +951,7 @@ class QuizContent extends React.Component {
         <div className="learn-lab-quiz-control">
           <div className="learn-lab-quiz-control-left">
             {this.state.quizStarted && !this.state.quizDone
-              ? "Question " +
+              ? t("learn.question") +
                 (this.state.currentQuestion + 1) +
                 "/" +
                 this.state.questions.length
@@ -972,7 +976,7 @@ class QuizContent extends React.Component {
                   })
                 }
               >
-                Start Quiz
+                {t("learn.start")}
               </Button>
             ) : this.state.quizDone ? (
               this.state.quizPassed ? (
@@ -987,7 +991,7 @@ class QuizContent extends React.Component {
                     }
                   }}
                 >
-                  Finish
+                  {t("learn.finish")}
                 </Button>
               ) : (
                 <Button
@@ -997,7 +1001,7 @@ class QuizContent extends React.Component {
                     this.setState({ quizStarted: false, quizDone: false })
                   }
                 >
-                  Retry
+                  {t("learn.retry")}
                 </Button>
               )
             ) : !this.state.currentQuestionAnswered ? (
@@ -1012,7 +1016,7 @@ class QuizContent extends React.Component {
                     this.setState({ currentQuestionAnswered: true });
                 }}
               >
-                Answer
+                {t("learn.answer")}
               </Button>
             ) : (
               <Button
@@ -1046,7 +1050,7 @@ class QuizContent extends React.Component {
                   }
                 }}
               >
-                Next
+                {t("learn.next")}
               </Button>
             )}
           </div>
@@ -1073,14 +1077,14 @@ class QuizContent extends React.Component {
                     })
                   }
                 >
-                  OK
+                  {t("learn.ok")}
                 </Button>
               </SpaceBetween>
             </Box>
           }
           header="Congratulation"
         >
-          Congratulations on completing the quiz
+          {t("learn.complete")}
         </Modal>
       </div>
     );
@@ -1307,6 +1311,7 @@ class MainContent extends React.Component {
   };
 
   render() {
+    const t = this.props.t;
     return (
       <div className="fullscreen">
         <div
@@ -1348,6 +1353,7 @@ class MainContent extends React.Component {
                 countView={this.countView}
                 isLast={this.props.isLast}
                 setCurrentVideoTime={this.props.setCurrentVideoTime}
+                t={this.props.t}
               />
             )}
           </div>
@@ -1394,7 +1400,7 @@ class MainContent extends React.Component {
                   this.setState({ autoNext: !this.state.autoNext })
                 }
               >
-                Auto next
+                {t("learn.autoNext")}
                 {this.state.autoNext ? (
                   <IoCheckmarkCircleOutline className="learn-auto-next-control-icon" />
                 ) : (
@@ -2048,14 +2054,19 @@ class Learn extends React.Component {
                             this.state.course.totalLecture >=
                           0.8 ? (
                             <span className="learn-navigation-progress-completed">
-                              Completed {this.state.completedLectures.length}{" "}
-                              out of {this.state.course.totalLecture} lectures{" "}
-                              <IoCheckmarkSharp />
+                              {t("learn.completeLesson")}{" "}
+                              {this.state.completedLectures.length}{" "}
+                              {t("learn.outOf")}{" "}
+                              {this.state.course.totalLecture}{" "}
+                              {t("learn.lectures")} <IoCheckmarkSharp />
                             </span>
                           ) : (
                             <span className="learn-navigation-progress">
-                              Completed {this.state.completedLectures.length}{" "}
-                              out of {this.state.course.totalLecture} lectures
+                              {t("learn.completeLesson")}{" "}
+                              {this.state.completedLectures.length}{" "}
+                              {t("learn.outOf")}{" "}
+                              {this.state.course.totalLecture}{" "}
+                              {t("learn.lectures")}
                             </span>
                           ),
                       },
@@ -2158,15 +2169,15 @@ class Learn extends React.Component {
             />
           }
           tools={
-            <HelpPanel header={<h2>More</h2>}>
-              <Tabs
+            <HelpPanel header={<h2>{t("learn.more")}</h2>}>
+              {/* <Tabs
                 tabs={[
                   {
                     label: "References",
                     id: "refer",
                     content: (
                       <div>
-                        <h4>Document</h4>
+                        <h4>{t("learn.document")}</h4>
                         <ul>
                           {this.state.lecture.lecture ? (
                             this.state.lecture.lecture.referDocs.map((item) => {
@@ -2185,7 +2196,7 @@ class Learn extends React.Component {
                           )}
                         </ul>
 
-                        <h4>Document URL</h4>
+                        <h4>{t("learn.docURL")}</h4>
                         <ul>
                           {this.state.lecture.lecture ? (
                             this.state.lecture.lecture.referUrl.map((item) => {
@@ -2202,63 +2213,94 @@ class Learn extends React.Component {
                       </div>
                     ),
                   },
-                  // {
-                  //   label: "Transcription",
-                  //   id: "transcript",
-                  //   content: (
-                  //     <>
-                  //       <span className="transcript">
-                  //         {this.state.lecture.transcript
-                  //           ? this.state.lecture.transcript.map(
-                  //               (item, index) => {
-                  //                 return (
-                  //                   <div
-                  //                     ref={
-                  //                       this.state.currentVideoTime >=
-                  //                         item.start_time &&
-                  //                       this.state.currentVideoTime <=
-                  //                         item.end_time
-                  //                         ? this.wordElement
-                  //                         : null
-                  //                     }
-                  //                     key={index}
-                  //                     className="trans-word"
-                  //                     onClick={(e) =>
-                  //                       this.changeVideoTime(item.start_time)
-                  //                     }
-                  //                   >
-                  //                     <span
-                  //                       className={
-                  //                         this.state.currentVideoTime >=
-                  //                           item.start_time &&
-                  //                         this.state.currentVideoTime <=
-                  //                           item.end_time
-                  //                           ? "bg-yellow-500"
-                  //                           : ""
-                  //                       }
-                  //                     >
-                  //                       {item.alternatives[0].content === "," ||
-                  //                       item.alternatives[0].content === "."
-                  //                         ? item.alternatives[0].content
-                  //                         : " " + item.alternatives[0].content}
-                  //                     </span>
-                  //                   </div>
-                  //                 );
-                  //               }
-                  //             )
-                  //           : ""}
-                  //       </span>
-                  //     </>
-                  //   ),
-                  // },
-                  // {
-                  //   label: "Third tab label",
-                  //   id: "third",
-                  //   content: "Third tab content area",
-                  //   disabled: true,
-                  // },
+                  {
+                    label: "Transcription",
+                    id: "transcript",
+                    content: (
+                      <>
+                        <span className="transcript">
+                          {this.state.lecture.transcript
+                            ? this.state.lecture.transcript.map(
+                                (item, index) => {
+                                  return (
+                                    <div
+                                      ref={
+                                        this.state.currentVideoTime >=
+                                          item.start_time &&
+                                        this.state.currentVideoTime <=
+                                          item.end_time
+                                          ? this.wordElement
+                                          : null
+                                      }
+                                      key={index}
+                                      className="trans-word"
+                                      onClick={(e) =>
+                                        this.changeVideoTime(item.start_time)
+                                      }
+                                    >
+                                      <span
+                                        className={
+                                          this.state.currentVideoTime >=
+                                            item.start_time &&
+                                          this.state.currentVideoTime <=
+                                            item.end_time
+                                            ? "bg-yellow-500"
+                                            : ""
+                                        }
+                                      >
+                                        {item.alternatives[0].content === "," ||
+                                        item.alternatives[0].content === "."
+                                          ? item.alternatives[0].content
+                                          : " " + item.alternatives[0].content}
+                                      </span>
+                                    </div>
+                                  );
+                                }
+                              )
+                            : ""}
+                        </span>
+                      </>
+                    ),
+                  },
+                  {
+                    label: "Third tab label",
+                    id: "third",
+                    content: "Third tab content area",
+                    disabled: true,
+                  },
                 ]}
-              />
+              /> */}
+              <div>
+                <h4>{t("learn.document")}</h4>
+                <ul>
+                  {this.state.lecture.lecture ? (
+                    this.state.lecture.lecture.referDocs.map((item) => {
+                      return (
+                        <li onClick={(e) => this.downloadReferDoc(e, item)}>
+                          {item.split("-")[2]}
+                        </li>
+                      );
+                    })
+                  ) : (
+                    <></>
+                  )}
+                </ul>
+
+                <h4>{t("learn.docURL")}</h4>
+                <ul>
+                  {this.state.lecture.lecture ? (
+                    this.state.lecture.lecture.referUrl.map((item) => {
+                      return (
+                        <li>
+                          <a href={item}>{item}</a>
+                        </li>
+                      );
+                    })
+                  ) : (
+                    <></>
+                  )}
+                </ul>
+              </div>
             </HelpPanel>
           }
           content={
@@ -2288,6 +2330,7 @@ class Learn extends React.Component {
                     </div>
                     <div className="learn-board-content">
                       <MainContent
+                        t={t}
                         ref={this.playerChild}
                         loading={this.state.loading}
                         lecture={this.state.lecture}

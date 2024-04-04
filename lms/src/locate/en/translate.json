@@ -73,6 +73,11 @@
       "requirement": "Requirements"
     },
     "learn": {
+      "autoNext": "Auto next",
+      "completeLesson": "Completed ",
+      "outOf": "out of ",
+      "lectures": "lectures",
+      "question": "Question ",
       "start": "Start",
       "finish": "Finish",
       "retry": "Retry",
@@ -81,22 +86,23 @@
       "ok": "OK",
       "pass": "Congratulation! You passed the quiz.",
       "fail": "Unfortunately you didn't pass. Keep trying!",
+      "complete": "Congratulations on completing the quiz",
       "more": "More",
       "document": "Document",
       "docURL": "Document URL"
     },
     "cert":{
-      "review": "Xem lại khoá học",
-      "share": "Chia sẻ",
-      "download": "Tải xuống"
+      "review": "Review course",
+      "share": "Share",
+      "download": "Download"
     },
     "mylearning": {
-      "recent": "Hoạt động gần đây",
-      "notice": "Không có khoá học nào",
-      "assign": "Khoá học được đăng ký",
-      "self_enroll": "Khoá học tự đăng ký",
-      "cert": "Chứng chỉ",
-      "continue": "Tiếp tục"
+      "recent": "Recent activity",
+      "notice": "You don't have any course assigned to you.",
+      "assign": "You didn't enrolled any course.",
+      "self_enroll": "Self-enrolled courses",
+      "cert": "Certificate",
+      "continue": "Continue"
     }
   }
 }

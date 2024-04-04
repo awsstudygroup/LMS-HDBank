@@ -73,6 +73,11 @@
       "requirement": "Yêu cầu"
     },
     "learn": {
+      "autoNext": "Tự động chuyển",
+      "completeLesson": "Đã hoàn thành ",
+      "outOf": "trên ",
+      "lectures": "bài",
+      "question": "Câu hỏi ",
       "start": "Bắt đầu",
       "finish": "Kết thúc",
       "retry": "Làm lại",
@@ -81,6 +86,8 @@
       "ok": "OK",
       "pass": "Chúc mừng bạn đã hoàn thành",
       "fail": "Cố gắng lần sau bạn nhé.",
+      "complete": "Chúc mừng bạn đã hoàn thành",
+      "transcription": "Phiên mã",
       "more": "Bổ sung",
       "document": "Tài liệu",
       "docURL": "Link tài liệu"
