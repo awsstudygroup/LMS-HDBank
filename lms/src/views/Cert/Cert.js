@@ -1,6 +1,6 @@
 import React from 'react';
 import './Cert.css';
-import { API, Auth } from 'aws-amplify';
+import { API, Auth, Storage } from 'aws-amplify';
 import { Navigate } from "react-router-dom";
 import NavBar from '../../components/NavBar/NavBar';
 import Footer from '../../components/Footer/Footer';
@@ -26,12 +26,18 @@ class Cert extends React.Component {
             redirectToCourse: null,
             disabled: true,
             uiSet: {},
+            defaultThumb: null,
         };
     }
 
     componentDidMount() {
         getUISet().then((data) => {
             this.setState({ uiSet: data});
+            if (data.DefaultThumb){
+              Storage.get(data.DefaultThumb, {
+                level: "public",
+              }).then((res) => this.setState({ defaultThumb: res}));
+            }
           }).catch((error) => console.log(error));
 
         this.loadUserId(() => {
@@ -293,7 +299,7 @@ class Cert extends React.Component {
                     </div>
                   </div>
                   <div className="cert-course-thumbnail">
-                    <img src={courseDefaultThumbnail} alt="Course Thumbnail" />
+                    <img src={this.state.defaultThumb || courseDefaultThumbnail} alt="Course Thumbnail" />
                   </div>
                   <div className="cert-course-separator" />
                   {/* <div className='cert-progress'>
@@ -312,12 +318,13 @@ class Cert extends React.Component {
                     >
                       {t("cert.review")} <Icon name="external" />
                     </Button>
+
                     {/* <Button variant="primary" className='btn-orange cert-continue-btn' onClick={() => this.setState({shareCertOpen: true})}>
                                 {t("cert.share")} <Icon name='share' />
                             </Button> */}
                     <button
                       variant="primary"
-                      className="btn-normal"
+                      className="btn-normal cert-continue-btn"
                       style={{
                         background: `${this.state.uiSet?.MainColor}`,
                         borderColor: `${this.state.uiSet?.MainColor}`,
@@ -349,17 +356,17 @@ class Cert extends React.Component {
                       <div className="cert-view-container">
                         {/* <div>{this.state.cert.UserEmail}</div> */}
                         <canvas id="canvas"></canvas>
-                        <div className="cert-view-user-name">
+                      <div className="cert-view-user-name" style={{color: `${this.state.uiSet?.MainColor}`}}>
                           {this.state.cert.UserName}
                         </div>
-                        <div className="cert-view-course-name">
+                        <div className="cert-view-course-name" style={{color: `${this.state.uiSet?.MainColor}`}}>
                           {/* {(() => {
                                             let courseNameList = this.state.course.name.split("-");
                                             return courseNameList.pop().toUpperCase()
                                         })()} */}
                           {this.getCourseName()}
                         </div>
-                        <div className="cert-view-issued-date">
+                        <div className="cert-view-issued-date" style={{color: `${this.state.uiSet?.MainColor}`}}>
                           ISSUED DATE -{" "}
                           {this.state.cert
                             ? transformDateTime(

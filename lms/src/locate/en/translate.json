@@ -38,7 +38,11 @@
         }
       ],
       "list_title": "Available courses",
-      "list_title_unauthen": "Popular courses"
+      "list_title_unauthen": "Popular courses",
+      "start": "Start"
+    },
+    "breadcrumbs": {
+      "mylearning": "My learning"
     },
     "auth":{
       "password": {

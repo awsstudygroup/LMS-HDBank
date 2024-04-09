@@ -173,7 +173,7 @@ class MyLearningCourse extends React.Component {
               </div>
             </div>
             <div className="mylearning-course-thumbnail">
-              <img src={courseDefaultThumbnail} alt="Course Thumbnail" />
+              <img src={this.state.defaultThumb || courseDefaultThumbnail} alt="Course Thumbnail" />
             </div>
             <div className="mylearning-course-separator" />
             <div className="mylearning-progress">

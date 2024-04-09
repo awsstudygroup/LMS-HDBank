@@ -43,6 +43,7 @@ export class Home extends React.Component {
       uiSet: null,
       banner: null,
       bannerIcon: null,
+      defaultThumb: null,
       HLImages: [],
     };
   }
@@ -169,6 +170,7 @@ export class Home extends React.Component {
   async loadImage(data) {
     var bannerRes;
     var bannerIconRes;
+    var defaultThumbRes;
     try {
       if (data.Banner){
         bannerRes = await Storage.get(data.Banner, { level: "public" });
@@ -179,6 +181,12 @@ export class Home extends React.Component {
         });
       }
       
+      if (data.DefaultThumb){
+        defaultThumbRes = await Storage.get(data.DefaultThumb, {
+          level: "public",
+        });
+      }
+
       var currentHLImage = [];
       for (let i = 0; i < data.HLImages.length; i++) {
         const hlImageRes = await Storage.get(data.HLImages[i], {
@@ -190,6 +198,7 @@ export class Home extends React.Component {
       this.setState({
         banner: bannerRes,
         bannerIcon: bannerIconRes,
+        defaultThumb: defaultThumbRes,
         HLImages: currentHLImage,
         loadingUISet: false,
       });
@@ -264,7 +273,7 @@ export class Home extends React.Component {
               name="ticket"
               className="dashboard-courses-list-item-property-icon"
             />{" "}
-            Level: {course.level}
+            {t("course.level")} {course.level}
           </div>
           <div className="dashboard-courses-list-item-property">
             <Icon
@@ -272,7 +281,7 @@ export class Home extends React.Component {
               name="check"
               className="dashboard-courses-list-item-property-icon"
             />
-            Category:
+            {t("course.category")}
             {course.categories.map((category, index) => (
               <span key={index}>
                 {index !== 0 ? ", " : " "}
@@ -286,7 +295,7 @@ export class Home extends React.Component {
               name="check"
               className="dashboard-courses-list-item-property-icon"
             />
-            Tag:
+            {t("course.tag")}
             {course.tags &&
               course.tags.map((tag, index) => (
                 <span key={index}>
@@ -308,7 +317,7 @@ export class Home extends React.Component {
           </div>
         </div>
         <div className="dashboard-courses-list-item-thumbnail">
-          <img src={courseDefaultThumbnail} alt="Course Thumbnail" />
+          <img src={this.state.defaultThumb || courseDefaultThumbnail} alt="Course Thumbnail" />
         </div>
         <div className="dashboard-courses-list-item-separator" />
         <div className="dashboard-courses-list-item-action">
