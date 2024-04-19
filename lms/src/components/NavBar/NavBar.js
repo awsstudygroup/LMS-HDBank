@@ -4,11 +4,10 @@ import { Navigate } from "react-router-dom";
 import { TopNavigation, Input } from "@cloudscape-design/components";
 import { withTranslation } from "react-i18next";
 import AWSLogo from "./Logo";
-import { calcTime } from "../../utils/tools";
-import { apiName, configUI } from "../../utils/api";
 import { API, Storage } from "aws-amplify";
-import { uiConfigId } from "../../utils/uiConfig";
 import { getUISet } from "../../utils/tools";
+import { setTheme } from "../../theme/theme"
+
 
 export class NavBar extends React.Component {
   constructor(props) {
@@ -25,6 +24,7 @@ export class NavBar extends React.Component {
       searchKey: "",
       uiSet: {},
       logo: null,
+      // theme: null,
     };
   }
 
@@ -47,31 +47,21 @@ export class NavBar extends React.Component {
           authenticated: false,
         });
       });
-
-    getUISet().then((data) => {
-      this.setState({ uiSet: data });
-      if (data) {
-        Storage.get(data.Logo, { level: "public" }).then((res) => {
-          this.setState({ logo: res });
-        });
-      }
-    });
-    // API.get(apiName, configUI + uiConfigId)
-    //   .then((data) => {
-    //     // console.log(data)
-    //     localStorage.setItem("AWSLIBVN_UISET", JSON.stringify(data));
-    //     this.setState({ uiSet: data });
-    //     // console.log(data);
-    //     if (data) {
-    //       Storage.get(data.Logo, { level: "public" }).then((res) => {
-    //         this.setState({ logo: res });
-    //         // console.log(res);
-    //       });
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
+      
+    if (!this.props.uiSet){
+      getUISet().then((data) => {
+        this.setState({ uiSet: data });
+        if (data) {
+          Storage.get(data.Logo, { level: "public" }).then((res) => {
+            this.setState({ logo: res });
+          });
+          setTheme(data)
+        }
+      });
+    }else {
+      this.setState({ uiSet: this.props.uiSet });
+      setTheme(this.props.uiSet)
+    }
   }
 
   startAuthentication(action) {
@@ -119,7 +109,7 @@ export class NavBar extends React.Component {
     ) : (
       <div id="h" style={{ position: "sticky", top: 0, zIndex: 1002 }}>
         <TopNavigation
-          className=""
+          className="custom-main-header"
           identity={{
             href: "/",
             title: this.state.uiSet?.WebName

@@ -126,7 +126,7 @@ class MyLearningCourse extends React.Component {
                   name="ticket"
                   className="mylearning-course-property-icon"
                 />{" "}
-                {t("course.level")} {!!course.level ? course.level : ""}
+                {t("common.level")} {!!course.level ? course.level : ""}
               </div>
               <div className="mylearning-course-property">
                 <Icon
@@ -134,7 +134,7 @@ class MyLearningCourse extends React.Component {
                   name="check"
                   className="mylearning-course-property-icon"
                 />
-                {t("course.category")}
+                {t("common.category")}
                 {!!course.categories
                   ? course.categories.map((category, index) => (
                       <span key={index}>

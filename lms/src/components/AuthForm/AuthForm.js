@@ -37,6 +37,7 @@ I18n.putVocabularies({
 
 export default function AuthForm(props) {
   const [theme, setTheme] = useState();
+  const [loading, setLoading] = useState();
   const { tokens } = useTheme();
   const location = useLocation();
   
@@ -133,6 +134,7 @@ export default function AuthForm(props) {
   };
   
   useEffect(() => {
+    setLoading(true)
     getUISet().then((data) => {
       const theme: Theme = {
         name: 'Auth Example Theme',
@@ -197,14 +199,30 @@ export default function AuthForm(props) {
         },
       };
       setTheme(theme)
+      setLoading(false)
      });
   }, [])
   
   return (
-    <ThemeProvider theme={theme}>
-    <Authenticator initialState={location.state.action ? location.state.action : "signIn"} formFields={formFields} services={services}>
-      <Navigate to={location.state.path ? location.state.path : "/"} replace={true} />
-    </Authenticator>
-    </ThemeProvider>
+    <>
+      {loading ? (
+        <></>
+      ) : (
+        <ThemeProvider theme={theme}>
+          <Authenticator
+            initialState={
+              location.state.action ? location.state.action : "signIn"
+            }
+            formFields={formFields}
+            services={services}
+          >
+            <Navigate
+              to={location.state.path ? location.state.path : "/"}
+              replace={true}
+            />
+          </Authenticator>
+        </ThemeProvider>
+      )}
+    </>
   );
 }

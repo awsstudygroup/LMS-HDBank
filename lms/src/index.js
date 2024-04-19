@@ -9,6 +9,7 @@ import awsExports from "./aws-exports";
 
 // Import CloudScape Design
 import "@cloudscape-design/global-styles/index.css";
+import * as awsui from '@cloudscape-design/design-tokens';
 
 // Import React Router
 import { createHashRouter, RouterProvider } from "react-router-dom";

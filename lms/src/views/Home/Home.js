@@ -273,7 +273,7 @@ export class Home extends React.Component {
               name="ticket"
               className="dashboard-courses-list-item-property-icon"
             />{" "}
-            {t("course.level")} {course.level}
+            {t("common.level")} {course.level}
           </div>
           <div className="dashboard-courses-list-item-property">
             <Icon
@@ -281,7 +281,7 @@ export class Home extends React.Component {
               name="check"
               className="dashboard-courses-list-item-property-icon"
             />
-            {t("course.category")}
+            {t("common.category")}
             {course.categories.map((category, index) => (
               <span key={index}>
                 {index !== 0 ? ", " : " "}
@@ -289,7 +289,7 @@ export class Home extends React.Component {
               </span>
             ))}
           </div>
-          <div className="dashboard-courses-list-item-property">
+          {/* <div className="dashboard-courses-list-item-property">
             <Icon
               variant="subtle"
               name="check"
@@ -303,7 +303,7 @@ export class Home extends React.Component {
                   <a href="/#">{tag}</a>
                 </span>
               ))}
-          </div>
+          </div> */}
           <div className="dashboard-courses-list-item-property">
             <Icon
               variant="subtle"
@@ -321,33 +321,9 @@ export class Home extends React.Component {
         </div>
         <div className="dashboard-courses-list-item-separator" />
         <div className="dashboard-courses-list-item-action">
-          {console.log(this.state.uiSet)}
-          {this.state.uiSet ? (
-            <button
-              variant="primary"
-              className="btn-normal"
-              style={{
-                background: `${this.state.uiSet.MainColor}`,
-                borderColor: `${this.state.uiSet.MainColor}`,
-                color: `${this.state.uiSet.TextColor}`,
-              }}
-              onClick={() => this.redirectToCourse(course.id)}
-            >
-              <span>
-                {t("home.start")} <Icon name="arrow-left" className="rotate-180" />
-              </span>
-            </button>
-          ) : (
-            <button
-              variant="primary"
-              className="btn-normal"
-              onClick={() => this.redirectToCourse(course.id)}
-            >
-              <span>
-                {t("home.start")} <Icon name="arrow-left" className="rotate-180" />
-              </span>
-            </button>
-          )}
+          <Button variant='primary' onClick={() => this.redirectToCourse(course.id)} >
+            {t("home.start")} <Icon name="arrow-left" className="rotate-180"/>
+          </Button>
         </div>
       </div>
     );
@@ -437,6 +413,7 @@ export class Home extends React.Component {
           setSearchKey={(key) => this.setState({ searchKey: key })}
           searchKey={this.state.searchKey}
           searchCourse={() => this.searchCourses()}
+          uiSet={this.state.uiSet}
         />
         <div className="dashboard-main">
           <div

@@ -37,7 +37,7 @@ export default class Footer extends React.Component {
   }
   render() {
     return (
-      <div className="footer">
+      <div className="footer" style={{backgroundColor: `${this.state.uiSet?.MainColor}`}}>
         {this.state.uiSet && this.state.uiSet.Footer ? (
           <>
             <div className="footer-div footer-div-left">

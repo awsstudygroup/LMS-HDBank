@@ -263,7 +263,7 @@ class Cert extends React.Component {
                         name="ticket"
                         className="cert-course-property-icon"
                       />{" "}
-                      {t("course.level")} {!!course.level ? course.level : ""}
+                      {t("common.level")} {!!course.level ? course.level : ""}
                     </div>
                     <div className="cert-course-property">
                       <Icon
@@ -271,7 +271,7 @@ class Cert extends React.Component {
                         name="check"
                         className="cert-course-property-icon"
                       />
-                      {t("course.category")}
+                      {t("common.category")}
                       {!!course.categories
                         ? course.categories.map((category, index) => (
                             <span key={index}>
@@ -310,7 +310,7 @@ class Cert extends React.Component {
                         </div> */}
                   <div className="cert-course-action">
                     <Button
-                      variant="primary"
+                      variant="normal"
                       className="cert-continue-btn"
                       onClick={() =>
                         this.setState({ redirectToCourse: course.id })
@@ -319,26 +319,11 @@ class Cert extends React.Component {
                       {t("cert.review")} <Icon name="external" />
                     </Button>
 
-                    {/* <Button variant="primary" className='btn-orange cert-continue-btn' onClick={() => this.setState({shareCertOpen: true})}>
+                    <Button variant="primary" className='btn-orange cert-continue-btn' onClick={() => this.setState({shareCertOpen: true})}>
                                 {t("cert.share")} <Icon name='share' />
-                            </Button> */}
-                    <button
-                      variant="primary"
-                      className="btn-normal cert-continue-btn"
-                      style={{
-                        background: `${this.state.uiSet?.MainColor}`,
-                        borderColor: `${this.state.uiSet?.MainColor}`,
-                        color: `${this.state.uiSet?.TextColor}`,
-                      }}
-                      onClick={() => this.redirectToCourse(course.id)}
-                    >
-                      <span>
-                        {t("cert.share")}
-                        <Icon name="share" className="rotate-180" />
-                      </span>
-                    </button>
+                    </Button>
                     <Button
-                      variant="primary"
+                      variant="normal"
                       className="cert-continue-btn"
                       onClick={this.downloadCert}
                     >
@@ -396,12 +381,12 @@ class Cert extends React.Component {
                       variant="primary"
                       onClick={() => this.setState({ shareCertOpen: false })}
                     >
-                      Ok
+                      {t("common.ok")}
                     </Button>
                   </SpaceBetween>
                 </Box>
               }
-              header="Share certificate"
+              header= {t("cert.share_header")}
             >
               <Button
                 variant="link"

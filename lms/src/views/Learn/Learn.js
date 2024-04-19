@@ -25,6 +25,7 @@ import {
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import { csv } from "csvtojson";
 import Papa from "papaparse";
+import { getUISet } from "../../utils/tools";
 
 import {
   Player,
@@ -1077,7 +1078,7 @@ class QuizContent extends React.Component {
                     })
                   }
                 >
-                  {t("learn.ok")}
+                  {t("common.ok")}
                 </Button>
               </SpaceBetween>
             </Box>
@@ -1461,6 +1462,7 @@ class Learn extends React.Component {
       nextLectureName: "",
       completedLectures: [],
       currentVideoTime: 0,
+      uiSet: null,
     };
     this.playerChild = React.createRef();
     this.wordElement = React.createRef();
@@ -1859,6 +1861,9 @@ class Learn extends React.Component {
   }
 
   componentDidMount() {
+    getUISet().then((data) => {
+      this.setState({ uiSet: data });
+    });
     this.ionViewCanEnter();
     this.loadUserId(() => this.loadCourse());
     // this.loadCourse();
@@ -2008,6 +2013,7 @@ class Learn extends React.Component {
         <NavBar
           navigation={this.props.navigation}
           title="Cloud Solutions Journey"
+          uiSet={this.state.uiSet}
         />
         <AppLayout
           headerSelector="#h"
@@ -2061,7 +2067,7 @@ class Learn extends React.Component {
                               {t("learn.lectures")} <IoCheckmarkSharp />
                             </span>
                           ) : (
-                            <span className="learn-navigation-progress">
+                            <span className="learn-navigation-progress" style={{color: `${this.state.uiSet?.HoverColor}`}}>
                               {t("learn.completeLesson")}{" "}
                               {this.state.completedLectures.length}{" "}
                               {t("learn.outOf")}{" "}

@@ -42,7 +42,9 @@ export default function UpdateSetUI(props) {
   const [hlImage2, setHlImage2] = useState([]);
   const [hlImage3, setHlImage3] = useState([]);
   const [mainColor, setMainColor] = useState("");
+  const [hoverColor, setHoverColor] = useState("");
   const [textColor, setTextColor] = useState("");
+  const [subTextColor, setSubTextColor] = useState("");
   const [highlight, setHighLight] = useState([
     { title: "", desc: "" },
     { title: "", desc: "" },
@@ -70,7 +72,9 @@ export default function UpdateSetUI(props) {
     // setLogo(state.Logo);
     // setHlImage(state.HLImages);
     setMainColor(state.MainColor);
+    setHoverColor(state.HoverColor);
     setTextColor(state.TextColor);
+    setSubTextColor(state.subTextColor);
     setHighLight(state.Highlight);
     setHeader(state.WebTitle);
     setName(state.WebName);
@@ -93,6 +97,9 @@ export default function UpdateSetUI(props) {
       BannerIcon: state.BannerIcon,
       MainColor: mainColor,
       TextColor: textColor,
+      HoverColor: hoverColor,
+      TextColor: textColor,
+      SubTextColor: subTextColor,
       Footer: {
         Left: leftFooter,
         Right: rightFooter
@@ -626,6 +633,18 @@ export default function UpdateSetUI(props) {
                           />
                         </FormField>
                         <FormField
+                          label="Hover Color"
+                          description="Enter color code, example: #000000"
+                          stretch={true}
+                        >
+                          <Input
+                            onChange={({ detail }) =>
+                              setHoverColor(detail.value)
+                            }
+                            value={hoverColor}
+                          />
+                        </FormField>
+                        <FormField
                           label="Text Color"
                           description="Enter color code, example: #000000"
                           stretch={true}
@@ -635,6 +654,18 @@ export default function UpdateSetUI(props) {
                               setTextColor(detail.value)
                             }
                             value={textColor}
+                          />
+                        </FormField>
+                        <FormField
+                          label="Sub Text Color"
+                          description="Enter color code, example: #000000"
+                          stretch={true}
+                        >
+                          <Input
+                            onChange={({ detail }) =>
+                              subTextColor(detail.value)
+                            }
+                            value={setSubTextColor}
                           />
                         </FormField>
                       </SpaceBetween>
