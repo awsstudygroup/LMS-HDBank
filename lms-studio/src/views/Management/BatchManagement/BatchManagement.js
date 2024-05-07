@@ -88,7 +88,8 @@ function BatchManagement(props) {
           for (let i = 0; i < chunk.length; i++) {
             const video = chunk[i];
             if (video.size > 0) {
-              const videoName = video.key.split("/")[1];
+              const videoPath = video.key;
+              const videoName = video.key.split("/").slice(-1)[0];
               const splitName = videoName.split("-");
               const transcription =
                 "transcription/" + videoName.split(".")[0] + ".json";
@@ -101,7 +102,8 @@ function BatchManagement(props) {
                 ID: uuid(),
                 Name: splitName[1],
                 LastUpdated: new Date().toISOString(),
-                Publicity: Number.parseInt(splitName[2]),
+                Publicity:
+                  splitName.length > 2 ? Number.parseInt(splitName[2]) : 1,
                 Content: video.key,
                 Type: "Video",
                 State: "Enabled",
