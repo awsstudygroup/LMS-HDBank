@@ -310,7 +310,7 @@ export class Home extends React.Component {
               name="status-pending"
               className="dashboard-courses-list-item-property-icon"
             />
-            {calcTimeBrief(course.length)}
+            {calcTimeBrief(course.length, t("common.hour"), t("common.minute"))}
           </div>
           <div className="dashboard-courses-list-item-desc">
             {course.description}

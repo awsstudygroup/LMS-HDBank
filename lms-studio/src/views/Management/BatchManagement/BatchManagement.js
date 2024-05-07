@@ -9,6 +9,7 @@ import {
   Icon,
   FileUpload,
   Flashbar,
+  Input,
 } from "@cloudscape-design/components";
 import { API, Storage } from "aws-amplify";
 import {
@@ -19,7 +20,7 @@ import {
   batchWriteCoursePath,
 } from "../../../utils/api";
 import { v4 as uuid } from "uuid";
-import LectureList from "../../../assets/test/LectureList.json";
+// import LectureList from "../../../assets/test/LectureList.json";
 import putCourseTemplate from "../../../assets/template/putCourseTemplate.json";
 
 const successMes = "Created success";
@@ -61,6 +62,7 @@ function BatchManagement(props) {
   const [isCreatingCourse, setIsCreatingCourse] = useState(false);
   const [courseTemplate, setCourseTemplate] = useState([]);
   const [flashItem, setFlashItem] = useState([]);
+  const [folder, setFolder] = useState("")
 
   // test upload 500 records to DynamoDB
   // useEffect(() => {
@@ -72,7 +74,7 @@ function BatchManagement(props) {
     e.preventDefault();
     const lecturesData = [];
     setIsCreatingLecture(true);
-    const lectureList = await Storage.list("lecture-videos/", {
+    const lectureList = await Storage.list(`lecture-videos/${folder}`, {
       pageSize: "ALL",
     });
     // const quizList =  await Storage.list({ prefix: "quizzes/", level: "public" });
@@ -100,11 +102,11 @@ function BatchManagement(props) {
               const videoEle = await setLectureLength(videoURL);
               const lecture = {
                 ID: uuid(),
-                Name: splitName[1],
+                Name: splitName[1].replace(".mp4"),
                 LastUpdated: new Date().toISOString(),
                 Publicity:
                   splitName.length > 2 ? Number.parseInt(splitName[2]) : 1,
-                Content: video.key,
+                Content: videoPath,
                 Type: "Video",
                 State: "Enabled",
                 Length: Math.round(videoEle.duration),
@@ -115,8 +117,8 @@ function BatchManagement(props) {
                 ReferDocs:
                   splitName.length === 5
                     ? `public/refer-docs/${splitName[4]}`
-                    : "",
-                ReferUrl: "",
+                    : [],
+                ReferUrl: [],
                 Transcription: transcription,
               };
 
@@ -332,7 +334,14 @@ function BatchManagement(props) {
             </Header>
           }
         >
-          <div>
+          <SpaceBetween direction="vertical" size="s">
+            <FormField label="Lecture folder" description="Folder contains just uploaded resources">
+              <Input
+                value={folder}
+                onChange={(event) => setFolder(event.detail.value)
+                }
+              />
+            </FormField>
             <Button
               variant="primary"
               loading={isCreatingLecture}
@@ -340,10 +349,7 @@ function BatchManagement(props) {
             >
               Create
             </Button>
-            <video id="myVideo" style={{ display: "none" }}>
-              <source src=""></source>
-            </video>
-          </div>
+          </SpaceBetween>
         </Container>
 
         <Container

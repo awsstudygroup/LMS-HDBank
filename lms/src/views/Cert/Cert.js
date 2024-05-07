@@ -292,7 +292,7 @@ class Cert extends React.Component {
                         name="status-pending"
                         className="cert-course-property-icon"
                       />
-                      {calcTimeBrief(course.length)}
+                      {calcTimeBrief(course.length, t("common.hour"), t("common.minute"))}
                     </div>
                     <div className="cert-course-desc">
                       {!!course.description ? course.description : ""}

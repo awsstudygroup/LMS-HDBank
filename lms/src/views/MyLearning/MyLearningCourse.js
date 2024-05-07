@@ -166,7 +166,7 @@ class MyLearningCourse extends React.Component {
                   name="status-pending"
                   className="mylearning-course-property-icon"
                 />
-                {calcTimeBrief(course.length)}
+                {calcTimeBrief(course.length, t("common.hour"), t("common.minute"))}
               </div>
               <div className="mylearning-course-desc">
                 {!!course.description ? course.description : ""}
