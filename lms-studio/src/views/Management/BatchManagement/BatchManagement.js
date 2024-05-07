@@ -102,7 +102,7 @@ function BatchManagement(props) {
               const videoEle = await setLectureLength(videoURL);
               const lecture = {
                 ID: uuid(),
-                Name: splitName[1].replace(".mp4"),
+                Name: splitName[1].replace(".mp4", ""),
                 LastUpdated: new Date().toISOString(),
                 Publicity:
                   splitName.length > 2 ? Number.parseInt(splitName[2]) : 1,

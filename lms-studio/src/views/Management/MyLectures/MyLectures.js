@@ -98,6 +98,7 @@ const MyLectures = () => {
     // }
     try {
       const data = await API.get(apiName, myLecturePath);
+      console.log(data)
       setLectures(data);
       setLoading(false);
     } catch (_) {
