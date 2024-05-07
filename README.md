@@ -1,19 +1,21 @@
 # LEARNING MANAGEMENT SYSTEM
 
 ## Table of Contents
-1. [Architect Overview](#1-architect-overview)
-2. [Clone Code](#2-clone-code)
-3. [Download Amplify CLI](#3-download-amplify-cli)
-4. [Init Amplify and Connect Your Local Environment to the Cloud](#4-init-amplify-and-connect-your-local-environment-to-the-cloud)
-5. [Check Your Apps](#5-check-your-apps)
-6. [Run Frontend from Your Local Laptop](#6-run-frontend-from-your-local-laptop)
-    6.1. [How to Run LMS FE](#61-how-to-run-lms-fe)
-    6.2. [How to Run LMS-Studio FE](#62-how-to-run-lms-studio-fe)
-7. [Add Sample Data to DynamoDB Tables](#7-add-sample-data-to-dynamodb-tables)
-8. [How to Contribute to the Source Code](#8-how-to-contribute-to-the-source-code)
-9. [Publish the Application](#9-publish-the-application)
-10. [Demo](#10-demo)
-11. [Additional Step After Publishing](#11-additional-step-after-publishing)
+- [LEARNING MANAGEMENT SYSTEM](#learning-management-system)
+  - [Table of Contents](#table-of-contents)
+  - [1. Architect Overview](#1-architect-overview)
+  - [2. Clone Code:](#2-clone-code)
+  - [3. Download Amplify CLI:](#3-download-amplify-cli)
+  - [4. Init Amplify and connect your local env to the Cloud:](#4-init-amplify-and-connect-your-local-env-to-the-cloud)
+  - [5. Check Your Apps Are On or Not:](#5-check-your-apps-are-on-or-not)
+  - [6. Run Frontend from Your Local Laptop:](#6-run-frontend-from-your-local-laptop)
+    - [6.1. How to Run LMS FE:](#61-how-to-run-lms-fe)
+    - [6.2. How to Run LMS-Studio FE:](#62-how-to-run-lms-studio-fe)
+  - [7. Add Sample Data to DynamoDB Tables](#7-add-sample-data-to-dynamodb-tables)
+  - [8. How Can We Contribute to the Source Code ?](#8-how-can-we-contribute-to-the-source-code-)
+  - [9. To Publish the Application, We Execute the Command:](#9-to-publish-the-application-we-execute-the-command)
+  - [10. Demo](#10-demo)
+  - [11. Additional Step After Publishing](#11-additional-step-after-publishing)
 
 ---
 
@@ -68,6 +70,7 @@ cd lms-HDBank/lms-studio
 ```
 
 - When initializing lms-studio project, if amplify adds a table to import, select **courses-dev, lecture-resource ...**
+- **Note**: S3 bucket name is formatted: **lecture-resource...-[environment name]**
 
 ```
 amplify push
@@ -135,7 +138,6 @@ amplify push
 }
 
 ```
-**Note**: S3 bucket name is formatted: **lecture-resource...-[environment name]**
 
 ## 5. Check Your Apps Are On or Not:
 - Open your own Isengard account and go to "Amplify" service to check if your app is now shown on or not (app names: lms, lmsstudio)
@@ -203,3 +205,4 @@ After publishing, follow these additional steps:
 - In the "Custom attributes" section, click "Add custom attributes."
 - Enter "name_on_certificate" for signup of **lms** cognito user pool
 - Enter "role" for signup of **lms-studio** cognito user pool
+
