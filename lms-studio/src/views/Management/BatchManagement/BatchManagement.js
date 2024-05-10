@@ -22,6 +22,7 @@ import {
 import { v4 as uuid } from "uuid";
 // import LectureList from "../../../assets/test/LectureList.json";
 import putCourseTemplate from "../../../assets/template/putCourseTemplate.json";
+import Papa from "papaparse";
 
 const successMes = "Created success";
 const noticeMes = "No any resources";
@@ -203,29 +204,29 @@ function BatchManagement(props) {
     });
 
   const convertToCSV = (objArray) => {
-    var array = typeof objArray != "object" ? JSON.parse(objArray) : objArray;
+    // var array = typeof objArray != "object" ? JSON.parse(objArray) : objArray;
     var str = "";
+    // console.log(array)
+    // for (var i = 0; i < array.length; i++) {
+    //   var line = "";
+    //   if (i === 0) {
+    //     for (var index in array[0]) {
+    //       if (line != "") line += ",";
+    //       line += index;
+    //     }
+    //     str += line + "\r\n";
+    //     line = "";
+    //   }
+    //   for (var index in array[i]) {
+    //     // console.log(array[i])
+    //     if (line != "") line += ",";
 
-    for (var i = 0; i < array.length; i++) {
-      var line = "";
-      if (i === 0) {
-        for (var index in array[0]) {
-          if (line != "") line += ",";
-          line += index;
-        }
-        str += line + "\r\n";
-        line = "";
-      }
-      for (var index in array[i]) {
-        // console.log(array[i])
-        if (line != "") line += ",";
+    //     line += array[i][index];
+    //   }
 
-        line += array[i][index];
-      }
-
-      str += line + "\r\n";
-    }
-
+    //   str += line + "\r\n";
+    // }
+    str = Papa.unparse(objArray)
     return str;
   };
 

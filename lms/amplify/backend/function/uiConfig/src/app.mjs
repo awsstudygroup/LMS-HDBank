@@ -57,6 +57,23 @@ const convertInfoType = (param, type) => {
   }
 };
 
+app.get(path, function (req, res){
+  let scanParams = {
+    TableName: tableName,
+  };
+  let command = new GetCommand(scanParams);
+  docClient.send(command).then(
+    (data) => {
+      res.json(data.Items);
+    },
+    (err) => {
+      console.log(err);
+      res.statusCode = 500;
+      res.json({ error: "Could not load items: " + err });
+    }
+  );
+})
+
 app.get(path + hashKeyPath, function (req, res) {
   console.log(req);
   const params = {};
