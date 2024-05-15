@@ -204,22 +204,22 @@ class Cert extends React.Component {
 
             ctx.drawImage(img,0,0);
             ctx.textAlign = "center";
-            ctx.font = 'bold 90px Amazon Ember';
-            ctx.fillStyle = '#ec7211';
-            ctx.fillText(this.state.cert.UserName, x, img.height / 2);
+            ctx.font = '900 80px sans-serif';
+            ctx.fillStyle = this.state.uiSet?.MainColor;
+            ctx.fillText(this.state.cert.UserName, x, img.height / 2 + 30);
 
-            ctx.font = 'bold 60px Amazon Ember';
-            ctx.fillStyle = 'black';
-            ctx.fillText(this.getCourseName(), x, img.height/2 + 180);
+            ctx.font = '900 50px sans-serif';
+            ctx.fillStyle = this.state.uiSet?.MainColor;
+            ctx.fillText(this.getCourseName(), x, img.height/2 + 230);
 
-            ctx.font = 'bold 20px Amazon Ember';
+            ctx.font = '300 20px sans-serif';
             let certURL = `https://${window.location.host}/#/certPublic/`;
             let issueDate = "ISSUED DATE - ";
             issueDate += this.state.cert ? transformDateTime(this.state.cert.CompletedTime).toUpperCase() : new Date().toDateString().toUpperCase();
             certURL += !!this.state.cert ? this.state.cert.ID : "";
             console.log(issueDate)
-            ctx.fillText(issueDate, x, img.height - 50);
-            ctx.fillText(certURL, x, img.height - 20);
+            ctx.fillText(issueDate, x, img.height - 175);
+            ctx.fillText(certURL, x, img.height - 130);
 
             
             const link = document.createElement("a");

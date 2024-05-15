@@ -125,7 +125,7 @@ class Course extends React.Component {
                         </div> */}
                         <div className='course-property'>
                             <Icon variant='subtle' name='status-pending' className='course-property-icon'/> 
-                            {calcTimeBrief(course.length)}
+                            {calcTimeBrief(course.length, t("common.hour"), t("common.minute"))}
                         </div>
                         <div className='course-desc'>
                             {course.description}

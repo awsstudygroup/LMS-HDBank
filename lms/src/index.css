@@ -3,13 +3,14 @@
     font-family: 'Amazon Ember' !important;
 }
 
-:root{
+/* :root{
 --font-family-base-dnvic8: Tahoma, sans-serif !important;
-}
+} */
 
 body {
     margin: 0;
-    font-family: Amazon Ember, sans-serif;
+    /* font-family: Amazon Ember !important; */
+    font-family: var(--font-family-base-dnvic8);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background-color: #fafafa;

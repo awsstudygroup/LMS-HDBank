@@ -510,7 +510,7 @@ a.learn-fill-div:hover {
     margin-left: 2%;
     overflow-y: scroll;
     display: none;
-    font-family: Amazon Ember, sans-serif !important;
+    font-family: 'Amazon Ember, serif' !important;
 }
 
 .video-react-icon-transcript:before {

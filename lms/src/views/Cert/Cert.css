@@ -147,13 +147,13 @@
     font-weight: bold;
     position: relative;
     top: 270px;
-    font-family: Arial;
+    font-family: var(--amplify-fonts-default-variable);
 }
 
 .cert-view-course-name {
     font-size: 25px;
     font-weight: 900;
-    font-family: 'Amazon Ember';
+    font-family: var(--amplify-fonts-default-variable);
     position: relative;
     color: white;
     top: 320px;

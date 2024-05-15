@@ -71,13 +71,11 @@ const MyCourses = () => {
       case "edt":
         navigate(`/editCourse/${selectedItems[0]?.ID}`, {
           state: selectedItems[0],
-          path: "/myCourses"
         });
         break;
       case "edt1":
         navigate(`/editCourse/${course?.ID}`, {
           state: course,
-          path: "/myCourses"
         });
         break;
       case "detail":
