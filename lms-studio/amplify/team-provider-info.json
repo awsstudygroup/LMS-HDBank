@@ -108,11 +108,11 @@
       "function": {
         "addCourseContributor": {
           "deploymentBucketName": "amplify-lmsstudio-hdbank-e8a68-deployment",
-          "s3Key": "amplify-builds/addCourseContributor-3475797759795a565642-build.zip"
+          "s3Key": "amplify-builds/addCourseContributor-78374f4d79584d305237-build.zip"
         },
         "addCourseOpportunity": {
           "deploymentBucketName": "amplify-lmsstudio-hdbank-e8a68-deployment",
-          "s3Key": "amplify-builds/addCourseOpportunity-77316d65665162455338-build.zip"
+          "s3Key": "amplify-builds/addCourseOpportunity-70306170585456575072-build.zip"
         },
         "studioAccessCode": {
           "deploymentBucketName": "amplify-lmsstudio-hdbank-e8a68-deployment",
@@ -120,7 +120,7 @@
         },
         "studioContributor": {
           "deploymentBucketName": "amplify-lmsstudio-hdbank-e8a68-deployment",
-          "s3Key": "amplify-builds/studioContributor-684e6673685a31574a76-build.zip"
+          "s3Key": "amplify-builds/studioContributor-61383679564534793272-build.zip"
         },
         "studioCourseCode": {
           "deploymentBucketName": "amplify-lmsstudio-hdbank-e8a68-deployment",
@@ -128,15 +128,15 @@
         },
         "studioCourseOpp": {
           "deploymentBucketName": "amplify-lmsstudio-hdbank-e8a68-deployment",
-          "s3Key": "amplify-builds/studioCourseOpp-4d756d64737039613273-build.zip"
+          "s3Key": "amplify-builds/studioCourseOpp-6f687374547937325258-build.zip"
         },
         "studioCourses": {
           "deploymentBucketName": "amplify-lmsstudio-hdbank-e8a68-deployment",
-          "s3Key": "amplify-builds/studioCourses-726b32656b3641756b47-build.zip"
+          "s3Key": "amplify-builds/studioCourses-4f61737072324d4a5930-build.zip"
         },
         "studioLectures": {
           "deploymentBucketName": "amplify-lmsstudio-hdbank-e8a68-deployment",
-          "s3Key": "amplify-builds/studioLectures-61563556676e4833546a-build.zip"
+          "s3Key": "amplify-builds/studioLectures-384f6d4d756f5676354d-build.zip"
         },
         "studioSecretManager": {
           "deploymentBucketName": "amplify-lmsstudio-hdbank-e8a68-deployment",
@@ -148,7 +148,7 @@
         },
         "studioUserCourse": {
           "deploymentBucketName": "amplify-lmsstudio-hdbank-e8a68-deployment",
-          "s3Key": "amplify-builds/studioUserCourse-4f676946367474775764-build.zip"
+          "s3Key": "amplify-builds/studioUserCourse-6f675178686b6d497979-build.zip"
         },
         "studioUsers": {
           "deploymentBucketName": "amplify-lmsstudio-hdbank-e8a68-deployment",

@@ -47,7 +47,7 @@
         },
         "uiConfig": {
           "deploymentBucketName": "amplify-lms-hdbank-22c49-deployment",
-          "s3Key": "amplify-builds/uiConfig-706c7478585447793331-build.zip"
+          "s3Key": "amplify-builds/uiConfig-6d4d624b71307857704d-build.zip"
         },
         "users": {
           "deploymentBucketName": "amplify-lms-hdbank-22c49-deployment",
@@ -75,16 +75,16 @@
         "AccessCode": {},
         "Categories": {},
         "Cert": {},
-        "Contributor": {},
         "CourseCode": {},
-        "CourseOpportunity": {},
         "FAQs": {},
         "Lectures": {},
         "UIConfig": {},
         "UserCourse": {},
         "UserLecture": {},
         "courses": {},
-        "lectureresource": {}
+        "lectureresource": {},
+        "Contributor": {},
+        "CourseOpportunity": {}
       }
     }
   }
