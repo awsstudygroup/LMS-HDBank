@@ -27,6 +27,7 @@ class Cert extends React.Component {
             disabled: true,
             uiSet: {},
             defaultThumb: null,
+            isMobile: window.innerWidth < 500
         };
     }
 
@@ -44,6 +45,12 @@ class Cert extends React.Component {
             this.loadCourse();
             this.loadUserCourse();
         });
+
+        window.addEventListener('resize', () => {
+          this.setState({
+              isMobile: window.innerWidth < 500
+          });
+        }, false);
     }
     
     async loadUserId(callback) {
@@ -312,22 +319,30 @@ class Cert extends React.Component {
                     <Button
                       variant="normal"
                       className="cert-continue-btn"
+                      ariaLabel={t("cert.review")}
                       onClick={() =>
                         this.setState({ redirectToCourse: course.id })
                       }
                     >
-                      {t("cert.review")} <Icon name="external" />
+                      {!this.state.isMobile ? t("cert.review") : ""} <Icon name="external" />
                     </Button>
 
-                    <Button variant="primary" className='btn-orange cert-continue-btn' onClick={() => this.setState({shareCertOpen: true})}>
-                                {t("cert.share")} <Icon name='share' />
+                    <Button 
+                      variant="primary" 
+                      className='btn-orange cert-continue-btn'
+                      ariaLabel={t("cert.share")}
+                      onClick={() => this.setState({shareCertOpen: true})}
+                    >
+                      {!this.state.isMobile ? t("cert.share") : ""} <Icon name='share' />
                     </Button>
+                    
                     <Button
                       variant="normal"
                       className="cert-continue-btn"
+                      ariaLabel={t("cert.download")}
                       onClick={this.downloadCert}
                     >
-                      {t("cert.download")} <Icon name="download" />
+                      {!this.state.isMobile ? t("cert.download") : ""} <Icon name="download" />
                     </Button>
                   </div>
                   <div className="cert-view">

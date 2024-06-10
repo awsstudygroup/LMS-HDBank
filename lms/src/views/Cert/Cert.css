@@ -157,6 +157,7 @@
     position: relative;
     color: white;
     top: 320px;
+    padding: 0 20px;
 }
 
 .cert-view-issued-date {
@@ -164,7 +165,10 @@
     position: relative;
     font-weight: 300;
     color: white;
-    top: 415px;
+    top: 410px;
+    text-align: right;
+    right: 200px;
+    font-weight: 700;
 }
 
 .publiccert-view-container {
@@ -225,7 +229,8 @@
     
     .cert-view-issued-date {
         font-size: 7px;
-        top: 360px;
+        top: 335px;
+        right: 175px;
     }
 }
 
@@ -267,6 +272,7 @@
     
     .cert-view-issued-date {
         font-size: 4px;
-        top: 180px;
+        top: 150px;
+        right: 80px
     }
 }
