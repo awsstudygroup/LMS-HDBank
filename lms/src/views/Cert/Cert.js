@@ -221,14 +221,16 @@ class Cert extends React.Component {
 
             ctx.font = '300 20px sans-serif';
             let certURL = `https://${window.location.host}/#/certPublic/`;
+            certURL += !!this.state.cert ? this.state.cert.ID : "";
+            ctx.fillText(certURL, x, img.height - 110);
+
+            // ctx.position = "relative"
+            ctx.font = '700 20px sans-serif';
+            ctx.textAlign = "left"
             let issueDate = "ISSUED DATE - ";
             issueDate += this.state.cert ? transformDateTime(this.state.cert.CompletedTime).toUpperCase() : new Date().toDateString().toUpperCase();
-            certURL += !!this.state.cert ? this.state.cert.ID : "";
-            console.log(issueDate)
-            ctx.fillText(issueDate, x, img.height - 175);
-            ctx.fillText(certURL, x, img.height - 130);
+            ctx.fillText(issueDate, x + 200, img.height - 190);
 
-            
             const link = document.createElement("a");
             link.href = canvas.toDataURL();
             link.setAttribute("download", "certificate");
@@ -335,7 +337,7 @@ class Cert extends React.Component {
                     >
                       {!this.state.isMobile ? t("cert.share") : ""} <Icon name='share' />
                     </Button>
-                    
+
                     <Button
                       variant="normal"
                       className="cert-continue-btn"
