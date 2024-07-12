@@ -117,9 +117,10 @@ export default function AuthForm(props) {
         },
       });
 
-      startSignOut();
+      // startSignOut();
+      await Auth.signOut({ global: true });
       console.log("after log out");
-      await sleep(2000)
+      // await sleep(2000)
       console.log("after sleep");
       // return user;
       return Auth.signIn({

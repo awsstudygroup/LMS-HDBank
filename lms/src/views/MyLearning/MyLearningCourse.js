@@ -204,14 +204,13 @@ class MyLearningCourse extends React.Component {
               ) : (
                 ""
               )}
-              {/* <Button
+              <Button
                 variant="primary"
-                className="btn-orange mylearning-continue-btn"
                 onClick={() => this.setState({ redirectToLearn: course.id })}
               >
                 Continue <Icon name="arrow-left" className="rotate-180" />
-              </Button> */}
-              <button
+              </Button>
+              {/* <button
                 variant="primary"
                 className="btn-normal"
                 style={{
@@ -224,7 +223,7 @@ class MyLearningCourse extends React.Component {
                 <span>
                   {t("mylearning.continue")} <Icon name="arrow-left" className="rotate-180" />
                 </span>
-              </button>
+              </button> */}
             </div>
           </div>
         );

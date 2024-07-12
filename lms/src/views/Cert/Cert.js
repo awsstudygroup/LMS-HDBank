@@ -331,7 +331,7 @@ class Cert extends React.Component {
 
                     <Button 
                       variant="primary" 
-                      className='btn-orange cert-continue-btn'
+                      className='cert-continue-btn'
                       ariaLabel={t("cert.share")}
                       onClick={() => this.setState({shareCertOpen: true})}
                     >

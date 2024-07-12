@@ -515,6 +515,8 @@ a.learn-fill-div:hover {
 
 .video-react-icon-transcript:before {
     content: "📄";
+    zoom:60%;
+     padding: 12px
 }
 
 .video-react-icon-transcript:focus:before {

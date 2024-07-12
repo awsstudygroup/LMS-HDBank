@@ -32,14 +32,14 @@ export function calcTimeBrief(time, hour, minute) {
   if (Math.floor(time / 3600) > 0) {
     timeString = timeString + (Math.floor(time / 3600) + " " + hour + " ")
   }
-  if( (time % 3600) / 60 > 0 ){
+  if( Math.floor((time % 3600) / 60) > 0 ){
     timeString = timeString + (Math.floor((time % 3600) / 60) + " " + minute)
   }
   return timeString;
 }
 
 export async function getUISet() {
-  let localParams = localStorage.getItem("AWSLIBVN_UISET");
+  let localParams = localStorage.getItem("AWSLIBVN_UISET_HDBank");
   let data = JSON.parse(localParams)
   if(data){
     return data;
@@ -47,7 +47,7 @@ export async function getUISet() {
     try{
       const uiSet = await API.get(apiName, configUI + uiConfigId);
       if ( uiSet ) {
-        localStorage.setItem("AWSLIBVN_UISET", JSON.stringify(uiSet));
+        localStorage.setItem("AWSLIBVN_UISET_HDBank", JSON.stringify(uiSet));
         return uiSet;
       }
     }catch(error){

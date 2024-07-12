@@ -204,7 +204,14 @@ function UpdateLecture(props) {
 
   const updateLectureInDB = async (lectureContent) => {
     // console.log(lectureContent)
-
+    let transcription = "";
+    if (newLecture.lectureVideo[0]) {
+      transcription = lectureContent.split("/")[1];
+      transcription = transcription.split(".")[0];
+      transcription = transcription.replace(/[^a-zA-Z ]/g, "");
+      transcription = "transcription/" + transcription + ".json";
+    }
+    
     const jsonData = {
       ID: state.ID,
       Name: newLecture.lectureTitle ? newLecture.lectureTitle : state.Name,
@@ -222,7 +229,7 @@ function UpdateLecture(props) {
       LastUpdated: new Date().toISOString(),
       State: "Enabled",
       Views: state.Views,
-      Transcription: newLecture.transcription,
+      Transcription: transcription || newLecture.transcription,
       YoutubeVideoURL: newLecture.youtubeVideo,
     };
 
@@ -383,7 +390,7 @@ function UpdateLecture(props) {
 
   const setLectureLength = (file) =>
     new Promise((resolve, reject) => {
-      if (file.length > 0) {
+      if (file > 0) {
         try {
           let video = document.createElement("video");
           video.preload = "metadata";
